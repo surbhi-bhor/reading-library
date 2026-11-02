@@ -1,0 +1,150 @@
+version: 2
+
+unit_tests:
+  - name: reads_one_row_per_reread
+    model: stg_hardcover__reads
+    given:
+      - input: ref('stg_hardcover__books')
+        format: sql
+        rows: |
+          select '1' as hardcover_id, 'read' as shelf_status, ['2024-01-09', '2025-03-01'] as finished_dates
+    expect:
+      rows:
+        - {hardcover_id: '1', read_number: 1, finished_at: 2024-01-09}
+        - {hardcover_id: '1', read_number: 2, finished_at: 2025-03-01}
+
+  - name: reads_undated_read_kept
+    model: stg_hardcover__reads
+    given:
+      - input: ref('stg_hardcover__books')
+        format: sql
+        rows: |
+          select '1' as hardcover_id, 'read' as shelf_status, []::varchar[] as finished_dates
+    expect:
+      rows:
+        - {hardcover_id: '1', read_number: 1, finished_at: null}
+
+  - name: reads_exclude_unfinished
+    model: stg_hardcover__reads
+    given:
+      - input: ref('stg_hardcover__books')
+        format: sql
+        rows: |
+          select '1' as hardcover_id, 'want_to_read' as shelf_status, ['2020-01-01'] as finished_dates
+          union all select '2', 'reading', ['2021-01-01']
+          union all select '3', 'did_not_finish', ['2022-01-01']
+    expect:
+      rows: []
+
+  - name: fact_reading_counts_only_read_items
+    model: fact_reading
+    given:
+      - input: ref('stg_hardcover__reads')
+        rows:
+          - {hardcover_id: '1', read_number: 1, finished_at: 2024-01-09}
+          - {hardcover_id: '1', read_number: 2, finished_at: 2025-03-01}
+          - {hardcover_id: '2', read_number: 1, finished_at: null}
+          - {hardcover_id: '3', read_number: 1, finished_at: 2023-05-05}
+      - input: ref('dim_item')
+        rows:
+          - {item_id: 'book:1', shelf_status: read, rating_10: 8, page_count: 100}
+          - {item_id: 'book:2', shelf_status: read, rating_10: null, page_count: null}
+          - {item_id: 'book:3', shelf_status: want_to_read, rating_10: 10, page_count: 50}
+    expect:
+      rows:
+        - {item_id: 'book:1', date_id: 20240109, rating_10: 8, reading_minutes: 150}
+        - {item_id: 'book:1', date_id: 20250301, rating_10: 8, reading_minutes: 150}
+        - {item_id: 'book:2', date_id: null, rating_10: null, reading_minutes: null}
+
+  - name: dim_item_keeps_unmatched_and_drops_dnf
+    model: dim_item
+    given:
+      - input: ref('stg_hardcover__books')
+        rows:
+          - {hardcover_id: '1', title: Matched, shelf_status: read}
+          - {hardcover_id: '2', title: Unmatched, shelf_status: want_to_read}
+          - {hardcover_id: '3', title: Abandoned, shelf_status: did_not_finish}
+      - input: ref('stg_openlibrary__books')
+        rows:
+          - {hardcover_id: '1', ol_key: /works/OL1W, page_count: 300, cover_url: 'https://covers.openlibrary.org/b/id/1-L.jpg'}
+    expect:
+      rows:
+        - {item_id: 'book:1', title: Matched, page_count: 300, cover_or_image_url: 'https://covers.openlibrary.org/b/id/1-L.jpg'}
+        - {item_id: 'book:2', title: Unmatched, page_count: null, cover_or_image_url: null}
+
+models:
+  - name: dim_item
+    description: One row per book (later also article) on a shelf. shelf_status is today's status from Hardcover and only places the item on a shelf; metrics use fact_reading.
+    columns:
+      - name: item_id
+        tests: [unique, not_null]
+      - name: item_type
+        tests:
+          - accepted_values:
+              values: [book, article, newsletter_post]
+      - name: shelf_status
+        tests:
+          - accepted_values:
+              values: [read, reading, want_to_read]
+      - name: rating_10
+        description: My rating, 0 to 10 (Hardcover stars times 2). Null when unrated.
+        tests:
+          - between: {min: 0, max: 10}
+      - name: source_id
+        tests:
+          - relationships: {to: ref('dim_source'), field: source_id, where: "source_id is not null"}
+  - name: fact_reading
+    description: One row per finished read of one item. A re-read gets one row per finish; a read without a date has a null date_id.
+    columns:
+      - name: reading_id
+        tests: [unique, not_null]
+      - name: item_id
+        tests:
+          - not_null
+          - relationships: {to: ref('dim_item'), field: item_id}
+      - name: date_id
+        tests:
+          - relationships: {to: ref('dim_date'), field: date_id, where: "date_id is not null"}
+      - name: rating_10
+        tests:
+          - between: {min: 0, max: 10}
+      - name: reading_minutes
+        description: Estimated, page_count times var minutes_per_page. Null without a page count.
+  - name: dim_creator
+    description: Authors, one row per person.
+    columns:
+      - name: creator_id
+        tests: [unique, not_null]
+  - name: bridge_item_creator
+    description: Item to creator, with credit order (1 = first author).
+    columns:
+      - name: item_id
+        tests:
+          - relationships: {to: ref('dim_item'), field: item_id}
+      - name: creator_id
+        tests:
+          - relationships: {to: ref('dim_creator'), field: creator_id}
+  - name: dim_source
+    description: Where an item was published. Publisher for books.
+    columns:
+      - name: source_id
+        tests: [unique, not_null]
+  - name: dim_topic
+    description: Topics from Open Library subjects; is_generic marks format and marketing tags that metrics ignore.
+    columns:
+      - name: topic_id
+        tests: [unique, not_null]
+  - name: bridge_item_topic
+    description: Item to topic.
+    columns:
+      - name: item_id
+        tests:
+          - relationships: {to: ref('dim_item'), field: item_id}
+      - name: topic_id
+        tests:
+          - relationships: {to: ref('dim_topic'), field: topic_id}
+  - name: dim_date
+    description: Calendar for finish dates.
+    columns:
+      - name: date_id
+        tests: [unique, not_null]
