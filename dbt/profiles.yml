@@ -1,0 +1,7 @@
+reading_library:
+  target: prod
+  outputs:
+    prod:
+      type: duckdb
+      path: "{{ env_var('WAREHOUSE_PATH', '../warehouse.duckdb') }}"
+      threads: 4

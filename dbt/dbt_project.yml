@@ -1,0 +1,32 @@
+name: reading_library
+version: "1.0.0"
+config-version: 2
+profile: reading_library
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+
+vars:
+  minutes_per_page: 1.5
+  words_per_minute: 238
+
+models:
+  reading_library:
+    staging:
+      +schema: staging
+      +materialized: table  # tables, not views: the raw paths are relative to dbt/
+    marts:
+      +schema: marts
+      +materialized: table
+    metrics:
+      +schema: metrics
+      +materialized: table
+    publish:
+      +schema: publish
+      +materialized: table
+
+seeds:
+  reading_library:
+    +schema: meta

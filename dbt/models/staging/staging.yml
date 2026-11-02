@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: stg_hardcover__books
+    description: My Hardcover library, one row per book, rating converted to 0 to 10.
+    columns:
+      - name: hardcover_id
+        tests: [unique, not_null]
+      - name: shelf_status
+        tests:
+          - accepted_values:
+              values: [want_to_read, reading, read, did_not_finish, unknown]
+  - name: stg_hardcover__reads
+    description: One row per finished read; read books without a date get one undated row.
+    columns:
+      - name: hardcover_id
+        tests: [not_null]
+  - name: stg_openlibrary__books
+    description: Open Library match per book, with cover URL and English author name.
+    columns:
+      - name: hardcover_id
+        tests: [unique, not_null]
+  - name: stg_openlibrary__subjects
+    description: English Open Library subjects per book.
+    columns:
+      - name: subject_name
+        tests: [not_null]

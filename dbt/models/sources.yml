@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw extract files written by `python -m extract`, committed under data/raw.
+    loaded_at_field: "extracted_at::timestamptz"
+    freshness:
+      warn_after: {count: 36, period: hour}
+      error_after: {count: 72, period: hour}
+    tables:
+      - name: hardcover_books
+        description: One row per book in my Hardcover library.
+        meta:
+          external_location: "read_json('../data/raw/hardcover_books.json', format='array')"
+      - name: openlibrary_books
+        description: Open Library match for each Hardcover book that could be matched.
+        meta:
+          external_location: "read_json('../data/raw/openlibrary_books.json', format='array')"
