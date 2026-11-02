@@ -1,0 +1,14 @@
+{
+  "name": "reading-library-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "observable preview",
+    "build": "observable build",
+    "test": "node --test test/*.test.js",
+    "fresh": "node -e \"require('fs').rmSync('src/.observablehq/cache/data', {recursive: true, force: true})\""
+  },
+  "dependencies": {
+    "@observablehq/framework": "1.13.4"
+  }
+}

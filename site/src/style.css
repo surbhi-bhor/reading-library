@@ -1,0 +1,727 @@
+/* Hallmark · macrostructure: custom (bespoke) · tone: classic library at night · anchor hue: library green 160 + brass 82
+ * theme: custom · vibe: "green reading room, walnut cases, brass lamp" · paper oklch(26% 0.035 160) · accent oklch(77% 0.1 82)
+ * display: IM Fell English (roman) · body: Alegreya Sans · cards: Courier Prime
+ * axes: dark / classical-serif / warm-other
+ */
+
+/* ── Tokens ─────────────────────────────────────────────── */
+:root {
+  /* the room */
+  --color-wall: oklch(26% 0.035 160);
+  --color-wall-deep: oklch(20% 0.03 160);
+  --color-wall-line: oklch(36% 0.035 160);
+  /* the furniture */
+  --color-walnut: oklch(40% 0.065 52);
+  --color-walnut-dark: oklch(25% 0.045 45);
+  --color-walnut-light: oklch(52% 0.075 58);
+  --color-brass: oklch(77% 0.1 82);
+  --color-brass-dim: oklch(62% 0.08 80);
+  /* type on the wall */
+  --color-ivory: oklch(94% 0.022 88);
+  --color-ivory-dim: oklch(80% 0.025 88);
+  /* index-card stock and ink */
+  --color-card: oklch(95% 0.022 90);
+  --color-card-line: oklch(84% 0.03 80);
+  --color-card-ink: oklch(28% 0.02 60);
+  --color-card-faint: oklch(52% 0.02 60);
+  --color-stamp: oklch(48% 0.15 25);
+  --color-rule-blue: oklch(62% 0.08 245);
+  /* light and shade */
+  --color-lamp: oklch(85% 0.11 82 / 0.16);
+  --color-shade: oklch(0% 0 0 / 0.5);
+  --color-shade-soft: oklch(0% 0 0 / 0.22);
+  --color-shine: oklch(100% 0 0 / 0.14);
+  --color-focus: oklch(85% 0.14 85);
+  /* bookcloth for books without a cover */
+  --cloth-oxblood: oklch(36% 0.11 22);
+  --cloth-bottle: oklch(36% 0.07 160);
+  --cloth-navy: oklch(32% 0.07 255);
+  --cloth-mustard: oklch(62% 0.12 85);
+  --cloth-plum: oklch(34% 0.08 330);
+  --cloth-slate: oklch(45% 0.025 240);
+  --cloth-rust: oklch(48% 0.12 45);
+  --cloth-walnut: oklch(38% 0.06 55);
+
+  --font-display: "IM Fell English", "Iowan Old Style", Georgia, serif;
+  --font-body: "Alegreya Sans", "Gill Sans", "Segoe UI", sans-serif;
+  --font-typed: "Courier Prime", "Courier New", monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.375rem;
+  --text-xl: 1.875rem;
+  --text-2xl: 2.5rem;
+  --text-display: clamp(2.6rem, 6vw, 4.75rem);
+
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  --radius-card: 3px;
+  --rule-thin: 1px;
+  --page-max: 76rem;
+  --shelf-height: 17rem;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 140ms;
+  --dur-med: 220ms;
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { overflow-x: clip; }
+
+html {
+  background: var(--color-wall-deep);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  /* the lamp-lit wall: brighter near the top, darker toward the floor */
+  background: linear-gradient(var(--color-wall) 0, var(--color-wall) 40rem, var(--color-wall-deep) 100%);
+  color: var(--color-ivory);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: 1.55;
+  text-rendering: optimizeLegibility;
+}
+
+#observablehq-center {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+#observablehq-main { min-height: 70vh; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.1;
+  margin: 0;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  color: var(--color-ivory);
+}
+
+h1 { font-size: var(--text-display); letter-spacing: -0.01em; }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+
+p { margin: 0 0 var(--space-md); max-width: 66ch; }
+
+a { color: var(--color-brass); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { color: var(--color-ivory); }
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+::selection { background: var(--color-brass); color: var(--color-wall-deep); }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ── Site nav and footer ────────────────────────────────── */
+#observablehq-header { padding: var(--space-lg) 0 0; }
+
+.site-nav {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: var(--rule-thin) solid var(--color-wall-line);
+}
+
+.site-mark {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-ivory);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-nav ul {
+  display: flex;
+  gap: var(--space-lg);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav ul a {
+  color: var(--color-ivory-dim);
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+}
+
+.site-nav ul a:hover,
+.site-nav ul a[aria-current="page"] { color: var(--color-brass); }
+
+#observablehq-footer {
+  margin-top: var(--space-3xl);
+  padding: var(--space-lg) 0 var(--space-xl);
+  border-top: var(--rule-thin) solid var(--color-wall-line);
+  color: var(--color-ivory-dim);
+  font-size: var(--text-sm);
+}
+
+/* ── Page heads ─────────────────────────────────────────── */
+.page-head {
+  padding: var(--space-2xl) 0 var(--space-xl);
+  max-width: 44rem;
+}
+
+.page-head p {
+  margin-top: var(--space-md);
+  color: var(--color-ivory-dim);
+  font-size: var(--text-lg);
+  line-height: 1.45;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-md);
+  margin: var(--space-2xl) 0 var(--space-md);
+}
+
+.section-head p { margin: 0; color: var(--color-ivory-dim); }
+
+/* A small brass plate, like the ones screwed onto library shelves. */
+.plate {
+  display: inline-block;
+  padding: 0.05rem 0.55rem 0.1rem;
+  border-radius: 2px;
+  background: linear-gradient(var(--color-brass), var(--color-brass-dim));
+  color: var(--color-walnut-dark);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 1px 0 var(--color-shine), 0 1px 2px var(--color-shade);
+}
+
+/* ── Finder (search + genre) ────────────────────────────── */
+.finder {
+  display: grid;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.finder input[type="search"] {
+  width: min(100%, 26rem);
+  padding: var(--space-xs) 0;
+  border: 0;
+  border-bottom: var(--rule-thin) solid var(--color-ivory-dim);
+  background: transparent;
+  color: var(--color-ivory);
+  font: inherit;
+  font-size: var(--text-lg);
+}
+
+.finder input[type="search"]::placeholder { color: var(--color-ivory-dim); opacity: 0.8; }
+.finder input[type="search"]:focus-visible { outline: none; border-bottom-color: var(--color-focus); box-shadow: 0 2px 0 var(--color-focus); }
+
+.genres { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin: 0; padding: 0; border: 0; }
+
+.genre {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+  padding: 0.3rem 0.8rem;
+  border: var(--rule-thin) solid var(--color-wall-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-ivory-dim);
+  font: inherit;
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.genre small { font-variant-numeric: tabular-nums; opacity: 0.75; }
+.genre:hover { border-color: var(--color-brass-dim); color: var(--color-ivory); }
+.genre[aria-pressed="true"] { border-color: var(--color-brass); color: var(--color-brass); }
+
+.finder-status { min-height: 1.5em; margin: 0; color: var(--color-ivory-dim); font-size: var(--text-sm); }
+
+/* ── The bookcase ───────────────────────────────────────── */
+.bookcase {
+  position: relative;
+  margin: 0 calc(-1 * var(--space-lg));
+  padding: 0 var(--space-md);
+  background:
+    radial-gradient(60% 70% at 50% 0%, var(--color-lamp), transparent 70%),
+    linear-gradient(var(--color-walnut-dark), var(--color-walnut-dark));
+  border-left: 14px solid var(--color-walnut);
+  border-right: 14px solid var(--color-walnut);
+  box-shadow: inset 0 18px 30px var(--color-shade-soft), 0 24px 40px var(--color-shade);
+}
+
+/* A short shelf gets a small case, not a long empty one. */
+.bookcase.fit { width: fit-content; min-width: min(100%, 24rem); max-width: calc(100% + 2 * var(--space-lg)); }
+
+.shelf-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: var(--shelf-height);
+  padding: var(--space-lg) var(--space-sm) 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-walnut-light) transparent;
+  overscroll-behavior-x: contain;
+}
+
+/* The plank the books stand on, with a little grain. */
+.plank {
+  height: 18px;
+  margin: 0 calc(-1 * var(--space-md));
+  background:
+    linear-gradient(var(--color-shine), transparent 30%),
+    repeating-linear-gradient(90deg, transparent 0 37px, var(--color-shade-soft) 37px 38px, transparent 38px 91px, var(--color-shade-soft) 91px 92px),
+    var(--color-walnut);
+  box-shadow: 0 6px 10px var(--color-shade);
+}
+
+.shelf-empty {
+  align-self: center;
+  margin: 0 auto;
+  color: var(--color-ivory-dim);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+}
+
+.spine {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xs) 0;
+  border: 0;
+  border-radius: 2px 2px 0 0;
+  background-color: var(--cloth, var(--cloth-walnut));
+  background-image:
+    linear-gradient(90deg, var(--color-shade) 0%, transparent 22%, var(--color-shine) 46%, transparent 64%, var(--color-shade) 100%),
+    linear-gradient(var(--color-shade-soft), var(--color-shade-soft)),
+    var(--cover, none);
+  background-size: 100% 100%, 100% 100%, cover;
+  background-position: center, center, 30% center;
+  color: var(--color-ivory);
+  cursor: pointer;
+  transform-origin: bottom center;
+  transition: transform var(--dur-med) var(--ease-out);
+  box-shadow: 1px 0 0 var(--color-shade);
+}
+
+.spine-title {
+  writing-mode: vertical-rl;
+  max-height: 100%;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: 0 0 3px var(--color-wall-deep), 0 0 1px var(--color-wall-deep);
+}
+
+.spine:hover, .spine:focus-visible { transform: translateY(-10px); }
+.spine:focus-visible { outline-offset: 2px; }
+
+/* Currently reading: a brass ribbon bookmark hanging out of the top. */
+.spine[data-reading="true"]::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 6px;
+  height: 22px;
+  translate: -50% 0;
+  background: var(--color-brass);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+}
+
+.spine-slot { flex: 0 0 auto; display: flex; align-items: flex-end; }
+.spine[hidden] { display: none; }
+
+/* A brass bookend holding the row up. */
+.bookend {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 46%;
+  margin-left: 3px;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(90deg, var(--color-brass-dim), var(--color-brass) 40%, var(--color-brass-dim));
+  box-shadow: 2px 0 6px var(--color-shade);
+}
+
+/* ── Book panel (native dialog) ─────────────────────────── */
+.book-panel {
+  width: min(52rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  color: var(--color-card-ink);
+  box-shadow: 0 30px 80px var(--color-shade);
+}
+
+.book-panel::backdrop {
+  background: var(--color-shade);
+  backdrop-filter: blur(6px);
+}
+
+.book-panel[open] { animation: panel-in var(--dur-med) var(--ease-out); }
+
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+.book-panel-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  gap: var(--space-xl);
+  padding: var(--space-xl);
+}
+
+.book-cover {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 10px 24px var(--color-shade-soft);
+  background: var(--cloth, var(--cloth-walnut));
+}
+
+.book-cover-cloth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  color: var(--color-ivory);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  text-align: center;
+}
+
+.book-status {
+  margin: 0 0 var(--space-sm);
+  color: var(--color-card-faint);
+  font-family: var(--font-typed);
+  font-size: var(--text-sm);
+}
+
+.book-panel h2 { color: var(--color-card-ink); font-size: var(--text-2xl); }
+
+.book-author {
+  margin: var(--space-xs) 0 var(--space-lg);
+  color: var(--color-walnut);
+  font-size: var(--text-lg);
+}
+
+.book-facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-2xs) var(--space-lg);
+  margin: 0 0 var(--space-xl);
+  font-size: var(--text-sm);
+}
+
+.book-facts dt { color: var(--color-card-faint); }
+.book-facts dd { margin: 0; }
+
+.stars { color: var(--color-walnut); letter-spacing: 0.08em; }
+
+.book-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.book-actions .push { margin-left: auto; }
+
+.btn {
+  padding: 0.45rem 0.95rem;
+  border: var(--rule-thin) solid var(--color-card-line);
+  border-radius: var(--radius-card);
+  background: transparent;
+  color: var(--color-card-ink);
+  font: inherit;
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+.btn:hover { border-color: var(--color-walnut); background: var(--color-card-line); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.btn:focus-visible { outline-color: var(--color-walnut); }
+.btn-solid { background: var(--color-walnut-dark); border-color: var(--color-walnut-dark); color: var(--color-card); }
+.btn-solid:hover { background: var(--color-walnut); border-color: var(--color-walnut); }
+
+.book-panel a { color: var(--color-walnut); }
+
+/* ── Index cards (catalogue, year, about) ───────────────── */
+.card {
+  position: relative;
+  /* Text rows are 1.6rem tall and sit on the ruled lines; the title sits above the red line. */
+  padding: 1rem var(--space-lg) var(--space-lg);
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(transparent calc(2.6rem - 1px), var(--color-stamp) calc(2.6rem - 1px), var(--color-stamp) 2.6rem, transparent 2.6rem),
+    linear-gradient(var(--color-card) 0 2.6rem, transparent 2.6rem),
+    repeating-linear-gradient(transparent 0 calc(1.6rem - 1px), var(--color-card-line) calc(1.6rem - 1px) 1.6rem),
+    var(--color-card);
+  background-position: 0 0, 0 0, 0 1rem, 0 0;
+  color: var(--color-card-ink);
+  box-shadow: 0 2px 0 var(--color-shade-soft), 0 12px 24px var(--color-shade-soft);
+  font-family: var(--font-typed);
+  line-height: 1.6rem;
+}
+
+.card h3 {
+  margin: 0;
+  color: var(--color-card-ink);
+  font-family: var(--font-typed);
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: 1.6rem;
+}
+
+/* ── Layout helpers ─────────────────────────────────────── */
+.two-up {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+/* ── Reduced motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 120ms !important;
+  }
+  .spine:hover, .spine:focus-visible { transform: none; box-shadow: 0 0 0 2px var(--color-focus); }
+  .book-panel[open] { animation-name: fade-in; }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+}
+
+/* ── Small screens ──────────────────────────────────────── */
+@media (max-width: 760px) {
+  :root { --shelf-height: 14rem; }
+  #observablehq-center { padding: 0 var(--space-md); }
+  .site-nav { flex-direction: column; align-items: flex-start; gap: var(--space-xs); }
+  .site-nav ul {
+    gap: var(--space-md);
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: var(--space-2xs);
+    scrollbar-width: none;
+  }
+  .bookcase { margin: 0 calc(-1 * var(--space-md)); border-left-width: 8px; border-right-width: 8px; }
+  .page-head { padding: var(--space-xl) 0 var(--space-lg); }
+  .book-panel-inner { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); padding: var(--space-lg); }
+  .book-cover { width: min(11rem, 60%); }
+  .two-up { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ── Catalogue: ledger ──────────────────────────────────── */
+.ledger dl { margin: 0; }
+
+.ledger-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 var(--space-md);
+  align-items: baseline;
+  line-height: 1.6rem;
+}
+
+.ledger dt { color: var(--color-card-faint); }
+.ledger dd { margin: 0; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ledger dd.ledger-note { grid-column: 1 / -1; font-weight: 400; font-size: var(--text-xs); color: var(--color-card-faint); }
+
+/* ── Catalogue: the card cabinet ────────────────────────── */
+.cabinet {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  border-radius: var(--radius-card);
+  background: var(--color-walnut-dark);
+  box-shadow: inset 0 0 0 4px var(--color-walnut), 0 20px 36px var(--color-shade);
+}
+
+.drawer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  min-height: var(--h);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: 2px;
+  background:
+    linear-gradient(var(--color-shine), transparent 18%),
+    repeating-linear-gradient(90deg, transparent 0 53px, var(--color-shade-soft) 53px 54px, transparent 54px 131px),
+    var(--color-walnut);
+  box-shadow: inset 0 -3px 0 var(--color-shade-soft);
+}
+
+/* The brass label holder with a typed card slipped into it. */
+.drawer-label {
+  display: grid;
+  min-width: 0;
+  padding: var(--space-2xs) var(--space-sm);
+  border: 2px solid var(--color-brass);
+  border-radius: 2px;
+  background: var(--color-card);
+  color: var(--color-card-ink);
+  font-family: var(--font-typed);
+  font-size: var(--text-xs);
+  line-height: 1.35;
+}
+
+.drawer-label strong { font-size: var(--text-sm); }
+.drawer-label span { color: var(--color-card-faint); }
+
+.drawer-pull {
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 0.9rem;
+  border-radius: 0 0 1rem 1rem;
+  background: linear-gradient(var(--color-brass), var(--color-brass-dim));
+  box-shadow: 0 2px 3px var(--color-shade);
+}
+
+/* ── Catalogue: checkout card ───────────────────────────── */
+.stamps { margin: 0; padding: 0; list-style: none; }
+
+.stamp-row {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-md);
+  align-items: center;
+  line-height: 1.6rem;
+}
+
+.stamp {
+  display: inline-block;
+  padding: 0 0.4rem;
+  border: 1.5px solid var(--color-stamp);
+  border-radius: 2px;
+  color: var(--color-stamp);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  line-height: 1.25rem;
+  rotate: var(--tilt, 0deg);
+  opacity: 0.88;
+}
+
+.stamp-count { color: var(--color-card-faint); font-size: var(--text-sm); }
+.checkout-note { margin: var(--space-sm) 0 0; color: var(--color-card-faint); font-size: var(--text-sm); line-height: 1.6rem; }
+
+/* ── Catalogue: author cards ────────────────────────────── */
+.author-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: var(--space-lg);
+}
+
+.author-card h3 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.author-card p { margin: 0; line-height: 1.6rem; font-size: var(--text-sm); }
+.author-card:nth-child(odd) { rotate: -0.6deg; }
+.author-card:nth-child(even) { rotate: 0.5deg; }
+
+/* ── Year in review ─────────────────────────────────────── */
+.year-sum {
+  margin: var(--space-xl) 0;
+  max-width: 40rem;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  line-height: 1.35;
+}
+
+.year-sum strong { font-weight: 400; color: var(--color-brass); }
+.year-sum em { font-style: normal; text-decoration: underline; text-decoration-color: var(--color-brass); text-underline-offset: 0.2em; }
+
+/* ── Stats ──────────────────────────────────────────────── */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 7.5rem), 1fr));
+  gap: var(--space-lg);
+  margin: 0 0 var(--space-2xl);
+  padding: var(--space-lg) 0;
+  border-top: var(--rule-thin) solid var(--color-wall-line);
+  border-bottom: var(--rule-thin) solid var(--color-wall-line);
+}
+
+.tiles dt { color: var(--color-ivory-dim); font-size: var(--text-sm); }
+.tiles dd { margin: var(--space-2xs) 0 0; font-family: var(--font-body); font-weight: 500; font-size: var(--text-2xl); line-height: 1; font-variant-numeric: lining-nums tabular-nums; }
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
+  gap: var(--space-2xl) var(--space-xl);
+}
+
+.chart { margin: 0; min-width: 0; }
+.chart figcaption { margin-bottom: var(--space-md); }
+.chart h3 { font-size: var(--text-lg); }
+.chart figcaption p { margin: var(--space-2xs) 0 0; color: var(--color-ivory-dim); font-size: var(--text-sm); }
+.chart svg { max-width: 100%; height: auto; }
+
+.chart details { margin-top: var(--space-sm); font-size: var(--text-sm); }
+.chart summary { color: var(--color-brass); cursor: pointer; width: fit-content; }
+
+.data-table { margin-top: var(--space-sm); border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.data-table th, .data-table td { padding: var(--space-2xs) var(--space-lg) var(--space-2xs) 0; text-align: left; border-bottom: var(--rule-thin) solid var(--color-wall-line); }
+.data-table th { color: var(--color-ivory-dim); font-weight: 500; }
+
+/* Plot's own tooltip, dressed as an index card. */
+[aria-label="tip"] { --plot-background: var(--color-card); }
+[aria-label="tip"] text { fill: var(--color-card-ink); }
+
+/* ── How this is made ───────────────────────────────────── */
+#observablehq-main > h2 { margin: var(--space-2xl) 0 var(--space-md); }
+.tiles dd.tile-text { font-size: var(--text-lg); line-height: 1.3; }
+.about-notes p, .definitions p { color: var(--color-ivory-dim); }
+.about-notes strong, .definitions strong { color: var(--color-ivory); font-weight: 500; }
+.about-notes code { font-family: var(--font-typed); font-size: 0.92em; color: var(--color-ivory); }
+.about-links { display: flex; flex-wrap: wrap; gap: var(--space-md) var(--space-xl); margin-top: var(--space-xl); }
+
+/* Mermaid diagram on the wall: ivory boxes, brass arrows. */
+.mermaid, svg[id^="mermaid"] { max-width: 100%; }
+svg[id^="mermaid"] .node rect { fill: var(--color-card) !important; stroke: var(--color-brass) !important; }
+svg[id^="mermaid"] .nodeLabel, svg[id^="mermaid"] .nodeLabel p { color: var(--color-card-ink) !important; font-family: var(--font-body) !important; }
+svg[id^="mermaid"] .flowchart-link { stroke: var(--color-brass) !important; }
+svg[id^="mermaid"] marker path { fill: var(--color-brass) !important; stroke: var(--color-brass) !important; }
+
+/* Framework wraps headings in self-links; they should read as headings. */
+h1 a[href^="#"], h2 a[href^="#"], h3 a[href^="#"] { color: inherit; text-decoration: none; }
