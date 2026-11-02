@@ -61,16 +61,78 @@ unit_tests:
     given:
       - input: ref('stg_hardcover__books')
         rows:
-          - {hardcover_id: '1', title: Matched, shelf_status: read}
+          - {hardcover_id: '1', title: 'Matched: A Subtitle', author: Elif Şafak, shelf_status: read}
           - {hardcover_id: '2', title: Unmatched, shelf_status: want_to_read}
           - {hardcover_id: '3', title: Abandoned, shelf_status: did_not_finish}
       - input: ref('stg_openlibrary__books')
         rows:
           - {hardcover_id: '1', ol_key: /works/OL1W, page_count: 300, cover_url: 'https://covers.openlibrary.org/b/id/1-L.jpg'}
+      - input: ref('int_item_genre')
+        rows:
+          - {hardcover_id: '1', genre: Mythology}
     expect:
       rows:
-        - {item_id: 'book:1', title: Matched, page_count: 300, cover_or_image_url: 'https://covers.openlibrary.org/b/id/1-L.jpg'}
-        - {item_id: 'book:2', title: Unmatched, page_count: null, cover_or_image_url: null}
+        - {item_id: 'book:1', title: 'Matched: A Subtitle', page_count: 300, cover_or_image_url: 'https://covers.openlibrary.org/b/id/1-L.jpg', genre: Mythology, url: 'https://www.goodreads.com/search?q=Matched%20Elif%20%C5%9Eafak'}
+        - {item_id: 'book:2', title: Unmatched, page_count: null, cover_or_image_url: null, genre: Fiction, url: 'https://www.goodreads.com/search?q=Unmatched'}
+
+  - name: item_genre_from_subjects_tags_title_then_author_then_fiction
+    model: int_item_genre
+    given:
+      - input: ref('stg_hardcover__books')
+        format: sql
+        rows: |
+          select '1' as hardcover_id, 'Some Epic' as title, 'A' as author, []::varchar[] as genres
+          union all select '2', 'Quiet Book', 'B', ['Thriller', 'Fantasy']
+          union all select '3', 'A Murder in Town', 'C', []::varchar[]
+          union all select '4', 'Inner Life', 'D', []::varchar[]
+          union all select '5', 'Another by D', 'D', ['Spirituality']
+          union all select '6', 'Nothing Known', 'E', ['Fantasy']
+      - input: ref('stg_openlibrary__subjects')
+        rows:
+          - {hardcover_id: '1', subject_name: Indic Mythology}
+      - input: ref('genre_rules')
+        rows:
+          - {priority: 1, pattern: 'mytholog', genre: Mythology}
+          - {priority: 2, pattern: 'thriller|murder', genre: Mystery & thriller}
+          - {priority: 5, pattern: 'spiritual', genre: Spirituality}
+    expect:
+      rows:
+        - {hardcover_id: '1', genre: Mythology}
+        - {hardcover_id: '2', genre: Mystery & thriller}
+        - {hardcover_id: '3', genre: Mystery & thriller}
+        - {hardcover_id: '4', genre: Spirituality}
+        - {hardcover_id: '5', genre: Spirituality}
+        - {hardcover_id: '6', genre: Fiction}
+
+  - name: genre_mix_counts_books_once_per_reread
+    model: metric_genre_mix
+    given:
+      - input: ref('fact_reading')
+        rows:
+          - {reading_id: r1, item_id: 'book:1'}
+          - {reading_id: r2, item_id: 'book:1'}
+          - {reading_id: r3, item_id: 'book:2'}
+      - input: ref('dim_item')
+        rows:
+          - {item_id: 'book:1', genre: Fiction}
+          - {item_id: 'book:2', genre: Fiction}
+    expect:
+      rows:
+        - {genre: Fiction, reads: 3, books: 2, share: 1.0}
+
+  - name: items_read_counts_distinct_books
+    model: metric_items_read
+    given:
+      - input: ref('fact_reading')
+        rows:
+          - {reading_id: r1, item_id: 'book:1'}
+          - {reading_id: r2, item_id: 'book:1'}
+      - input: ref('dim_item')
+        rows:
+          - {item_id: 'book:1', item_type: book}
+    expect:
+      rows:
+        - {item_type: book, items_read: 2, distinct_items: 1}
 
 models:
   - name: dim_item
@@ -86,6 +148,11 @@ models:
         tests:
           - accepted_values:
               values: [read, reading, want_to_read]
+      - name: url
+        description: Goodreads search for the title and first author, so the link lands on the English edition.
+      - name: genre
+        description: Genre shelf from int_item_genre (rules over subjects, Hardcover tags and title, then the author's usual genre, then Fiction).
+        tests: [not_null]
       - name: rating_10
         description: My rating, 0 to 10 (Hardcover stars times 2). Null when unrated.
         tests:

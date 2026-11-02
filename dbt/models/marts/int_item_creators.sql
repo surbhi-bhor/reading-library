@@ -22,6 +22,9 @@ credited as (
     where len(authors) = 0
 )
 
-select item_id, creator_order, trim(creator_name) as creator_name, md5(lower(trim(creator_name))) as creator_id
+select item_id, creator_order,
+    -- Hardcover has stray double spaces in some names ("Siddharth  Maheshwari").
+    regexp_replace(trim(creator_name), '\s+', ' ', 'g') as creator_name,
+    md5(lower(regexp_replace(trim(creator_name), '\s+', ' ', 'g'))) as creator_id
 from credited
 where creator_name is not null

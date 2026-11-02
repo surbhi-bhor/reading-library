@@ -10,6 +10,8 @@
 -- depends_on: {{ ref('metric_top_creators') }}
 -- depends_on: {{ ref('metric_topic_mix') }}
 -- depends_on: {{ ref('metric_long_form_share') }}
+-- depends_on: {{ ref('metric_genre_mix') }}
+-- depends_on: {{ ref('metric_rating_spread') }}
 -- depends_on: {{ ref('metric_undated_reads') }}
 -- depends_on: {{ ref('pub_shelf') }}
 -- depends_on: {{ ref('pub_build_info') }}

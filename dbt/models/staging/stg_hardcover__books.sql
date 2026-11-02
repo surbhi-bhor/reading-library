@@ -1,7 +1,8 @@
 select
     hardcover_id::varchar as hardcover_id,
     title,
-    {{ latin_or_null('authors[1]') }} as author,
+    -- First author, Latin script only, stray double spaces collapsed.
+    regexp_replace(trim({{ latin_or_null('authors[1]') }}), '\s+', ' ', 'g') as author,
     authors,
     isbn_13,
     isbn_10,
@@ -15,5 +16,7 @@ select
         else 'unknown'
     end as shelf_status,
     finished_dates,
+    -- Hardcover's crowd-sourced genre tags (older raw files may lack the field).
+    coalesce(genres, []::varchar[]) as genres,
     extracted_at::timestamptz as extracted_at
 from {{ source('raw', 'hardcover_books') }}

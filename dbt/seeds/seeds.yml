@@ -1,0 +1,7 @@
+version: 2
+
+seeds:
+  - name: genre_rules
+    description: Maps a book to a genre shelf, automatically. Each rule is a regex over the book's Open Library subjects, Hardcover genre tags and title, lowercased; the lowest priority number that matches wins.
+  - name: allowed_published_columns
+    description: Every column allowed in the metrics and publish schemas. The privacy test fails on anything else.

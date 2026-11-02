@@ -7,6 +7,11 @@ with rated as (
 select 'type' as dimension, item_type as dimension_value, avg(rating_10) as avg_rating_10, count(*) as rated_reads
 from rated group by item_type
 union all
+select 'genre', i.genre, avg(r.rating_10), count(*)
+from rated r
+join {{ ref('dim_item') }} i using (item_id)
+group by i.genre
+union all
 select 'topic', t.topic_name, avg(r.rating_10), count(*)
 from rated r
 join {{ ref('bridge_item_topic') }} b using (item_id)

@@ -1,6 +1,7 @@
 table_name,column_name
 metric_items_read,item_type
 metric_items_read,items_read
+metric_items_read,distinct_items
 metric_books_by_period,finish_year
 metric_books_by_period,finish_month
 metric_books_by_period,books_read
@@ -20,6 +21,12 @@ metric_top_creators,rank
 metric_topic_mix,topic_name
 metric_topic_mix,reads
 metric_topic_mix,share
+metric_rating_spread,rating_10
+metric_rating_spread,reads
+metric_genre_mix,genre
+metric_genre_mix,reads
+metric_genre_mix,books
+metric_genre_mix,share
 metric_long_form_share,item_type
 metric_long_form_share,reading_minutes
 metric_long_form_share,share
@@ -34,6 +41,7 @@ pub_shelf,page_count
 pub_shelf,first_published_year
 pub_shelf,shelf_status
 pub_shelf,rating_10
+pub_shelf,genre
 pub_shelf,finish_dates
 pub_shelf,last_finished
 pub_shelf,topics

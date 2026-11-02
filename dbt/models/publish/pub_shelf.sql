@@ -20,7 +20,7 @@ topics as (
 
 select
     i.item_id, i.title, a.author, i.cover_or_image_url as cover_url, i.url, i.page_count,
-    i.first_published_year, i.shelf_status, i.rating_10,
+    i.first_published_year, i.shelf_status, i.rating_10, i.genre,
     coalesce(fi.finish_dates, []::date[]) as finish_dates, fi.last_finished,
     coalesce(t.topics, []::varchar[]) as topics
 from {{ ref('dim_item') }} i
