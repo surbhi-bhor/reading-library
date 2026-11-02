@@ -1,0 +1,420 @@
+[
+  {
+    "authors": [
+      "Kristen Perrin"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-07-01"
+    ],
+    "hardcover_id": "17256085",
+    "isbn_10": "8856691019",
+    "isbn_13": "9788856691016",
+    "rating": 4.0,
+    "status_id": 3,
+    "title": "How to Solve Your Own Murder"
+  },
+  {
+    "authors": [
+      "Marjan Kamali"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-01-01"
+    ],
+    "hardcover_id": "17256109",
+    "isbn_10": "9920657417",
+    "isbn_13": "9789920657419",
+    "rating": 3.5,
+    "status_id": 3,
+    "title": "The Stationery Shop"
+  },
+  {
+    "authors": [
+      "Satoshi Yagisawa"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2025-12-01"
+    ],
+    "hardcover_id": "17256110",
+    "isbn_10": "6004616311",
+    "isbn_13": "9786004616317",
+    "rating": 3.5,
+    "status_id": 3,
+    "title": "Days At The Morisaki Bookshop"
+  },
+  {
+    "authors": [
+      "Chitra Banerjee Divakaruni"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256111",
+    "isbn_10": "1433215950",
+    "isbn_13": "9781433215957",
+    "rating": 4.5,
+    "status_id": 3,
+    "title": "The Palace of Illusions"
+  },
+  {
+    "authors": [
+      "Chitra Banerjee Divakaruni"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256112",
+    "isbn_10": "9353025990",
+    "isbn_13": "9789353025991",
+    "rating": 4.5,
+    "status_id": 3,
+    "title": "The Forest of Enchantments"
+  },
+  {
+    "authors": [
+      "James Clear"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256113",
+    "isbn_10": "9044978322",
+    "isbn_13": "9789044978322",
+    "rating": 5.0,
+    "status_id": 3,
+    "title": "Atomic habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones"
+  },
+  {
+    "authors": [
+      "Vineet Bajpai"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256114",
+    "isbn_10": "1721387234",
+    "isbn_13": "9781721387236",
+    "rating": 3.5,
+    "status_id": 3,
+    "title": "Harappa: Curse of the Blood River"
+  },
+  {
+    "authors": [
+      "Viktor E. Frankl"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256115",
+    "isbn_10": "9955290706",
+    "isbn_13": "9789955290704",
+    "rating": 5.0,
+    "status_id": 3,
+    "title": "Man's Search for Meaning"
+  },
+  {
+    "authors": [
+      "Vineet Bajpai"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256116",
+    "isbn_10": "8193642406",
+    "isbn_13": "9788193642405",
+    "rating": 3.0,
+    "status_id": 3,
+    "title": "Pralay: The Great Deluge"
+  },
+  {
+    "authors": [
+      "Amish Tripathi"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256117",
+    "isbn_10": "9381315760",
+    "isbn_13": "9789381315767",
+    "rating": 5.0,
+    "status_id": 3,
+    "title": "The Immortals of Meluha"
+  },
+  {
+    "authors": [
+      "Amish Tripathi"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256118",
+    "isbn_10": "8130015870",
+    "isbn_13": "9788130015873",
+    "rating": 5.0,
+    "status_id": 3,
+    "title": "The Secret of the Nagas"
+  },
+  {
+    "authors": [
+      "Amish Tripathi"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256119",
+    "isbn_10": "8130016397",
+    "isbn_13": "9788130016399",
+    "rating": 5.0,
+    "status_id": 3,
+    "title": "The Oath of the Vayuputras"
+  },
+  {
+    "authors": [
+      "John Boyne"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256120",
+    "isbn_10": "0739348280",
+    "isbn_13": "9780739348284",
+    "rating": 4.5,
+    "status_id": 3,
+    "title": "The Boy in the Striped Pyjamas"
+  },
+  {
+    "authors": [
+      "Sadhguru"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256121",
+    "isbn_10": "9353057728",
+    "isbn_13": "9789353057725",
+    "rating": 3.5,
+    "status_id": 3,
+    "title": "Death; An Inside Story: A book for all those who shall die"
+  },
+  {
+    "authors": [
+      "Elif Shafak"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256122",
+    "isbn_10": "9542705018",
+    "isbn_13": "9789542705017",
+    "rating": null,
+    "status_id": 3,
+    "title": "The Forty Rules of Love"
+  },
+  {
+    "authors": [
+      "Matt Haig"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256123",
+    "isbn_10": "952364078X",
+    "isbn_13": "9789523640788",
+    "rating": 5.0,
+    "status_id": 3,
+    "title": "The Midnight Library"
+  },
+  {
+    "authors": [
+      "Akshat Gupta"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-04-01"
+    ],
+    "hardcover_id": "17256124",
+    "isbn_10": "0143455699",
+    "isbn_13": "9780143455699",
+    "rating": null,
+    "status_id": 3,
+    "title": "The Hidden Hindu"
+  },
+  {
+    "authors": [
+      "Freida McFadden"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-04-01"
+    ],
+    "hardcover_id": "17256125",
+    "isbn_10": "1088057969",
+    "isbn_13": "9781088057964",
+    "rating": 4.0,
+    "status_id": 3,
+    "title": "Never Lie"
+  },
+  {
+    "authors": [
+      "Kavita Kane"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-05-01"
+    ],
+    "hardcover_id": "17256126",
+    "isbn_10": "8129120852",
+    "isbn_13": "9788129120854",
+    "rating": 3.5,
+    "status_id": 3,
+    "title": "Karna's Wife"
+  },
+  {
+    "authors": [
+      "Alison Espach"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-05-01"
+    ],
+    "hardcover_id": "17256127",
+    "isbn_10": "1399622757",
+    "isbn_13": "9781399622752",
+    "rating": 3.5,
+    "status_id": 3,
+    "title": "The Wedding People"
+  },
+  {
+    "authors": [
+      "Alex Michaelides"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-08-01"
+    ],
+    "hardcover_id": "17256128",
+    "isbn_10": "9403197900",
+    "isbn_13": "9789403197906",
+    "rating": 5.0,
+    "status_id": 3,
+    "title": "The Silent Patient"
+  },
+  {
+    "authors": [
+      "Ankur Warikoo"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256129",
+    "isbn_10": "9393986282",
+    "isbn_13": "9789393986283",
+    "rating": 1.5,
+    "status_id": 3,
+    "title": "Do Epic Shit"
+  },
+  {
+    "authors": [
+      "Toshikazu Kawaguchi"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256130",
+    "isbn_10": "1799920917",
+    "isbn_13": "9781799920915",
+    "rating": 5.0,
+    "status_id": 3,
+    "title": "Before the Coffee Gets Cold"
+  },
+  {
+    "authors": [
+      "Sadhguru"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [],
+    "hardcover_id": "17256131",
+    "isbn_10": "059323202X",
+    "isbn_13": "9780593232026",
+    "rating": 3.5,
+    "status_id": 3,
+    "title": "Karma: A Yogi's Guide to Crafting Your Destiny"
+  },
+  {
+    "authors": [
+      "Michiko Aoyama"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-08-22"
+    ],
+    "hardcover_id": "17738516",
+    "isbn_10": "1529196264",
+    "isbn_13": "9781529196269",
+    "rating": 5.0,
+    "status_id": 3,
+    "title": "What You Are Looking for Is in the Library"
+  },
+  {
+    "authors": [
+      "Alice Feeney"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-08-30"
+    ],
+    "hardcover_id": "17992968",
+    "isbn_10": "1250266106",
+    "isbn_13": "9781250266101",
+    "rating": 3.0,
+    "status_id": 3,
+    "title": "Rock Paper Scissors"
+  },
+  {
+    "authors": [
+      "Katy Brent"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-09-19"
+    ],
+    "hardcover_id": "18721555",
+    "isbn_10": "0008600481",
+    "isbn_13": "9780008600488",
+    "rating": 4.0,
+    "status_id": 3,
+    "title": "How to Kill Men and Get Away With It"
+  },
+  {
+    "authors": [
+      "Amish Tripathi"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-10-05"
+    ],
+    "hardcover_id": "19291925",
+    "isbn_10": "8130017539",
+    "isbn_13": "9788130017532",
+    "rating": 3.5,
+    "status_id": 3,
+    "title": "Scion of Ikshvaku"
+  },
+  {
+    "authors": [
+      "Amish Tripathi"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-10-05"
+    ],
+    "hardcover_id": "19291926",
+    "isbn_10": "9356290911",
+    "isbn_13": "9789356290914",
+    "rating": 2.5,
+    "status_id": 3,
+    "title": "Sita: Warrior of Mithila"
+  },
+  {
+    "authors": [
+      "Siddharth  Maheshwari"
+    ],
+    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "finished_dates": [
+      "2026-11-01"
+    ],
+    "hardcover_id": "20246136",
+    "isbn_10": "9361851330",
+    "isbn_13": "9789361851339",
+    "rating": 2.5,
+    "status_id": 3,
+    "title": "A Murder in Dehradun"
+  }
+]
