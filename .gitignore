@@ -13,3 +13,4 @@ __pycache__/
 .venv/
 .superpowers/
 bash.exe.stackdump
+dbt/.user.yml
