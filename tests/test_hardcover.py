@@ -16,6 +16,7 @@ def user_book(**overrides):
             "title": "Some Book",
             "contributions": [{"contribution": None, "author": {"name": "A"}}],
             "editions": [{"isbn_10": None, "isbn_13": None}, {"isbn_10": "123", "isbn_13": "978"}],
+            "cached_tags": {"Genre": [{"tag": "Thriller", "count": 4}, {"tag": "Mystery", "count": 3}], "Mood": [{"tag": "dark"}]},
         },
     }
     ub.update(overrides)
@@ -44,7 +45,7 @@ def test_parse_keeps_every_finish_date():
 
 def test_parse_row_has_only_allowed_keys():
     row = parse_user_books([user_book()], TS)[0]
-    assert set(row) == {"hardcover_id", "title", "authors", "isbn_13", "isbn_10", "rating", "status_id", "finished_dates", "extracted_at"}
+    assert set(row) == {"hardcover_id", "title", "authors", "isbn_13", "isbn_10", "rating", "status_id", "finished_dates", "genres", "extracted_at"}
     assert row["hardcover_id"] == "7" and row["isbn_13"] == "978" and row["rating"] == 4.5 and row["status_id"] == 3
 
 
@@ -59,3 +60,19 @@ def test_fetch_raises_on_graphql_errors():
 def test_fetch_returns_empty_list_when_me_missing():
     responses.post(HARDCOVER_URL, json={"data": {"me": []}})
     assert fetch_user_books("token") == []
+
+
+def test_parse_drops_books_the_site_never_shows():
+    # Did-not-finish (5) and unknown statuses must not reach the public raw file.
+    rows = parse_user_books([user_book(id=1, status_id=5), user_book(id=2, status_id=4), user_book(id=3, status_id=1)], TS)
+    assert [r["hardcover_id"] for r in rows] == ["3"]
+
+
+def test_parse_keeps_hardcover_genre_tags_only():
+    assert parse_user_books([user_book()], TS)[0]["genres"] == ["Thriller", "Mystery"]
+
+
+def test_parse_handles_books_without_tags():
+    ub = user_book()
+    ub["book"]["cached_tags"] = None
+    assert parse_user_books([ub], TS)[0]["genres"] == []

@@ -30,6 +30,7 @@ HARDCOVER_QUERY = """
           isbn_10
           isbn_13
         }
+        cached_tags
       }
     }
   }
@@ -75,9 +76,16 @@ def get_authors(book: dict) -> list[str]:
     return authors
 
 
+# Want to read, currently reading, read. Did-not-finish (5) and any other
+# status never appear on the site, so they never enter the public raw file.
+SHOWN_STATUSES = {1, 2, 3}
+
+
 def parse_user_books(user_books: list[dict], extracted_at: str) -> list[dict]:
     rows = []
     for ub in user_books:
+        if ub.get("status_id") not in SHOWN_STATUSES:
+            continue
         book = ub.get("book") or {}
         isbn_13, isbn_10 = get_isbns(book)
         dates = sorted(r["finished_at"][:10] for r in ub.get("user_book_reads") or [] if r.get("finished_at"))
@@ -90,6 +98,9 @@ def parse_user_books(user_books: list[dict], extracted_at: str) -> list[dict]:
             "rating": ub.get("rating"),
             "status_id": ub.get("status_id"),
             "finished_dates": dates,
+            # Crowd-sourced genre tags, most used first. Only the Genre group:
+            # moods and content warnings are not needed and stay out of the repo.
+            "genres": [g["tag"].strip() for g in ((book.get("cached_tags") or {}).get("Genre") or []) if (g.get("tag") or "").strip()][:8],
             "extracted_at": extracted_at,
         })
     return rows
