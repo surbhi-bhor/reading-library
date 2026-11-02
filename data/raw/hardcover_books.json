@@ -3,9 +3,19 @@
     "authors": [
       "Kristen Perrin"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-07-01"
+    ],
+    "genres": [
+      "Mystery",
+      "cozy mystery",
+      "Amateur Sleuths",
+      "Crime Fiction",
+      "Literary Fiction",
+      "Cosy",
+      "Romance",
+      "Young Adult"
     ],
     "hardcover_id": "17256085",
     "isbn_10": "8856691019",
@@ -18,9 +28,15 @@
     "authors": [
       "Marjan Kamali"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-01-01"
+    ],
+    "genres": [
+      "Historical Fiction",
+      "Romance",
+      "War",
+      "Young Adult"
     ],
     "hardcover_id": "17256109",
     "isbn_10": "9920657417",
@@ -33,9 +49,19 @@
     "authors": [
       "Satoshi Yagisawa"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2025-12-01"
+    ],
+    "genres": [
+      "Japanese literature",
+      "Books About Books",
+      "Literary Fiction",
+      "Contemporary",
+      "Japanese fiction",
+      "Large type books",
+      "Novella",
+      "Drama"
     ],
     "hardcover_id": "17256110",
     "isbn_10": "6004616311",
@@ -48,8 +74,15 @@
     "authors": [
       "Chitra Banerjee Divakaruni"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Fantasy",
+      "Classics",
+      "Adventure",
+      "War",
+      "Historical Fiction"
+    ],
     "hardcover_id": "17256111",
     "isbn_10": "1433215950",
     "isbn_13": "9781433215957",
@@ -61,8 +94,13 @@
     "authors": [
       "Chitra Banerjee Divakaruni"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Women",
+      "Fantasy",
+      "Romance"
+    ],
     "hardcover_id": "17256112",
     "isbn_10": "9353025990",
     "isbn_13": "9789353025991",
@@ -74,8 +112,18 @@
     "authors": [
       "James Clear"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Self-Help",
+      "Psychology",
+      "Business",
+      "Personal Development",
+      "Self help",
+      "Organizational behavior",
+      "Business & Economics",
+      "Business & Careers"
+    ],
     "hardcover_id": "17256113",
     "isbn_10": "9044978322",
     "isbn_13": "9789044978322",
@@ -87,8 +135,12 @@
     "authors": [
       "Vineet Bajpai"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
     "hardcover_id": "17256114",
     "isbn_10": "1721387234",
     "isbn_13": "9781721387236",
@@ -100,8 +152,18 @@
     "authors": [
       "Viktor E. Frankl"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Psychology",
+      "Philosophy",
+      "History",
+      "Memoir",
+      "Biography",
+      "Holocaust",
+      "Biography & Autobiography",
+      "Self help"
+    ],
     "hardcover_id": "17256115",
     "isbn_10": "9955290706",
     "isbn_13": "9789955290704",
@@ -113,8 +175,9 @@
     "authors": [
       "Vineet Bajpai"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [],
     "hardcover_id": "17256116",
     "isbn_10": "8193642406",
     "isbn_13": "9788193642405",
@@ -126,8 +189,16 @@
     "authors": [
       "Amish Tripathi"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Mythology",
+      "Fantasy",
+      "Young Adult",
+      "Adventure",
+      "War",
+      "Indus civilization"
+    ],
     "hardcover_id": "17256117",
     "isbn_10": "9381315760",
     "isbn_13": "9789381315767",
@@ -139,8 +210,16 @@
     "authors": [
       "Amish Tripathi"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Mythology",
+      "Fantasy",
+      "Young Adult",
+      "Adventure",
+      "War",
+      "Fantasy fiction"
+    ],
     "hardcover_id": "17256118",
     "isbn_10": "8130015870",
     "isbn_13": "9788130015873",
@@ -152,8 +231,15 @@
     "authors": [
       "Amish Tripathi"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Fantasy",
+      "Adventure",
+      "Mythology",
+      "Young Adult",
+      "War"
+    ],
     "hardcover_id": "17256119",
     "isbn_10": "8130016397",
     "isbn_13": "9788130016399",
@@ -165,8 +251,18 @@
     "authors": [
       "John Boyne"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Young Adult",
+      "War",
+      "Historical Fiction",
+      "History",
+      "Religion",
+      "Juvenile Nonfiction",
+      "Adventure and adventurers",
+      "Foreign Language Study"
+    ],
     "hardcover_id": "17256120",
     "isbn_10": "0739348280",
     "isbn_13": "9780739348284",
@@ -178,8 +274,11 @@
     "authors": [
       "Sadhguru"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Literary Collections"
+    ],
     "hardcover_id": "17256121",
     "isbn_10": "9353057728",
     "isbn_13": "9789353057725",
@@ -191,8 +290,16 @@
     "authors": [
       "Elif Shafak"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Philosophy",
+      "Historical Fiction",
+      "Spirituality",
+      "Housewives",
+      "Classics",
+      "Literature"
+    ],
     "hardcover_id": "17256122",
     "isbn_10": "9542705018",
     "isbn_13": "9789542705017",
@@ -204,8 +311,18 @@
     "authors": [
       "Matt Haig"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Fantasy",
+      "Science Fiction",
+      "Magical Realism",
+      "Time Travel",
+      "Literary",
+      "Contemporary",
+      "General",
+      "Women"
+    ],
     "hardcover_id": "17256123",
     "isbn_10": "952364078X",
     "isbn_13": "9789523640788",
@@ -217,9 +334,14 @@
     "authors": [
       "Akshat Gupta"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-04-01"
+    ],
+    "genres": [
+      "Fantasy",
+      "Adventure",
+      "Science Fiction"
     ],
     "hardcover_id": "17256124",
     "isbn_10": "0143455699",
@@ -232,9 +354,19 @@
     "authors": [
       "Freida McFadden"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-04-01"
+    ],
+    "genres": [
+      "Thriller",
+      "Mystery",
+      "Suspense",
+      "Genre Fiction",
+      "mystery-thriller",
+      "Audiobooks",
+      "Psychological",
+      "Medical"
     ],
     "hardcover_id": "17256125",
     "isbn_10": "1088057969",
@@ -247,10 +379,11 @@
     "authors": [
       "Kavita Kane"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-05-01"
     ],
+    "genres": [],
     "hardcover_id": "17256126",
     "isbn_10": "8129120852",
     "isbn_13": "9788129120854",
@@ -262,9 +395,19 @@
     "authors": [
       "Alison Espach"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-05-01"
+    ],
+    "genres": [
+      "Brides",
+      "Family & Relationships",
+      "Cozy",
+      "Literature & Fiction",
+      "Family life",
+      "Women's Fiction",
+      "Dark humor",
+      "Wedding"
     ],
     "hardcover_id": "17256127",
     "isbn_10": "1399622757",
@@ -277,9 +420,19 @@
     "authors": [
       "Alex Michaelides"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-08-01"
+    ],
+    "genres": [
+      "Thriller",
+      "Mystery",
+      "Suspense",
+      "Crime",
+      "Mystery Thriller",
+      "Thrillers",
+      "Thriller & Suspense",
+      "Physiological thriller"
     ],
     "hardcover_id": "17256128",
     "isbn_10": "9403197900",
@@ -292,8 +445,12 @@
     "authors": [
       "Ankur Warikoo"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Body",
+      "Mind & Spirit"
+    ],
     "hardcover_id": "17256129",
     "isbn_10": "9393986282",
     "isbn_13": "9789393986283",
@@ -305,8 +462,18 @@
     "authors": [
       "Toshikazu Kawaguchi"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Fantasy",
+      "Magical Realism",
+      "Literary Fiction",
+      "Sci-fi",
+      "Science Fiction",
+      "Contemporary Fiction",
+      "did-not-finish",
+      "physical-tbr"
+    ],
     "hardcover_id": "17256130",
     "isbn_10": "1799920917",
     "isbn_13": "9781799920915",
@@ -318,8 +485,12 @@
     "authors": [
       "Sadhguru"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [],
+    "genres": [
+      "Body",
+      "Mind & Spirit"
+    ],
     "hardcover_id": "17256131",
     "isbn_10": "059323202X",
     "isbn_13": "9780593232026",
@@ -331,9 +502,14 @@
     "authors": [
       "Michiko Aoyama"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-08-22"
+    ],
+    "genres": [
+      "Fantasy",
+      "Domestic fiction",
+      "Cozy"
     ],
     "hardcover_id": "17738516",
     "isbn_10": "1529196264",
@@ -346,9 +522,19 @@
     "authors": [
       "Alice Feeney"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-08-30"
+    ],
+    "genres": [
+      "Thriller",
+      "Mystery",
+      "mystery-thriller",
+      "did-not-finish",
+      "Thrillers",
+      "Family life",
+      "Mystery/Thriller",
+      "[\"Thriller\""
     ],
     "hardcover_id": "17992968",
     "isbn_10": "1250266106",
@@ -361,10 +547,11 @@
     "authors": [
       "Katy Brent"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-09-19"
     ],
+    "genres": [],
     "hardcover_id": "18721555",
     "isbn_10": "0008600481",
     "isbn_13": "9780008600488",
@@ -376,9 +563,14 @@
     "authors": [
       "Amish Tripathi"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-10-05"
+    ],
+    "genres": [
+      "Fantasy",
+      "Adventure",
+      "Mythology"
     ],
     "hardcover_id": "19291925",
     "isbn_10": "8130017539",
@@ -391,9 +583,14 @@
     "authors": [
       "Amish Tripathi"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-10-05"
+    ],
+    "genres": [
+      "Fantasy",
+      "Adventure",
+      "Young Adult"
     ],
     "hardcover_id": "19291926",
     "isbn_10": "9356290911",
@@ -406,9 +603,13 @@
     "authors": [
       "Siddharth  Maheshwari"
     ],
-    "extracted_at": "2026-11-02T19:53:35+00:00",
+    "extracted_at": "2026-11-02T20:42:53+00:00",
     "finished_dates": [
       "2026-11-01"
+    ],
+    "genres": [
+      "Fantasy",
+      "Young Adult"
     ],
     "hardcover_id": "20246136",
     "isbn_10": "9361851330",
