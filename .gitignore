@@ -1,0 +1,15 @@
+.env
+*.duckdb
+*.duckdb.wal
+*.tmp
+dbt/target/
+dbt/logs/
+site/node_modules/
+site/dist/
+site/src/.observablehq/cache/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.venv/
+.superpowers/
+bash.exe.stackdump

@@ -1,0 +1,7 @@
+# Lint for real defects only (undefined names, unused imports and variables,
+# syntax and pycodestyle errors). Line length is not enforced.
+target-version = "py312"
+
+[lint]
+select = ["E", "F"]
+ignore = ["E501"]
