@@ -1,0 +1,23 @@
+version: 2
+
+# One definition per number. Every number on the site is read from these
+# tables; pages never count on their own.
+models:
+  - name: metric_items_read
+    description: Count of finished reads (rows in fact_reading), by item type. A re-read counts again.
+  - name: metric_books_by_period
+    description: Finished book reads that have a finish date, by year and month.
+  - name: metric_pages_read
+    description: Sum of page counts over finished book reads, by finish year (null year means undated). Books without a page count add nothing.
+  - name: metric_reading_time
+    description: Sum of estimated reading minutes (pages times minutes_per_page for books), by item type and finish year.
+  - name: metric_avg_rating
+    description: Mean rating (0 to 10) over rated reads, by type, by non-generic topic and by creator, with the number of rated reads.
+  - name: metric_top_creators
+    description: Creators ranked by items read, then average rating.
+  - name: metric_topic_mix
+    description: For each non-generic topic, the reads carrying it and their share of reads with any non-generic topic. Shares overlap.
+  - name: metric_long_form_share
+    description: Reading minutes and share of total reading time by item type (books vs articles).
+  - name: metric_undated_reads
+    description: Finished reads without a finish date, by item type. Shown on the site, never hidden.

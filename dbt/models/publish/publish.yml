@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: pub_shelf
+    description: One row per item on a shelf, with first author, finish dates and non-generic topics. The only item table the site reads.
+    columns:
+      - name: item_id
+        tests: [unique, not_null]
+  - name: pub_build_info
+    description: When the site data was built and when Hardcover was last read.
