@@ -3,7 +3,7 @@
     "authors": [
       "Kristen Perrin"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-07-01"
     ],
@@ -28,7 +28,7 @@
     "authors": [
       "Marjan Kamali"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-01-01"
     ],
@@ -49,7 +49,7 @@
     "authors": [
       "Satoshi Yagisawa"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2025-12-01"
     ],
@@ -74,8 +74,10 @@
     "authors": [
       "Chitra Banerjee Divakaruni"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2021-06-09"
+    ],
     "genres": [
       "Fantasy",
       "Classics",
@@ -86,7 +88,7 @@
     "hardcover_id": "17256111",
     "isbn_10": "1433215950",
     "isbn_13": "9781433215957",
-    "rating": 4.5,
+    "rating": 5.0,
     "status_id": 3,
     "title": "The Palace of Illusions"
   },
@@ -94,8 +96,10 @@
     "authors": [
       "Chitra Banerjee Divakaruni"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2021-09-28"
+    ],
     "genres": [
       "Women",
       "Fantasy",
@@ -112,8 +116,10 @@
     "authors": [
       "James Clear"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2021-09-14"
+    ],
     "genres": [
       "Self-Help",
       "Psychology",
@@ -135,8 +141,10 @@
     "authors": [
       "Vineet Bajpai"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2022-07-14"
+    ],
     "genres": [
       "Fantasy",
       "Adventure"
@@ -144,7 +152,7 @@
     "hardcover_id": "17256114",
     "isbn_10": "1721387234",
     "isbn_13": "9781721387236",
-    "rating": 3.5,
+    "rating": 4.0,
     "status_id": 3,
     "title": "Harappa: Curse of the Blood River"
   },
@@ -152,8 +160,10 @@
     "authors": [
       "Viktor E. Frankl"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2022-03-29"
+    ],
     "genres": [
       "Psychology",
       "Philosophy",
@@ -175,8 +185,10 @@
     "authors": [
       "Vineet Bajpai"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2022-12-21"
+    ],
     "genres": [],
     "hardcover_id": "17256116",
     "isbn_10": "8193642406",
@@ -189,8 +201,10 @@
     "authors": [
       "Amish Tripathi"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2020-09-22"
+    ],
     "genres": [
       "Mythology",
       "Fantasy",
@@ -210,8 +224,10 @@
     "authors": [
       "Amish Tripathi"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2020-09-26"
+    ],
     "genres": [
       "Mythology",
       "Fantasy",
@@ -231,8 +247,10 @@
     "authors": [
       "Amish Tripathi"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2020-09-30"
+    ],
     "genres": [
       "Fantasy",
       "Adventure",
@@ -251,8 +269,10 @@
     "authors": [
       "John Boyne"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2022-12-22"
+    ],
     "genres": [
       "Young Adult",
       "War",
@@ -272,26 +292,12 @@
   },
   {
     "authors": [
-      "Sadhguru"
-    ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
-    "genres": [
-      "Literary Collections"
-    ],
-    "hardcover_id": "17256121",
-    "isbn_10": "9353057728",
-    "isbn_13": "9789353057725",
-    "rating": 3.5,
-    "status_id": 3,
-    "title": "Death; An Inside Story: A book for all those who shall die"
-  },
-  {
-    "authors": [
       "Elif Shafak"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
-    "finished_dates": [],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2021-10-12"
+    ],
     "genres": [
       "Philosophy",
       "Historical Fiction",
@@ -303,7 +309,7 @@
     "hardcover_id": "17256122",
     "isbn_10": "9542705018",
     "isbn_13": "9789542705017",
-    "rating": null,
+    "rating": 4.0,
     "status_id": 3,
     "title": "The Forty Rules of Love"
   },
@@ -311,7 +317,7 @@
     "authors": [
       "Matt Haig"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [],
     "genres": [
       "Fantasy",
@@ -334,7 +340,7 @@
     "authors": [
       "Akshat Gupta"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-04-01"
     ],
@@ -346,7 +352,7 @@
     "hardcover_id": "17256124",
     "isbn_10": "0143455699",
     "isbn_13": "9780143455699",
-    "rating": null,
+    "rating": 4.0,
     "status_id": 3,
     "title": "The Hidden Hindu"
   },
@@ -354,7 +360,7 @@
     "authors": [
       "Freida McFadden"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-04-01"
     ],
@@ -379,7 +385,7 @@
     "authors": [
       "Kavita Kane"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-05-01"
     ],
@@ -395,7 +401,7 @@
     "authors": [
       "Alison Espach"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-05-01"
     ],
@@ -420,7 +426,7 @@
     "authors": [
       "Alex Michaelides"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-08-01"
     ],
@@ -445,7 +451,7 @@
     "authors": [
       "Ankur Warikoo"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [],
     "genres": [
       "Body",
@@ -462,7 +468,7 @@
     "authors": [
       "Toshikazu Kawaguchi"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [],
     "genres": [
       "Fantasy",
@@ -485,7 +491,7 @@
     "authors": [
       "Sadhguru"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [],
     "genres": [
       "Body",
@@ -502,7 +508,7 @@
     "authors": [
       "Michiko Aoyama"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-08-22"
     ],
@@ -522,7 +528,7 @@
     "authors": [
       "Alice Feeney"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-08-30"
     ],
@@ -547,7 +553,7 @@
     "authors": [
       "Katy Brent"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-09-19"
     ],
@@ -563,9 +569,9 @@
     "authors": [
       "Amish Tripathi"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
-      "2026-10-05"
+      "2020-10-20"
     ],
     "genres": [
       "Fantasy",
@@ -583,7 +589,7 @@
     "authors": [
       "Amish Tripathi"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-10-05"
     ],
@@ -603,7 +609,7 @@
     "authors": [
       "Siddharth  Maheshwari"
     ],
-    "extracted_at": "2026-11-02T20:42:53+00:00",
+    "extracted_at": "2026-11-03T10:39:11+00:00",
     "finished_dates": [
       "2026-11-01"
     ],
@@ -617,5 +623,137 @@
     "rating": 2.5,
     "status_id": 3,
     "title": "A Murder in Dehradun"
+  },
+  {
+    "authors": [
+      "Anne Frank"
+    ],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2021-03-21"
+    ],
+    "genres": [
+      "Memoir",
+      "Classics",
+      "History",
+      "Young Adult",
+      "Religion",
+      "Women",
+      "Science",
+      "autobiography"
+    ],
+    "hardcover_id": "20300816",
+    "isbn_10": "9035109996",
+    "isbn_13": "9789035109995",
+    "rating": 4.5,
+    "status_id": 3,
+    "title": "The Diary of a Young Girl"
+  },
+  {
+    "authors": [
+      "Stephen R. Covey"
+    ],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2020-10-11"
+    ],
+    "genres": [
+      "Business",
+      "Self-Help",
+      "Self help",
+      "Psychology",
+      "Management",
+      "Business & Economics",
+      "Character",
+      "Leadership"
+    ],
+    "hardcover_id": "20300855",
+    "isbn_10": "8408143980",
+    "isbn_13": "9788408143987",
+    "rating": 3.5,
+    "status_id": 3,
+    "title": "The 7 Habits of Highly Effective People"
+  },
+  {
+    "authors": [
+      "Sadhguru"
+    ],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2021-03-26"
+    ],
+    "genres": [],
+    "hardcover_id": "20300876",
+    "isbn_10": "0143450832",
+    "isbn_13": "9780143450832",
+    "rating": 4.0,
+    "status_id": 3,
+    "title": "Death"
+  },
+  {
+    "authors": [
+      "Morgan Housel"
+    ],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2021-11-05"
+    ],
+    "genres": [
+      "Finance",
+      "Business & Economics",
+      "Psychology",
+      "Personal Finance",
+      "Business",
+      "Investing",
+      "Self help",
+      "Self-Help"
+    ],
+    "hardcover_id": "20300955",
+    "isbn_10": "180409160X",
+    "isbn_13": "9781804091609",
+    "rating": 3.5,
+    "status_id": 3,
+    "title": "The Psychology of Money"
+  },
+  {
+    "authors": [
+      "Jay Shetty"
+    ],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2021-09-21"
+    ],
+    "genres": [
+      "Self-Help",
+      "Body",
+      "Mind & Spirit",
+      "Conduct of life",
+      "Philosophy"
+    ],
+    "hardcover_id": "20300957",
+    "isbn_10": "179710053X",
+    "isbn_13": "9781797100531",
+    "rating": 3.0,
+    "status_id": 3,
+    "title": "Think Like a Monk: Train Your Mind for Peace and Purpose Every Day"
+  },
+  {
+    "authors": [
+      "Satyarth Nayak"
+    ],
+    "extracted_at": "2026-11-03T10:39:11+00:00",
+    "finished_dates": [
+      "2024-04-07"
+    ],
+    "genres": [
+      "Fantasy",
+      "Hindu legends"
+    ],
+    "hardcover_id": "20305188",
+    "isbn_10": "9356294496",
+    "isbn_13": "9789356294493",
+    "rating": 5.0,
+    "status_id": 3,
+    "title": "Mahagatha - 100 Tales from the Puranas"
   }
 ]
