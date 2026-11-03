@@ -40,7 +40,8 @@ export function spineStyle(book) {
   return {
     width: spineWidth(book.page_count),
     height: spineHeight(book.item_id),
-    cloth: CLOTHS[hash(book.item_id + "#cloth") % CLOTHS.length],
+    // The cover's own colour once the page has read it; a bookcloth until then.
+    cloth: book.cover_rgb ? `rgb(${book.cover_rgb.join(" ")})` : CLOTHS[hash(book.item_id + "#cloth") % CLOTHS.length],
     cover: book.cover_url ? book.cover_url.replace(/-L\.jpg$/, "-M.jpg") : null
   };
 }

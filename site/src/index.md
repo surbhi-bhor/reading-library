@@ -3,7 +3,8 @@ title: The Reading Library
 ---
 
 ```js
-import {Bookcase, Finder, Shelf, matches} from "./components/shelf.js";
+import {Finder, matches} from "./components/shelf.js";
+import {ArcShelf} from "./components/shelf3d.js";
 
 const shelf = await FileAttachment("data/shelf.json").json();
 const metrics = await FileAttachment("data/metrics.json").json();
@@ -34,12 +35,12 @@ const filtered = find.query || find.genre;
 display(html`<p class="finder-status" aria-live="polite">${
   filtered ? (shown.length === 0 ? "Nothing on these shelves matches that." : `${shown.length} of ${mainShelf.length} books on the shelf`) : ""
 }</p>`);
-display(Bookcase(Shelf(shown, {label: "Books I have read", empty: "Nothing on these shelves matches that."})));
+display(ArcShelf(shown, {label: "Books I have read", empty: "Nothing on these shelves matches that."}));
 ```
 
 ```js
 if (wantShelf.length > 0) {
   display(html`<div class="section-head"><h2>On my list</h2><span class="plate">${wantShelf.length}</span></div>`);
-  display(Bookcase(Shelf(wantShelf, {label: "Books I want to read"})));
+  display(ArcShelf(wantShelf, {label: "Books I want to read"}));
 }
 ```

@@ -82,12 +82,20 @@ export function CheckoutCard(m, {year} = {}) {
     .sort((a, b) => a.finish_year - b.finish_year || a.finish_month - b.finish_month);
   const undated = m.metric_undated_reads.find((d) => d.item_type === "book")?.undated_reads ?? 0;
   const stamps = months.map((d, i) => el("li", {class: "stamp-row"},
-    el("span", {class: "stamp", style: `--tilt: ${((i * 37) % 7) - 3}deg`},
+    el("span", {class: "stamp", style: `--tilt: ${((i * 37) % 7) - 3}deg; --i: ${i}`},
       monthShort.format(new Date(Date.UTC(d.finish_year, d.finish_month - 1, 1)))),
     el("span", {class: "stamp-count"}, `${d.books_read} ${d.books_read === 1 ? "book" : "books"}`)));
+  const list = stamps.length ? el("ol", {class: "stamps"}, ...stamps) : null;
+  // The stamps land one after another the first time the card comes into view.
+  if (list && typeof IntersectionObserver !== "undefined") {
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { list.classList.add("is-stamped"); io.disconnect(); }
+    }, {threshold: 0.4});
+    io.observe(list);
+  }
   return el("article", {class: "card checkout"},
     el("h3", {}, "Date due"),
-    stamps.length ? el("ol", {class: "stamps"}, ...stamps) : el("p", {}, "No dated books yet."),
+    list ?? el("p", {}, "No dated books yet."),
     year == null && undated ? el("p", {class: "checkout-note"}, `${undated} more read without a stamp.`) : null);
 }
 

@@ -725,3 +725,684 @@ svg[id^="mermaid"] marker path { fill: var(--color-brass) !important; stroke: va
 
 /* Framework wraps headings in self-links; they should read as headings. */
 h1 a[href^="#"], h2 a[href^="#"], h3 a[href^="#"] { color: inherit; text-decoration: none; }
+
+/* ════════════════════════════════════════════════════════════
+   The enchanted reading room: night ceiling, floating candles,
+   a curved bookcase you stand inside, books that float.
+   ════════════════════════════════════════════════════════════ */
+:root {
+  --color-night: oklch(17% 0.035 250);
+  --color-night-mid: oklch(22% 0.035 200);
+  --color-flame-core: oklch(97% 0.06 95);
+  --color-flame: oklch(84% 0.16 75);
+  --color-flame-edge: oklch(64% 0.19 45 / 0.85);
+  --color-candle-glow: oklch(85% 0.13 80 / 0.28);
+  --color-wax: oklch(95% 0.02 90);
+  --color-wax-shade: oklch(80% 0.03 85);
+  --color-star: oklch(96% 0.03 95);
+  --color-paper-edge: oklch(92% 0.02 90);
+  --color-paper-line: oklch(82% 0.025 85);
+  --color-backdrop: oklch(14% 0.03 200 / 0.9);
+}
+
+/* The ceiling: night sky at the top of the page, fading into the green walls. */
+body {
+  background: linear-gradient(var(--color-night) 0, var(--color-night-mid) 18rem, var(--color-wall) 34rem, var(--color-wall) 60rem, var(--color-wall-deep) 100%);
+}
+
+#observablehq-center { position: relative; }
+
+.ceiling {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  height: 34rem;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(black 40%, transparent);
+  mask-image: linear-gradient(black 40%, transparent);
+}
+
+.starfield, .starfield::after {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, var(--color-star), transparent),
+    radial-gradient(1px 1px at 27% 42%, var(--color-star), transparent),
+    radial-gradient(1.5px 1.5px at 41% 12%, var(--color-star), transparent),
+    radial-gradient(1px 1px at 55% 33%, var(--color-star), transparent),
+    radial-gradient(2px 2px at 68% 9%, var(--color-star), transparent),
+    radial-gradient(1px 1px at 79% 46%, var(--color-star), transparent),
+    radial-gradient(1.5px 1.5px at 91% 22%, var(--color-star), transparent),
+    radial-gradient(1px 1px at 6% 58%, var(--color-star), transparent),
+    radial-gradient(1px 1px at 35% 66%, var(--color-star), transparent),
+    radial-gradient(1.5px 1.5px at 86% 61%, var(--color-star), transparent);
+  background-size: 640px 420px;
+  animation: twinkle 7s ease-in-out infinite alternate;
+}
+
+.starfield::after {
+  content: "";
+  background-size: 410px 300px;
+  background-position: 120px 60px;
+  animation-duration: 11s;
+  animation-delay: -4s;
+}
+
+@keyframes twinkle { from { opacity: 0.35; } to { opacity: 0.95; } }
+
+#observablehq-header, #observablehq-main, #observablehq-footer { position: relative; z-index: 1; }
+
+/* ── The curved bookcase ─────────────────────────────────── */
+/* Full bleed: the bookcase runs edge to edge and curves round the reader. */
+.arc-shelf { position: relative; width: 100vw; margin-left: calc(50% - 50vw); }
+
+.arc-stage {
+  position: relative;
+  height: 25rem;
+  perspective: 1100px;
+  perspective-origin: 50% -10%;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.arc-stage.is-dragging { cursor: grabbing; }
+.arc-stage.is-dragging .book3d { pointer-events: none; }
+
+.arc-ring {
+  position: absolute;
+  left: 50%;
+  bottom: 4rem;
+  width: 0;
+  height: 18rem;
+  transform-style: preserve-3d;
+}
+
+.book3d {
+  position: absolute;
+  bottom: 0;
+  left: calc(var(--w) / -2);
+  width: var(--w);
+  height: var(--hpx, 240px);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-ivory);
+  font: inherit;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.b-body {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform var(--dur-med) var(--ease-out);
+}
+
+.book3d:hover .b-body,
+.book3d:focus-visible .b-body { transform: translateY(-16px) translateZ(22px); }
+.book3d:focus-visible { outline: none; }
+.book3d:focus-visible .b-spine { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+
+.b-spine {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) 0;
+  border-radius: 2px 2px 0 0;
+  background-color: var(--cloth, var(--cloth-walnut));
+  background-image:
+    linear-gradient(90deg, var(--color-shade) 0%, transparent 20%, var(--color-shine) 45%, transparent 62%, var(--color-shade) 100%),
+    linear-gradient(var(--color-shade-soft), var(--color-shade-soft)),
+    var(--cover, none);
+  background-size: 100% 100%, 100% 100%, cover;
+  background-position: center, center, 30% center;
+  box-shadow: inset 0 3px 0 var(--color-shine);
+}
+
+/* Gold bands near the top and bottom of every spine, like gilt tooling. */
+.b-spine::before, .b-spine::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  height: 2px;
+  background: var(--color-brass);
+  opacity: 0.7;
+}
+.b-spine::before { top: 9%; }
+.b-spine::after { bottom: 9%; }
+
+.b-title {
+  writing-mode: vertical-rl;
+  max-height: 76%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: 0 0 3px var(--color-wall-deep), 0 0 1px var(--color-wall-deep);
+}
+
+/* The page block seen from above. */
+.b-top {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: var(--d);
+  transform-origin: top center;
+  transform: rotateX(-90deg);
+  border: 2px solid var(--cloth, var(--cloth-walnut));
+  border-top-width: 0;
+  background: repeating-linear-gradient(90deg, var(--color-paper-edge) 0 2px, var(--color-paper-line) 2px 3px);
+}
+
+/* Each book carries its slice of the shelf, so the plank follows the curve. */
+.b-ledge {
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  top: 100%;
+  height: 18px;
+  background: linear-gradient(var(--color-shine), transparent 35%), var(--color-walnut);
+  transform-style: preserve-3d;
+}
+
+.b-ledge::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(var(--d) + 30px);
+  transform-origin: top center;
+  transform: rotateX(-90deg);
+  background: linear-gradient(var(--color-walnut-light), var(--color-walnut-dark));
+}
+
+.book3d[data-reading="true"] .b-spine::after { background: var(--color-flame); height: 4px; opacity: 1; }
+
+.arc-plank {
+  height: 2.5rem;
+  margin-top: -2.6rem;
+  background: radial-gradient(60% 100% at 50% 0%, var(--color-shade), transparent 70%);
+  pointer-events: none;
+}
+
+.arc-name {
+  min-height: 1.6em;
+  margin: var(--space-xs) auto 0;
+  padding: 0 var(--space-lg);
+  max-width: none;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-brass);
+}
+
+.arc-scrubber {
+  position: relative;
+  width: min(100% - 2 * var(--space-lg), 46rem);
+  margin: var(--space-md) auto 0;
+  height: 28px;
+}
+
+.arc-ticks { position: absolute; inset: 12px 0 auto; height: 6px; border-top: 1px solid var(--color-wall-line); }
+.arc-ticks span { position: absolute; top: -1px; width: 1px; height: 6px; background: var(--color-ivory-dim); opacity: 0.45; }
+
+.arc-scrub {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+.arc-scrub::-webkit-slider-runnable-track { height: 28px; background: transparent; }
+.arc-scrub::-moz-range-track { height: 28px; background: transparent; }
+.arc-scrub::-webkit-slider-thumb { -webkit-appearance: none; width: 3px; height: 26px; margin-top: 1px; border-radius: 2px; background: var(--color-brass); box-shadow: 0 0 10px var(--color-candle-glow); }
+.arc-scrub::-moz-range-thumb { width: 3px; height: 26px; border: 0; border-radius: 2px; background: var(--color-brass); }
+
+.arc-hint { margin: var(--space-xs) auto 0; max-width: none; text-align: center; color: var(--color-ivory-dim); font-size: var(--text-sm); }
+.arc-empty { padding: var(--space-3xl) 0; text-align: center; }
+
+/* ── The floating book ───────────────────────────────────── */
+dialog.viewer {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-ivory);
+  overflow-y: auto;
+}
+
+dialog.viewer::backdrop {
+  background:
+    radial-gradient(45% 55% at 68% 48%, var(--color-candle-glow), transparent 70%),
+    var(--color-backdrop);
+  backdrop-filter: blur(8px);
+  animation: fade-in var(--dur-med) var(--ease-out);
+}
+
+dialog.viewer.is-closing::backdrop { opacity: 0; transition: opacity 400ms var(--ease-in); }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.viewer-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-2xl);
+  min-height: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+.v-book { position: relative; display: grid; place-items: center; perspective: 1400px; }
+
+.v-book::after { /* the shadow under the floating book */
+  content: "";
+  position: absolute;
+  bottom: -2.5rem;
+  left: 50%;
+  width: 220px;
+  height: 28px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--color-shade), transparent);
+  animation: shadow-breathe 5s ease-in-out infinite alternate;
+}
+
+.v-float { transform-style: preserve-3d; animation: float 5s ease-in-out infinite alternate; }
+@keyframes float { from { transform: translateY(-8px); } to { transform: translateY(10px); } }
+@keyframes shadow-breathe { from { transform: scale(0.85); opacity: 0.7; } to { transform: scale(1); opacity: 1; } }
+
+.v-box {
+  --bw: 260px;
+  --bh: 390px;
+  --depth: 46px;
+  position: relative;
+  width: var(--bw);
+  height: var(--bh);
+  transform-style: preserve-3d;
+  transform: rotateY(-24deg);
+}
+
+.v-face { position: absolute; backface-visibility: hidden; }
+.v-front { inset: 0; transform: translateZ(calc(var(--depth) / 2)); background: var(--cloth); border-radius: 2px 4px 4px 2px; } /* cloth shows while the cover loads */
+.v-back { inset: 0; transform: rotateY(180deg) translateZ(calc(var(--depth) / 2)); background: var(--cloth); }
+
+.v-spine, .v-pages {
+  top: 0;
+  height: 100%;
+  width: var(--depth);
+  left: calc(50% - var(--depth) / 2);
+}
+
+.v-spine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotateY(-90deg) translateZ(calc(var(--bw) / 2));
+  background: linear-gradient(90deg, var(--color-shade), transparent 30%, var(--color-shine) 50%, transparent 70%, var(--color-shade)), var(--cloth);
+  color: var(--color-ivory);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+}
+.v-spine span { writing-mode: vertical-rl; white-space: nowrap; }
+
+.v-pages {
+  top: 3px;
+  height: calc(100% - 6px);
+  transform: rotateY(90deg) translateZ(calc(var(--bw) / 2 - 3px));
+  background: repeating-linear-gradient(90deg, var(--color-paper-edge) 0 2px, var(--color-paper-line) 2px 3px);
+}
+
+.v-cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px 4px 4px 2px;
+  box-shadow: 0 30px 60px var(--color-shade);
+}
+
+.v-front::after { /* a sheen across the cover */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 2px 4px 4px 2px;
+  background: linear-gradient(105deg, transparent 40%, var(--color-shine) 50%, transparent 60%);
+  pointer-events: none;
+}
+
+.v-cover-cloth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  background: var(--cloth);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  text-align: center;
+  color: var(--color-ivory);
+}
+
+.v-dust { position: absolute; left: 50%; top: 45%; pointer-events: none; }
+.v-dust span {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-brass);
+  box-shadow: 0 0 8px var(--color-flame);
+  opacity: 0;
+  animation: dust 1.3s var(--ease-out) var(--delay) forwards;
+}
+@keyframes dust {
+  0% { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.2); }
+}
+
+.v-details { max-width: 32rem; }
+
+.v-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0 0 var(--space-lg);
+  color: var(--color-ivory-dim);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.v-count-rule { width: 3rem; height: 1px; background: var(--color-ivory-dim); opacity: 0.6; }
+
+.v-status { margin: 0 0 var(--space-sm); color: var(--color-brass); font-family: var(--font-typed); font-size: var(--text-sm); }
+.v-title { font-size: clamp(2.4rem, 5vw, 4.25rem); line-height: 1.02; }
+.v-subtitle { margin: var(--space-sm) 0 0; color: var(--color-ivory-dim); font-size: var(--text-lg); line-height: 1.35; }
+.v-author { margin: var(--space-md) 0 var(--space-xl); color: var(--color-brass); font-family: var(--font-display); font-size: var(--text-xl); }
+
+.v-facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-xs) var(--space-xl);
+  margin: 0 0 var(--space-lg);
+  padding: var(--space-md) 0;
+  border-top: var(--rule-thin) solid var(--color-wall-line);
+  border-bottom: var(--rule-thin) solid var(--color-wall-line);
+  font-size: var(--text-sm);
+}
+.v-facts dt { color: var(--color-ivory-dim); }
+.v-facts dd { margin: 0; }
+.v-facts .stars { color: var(--color-brass); letter-spacing: 0.1em; }
+
+.v-link a { color: var(--color-brass); }
+
+.v-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm); margin-top: var(--space-lg); }
+
+.v-arrow {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: var(--rule-thin) solid var(--color-wall-line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-ivory);
+  font-size: var(--text-lg);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.v-arrow:hover { border-color: var(--color-brass); color: var(--color-brass); }
+.v-arrow:disabled { opacity: 0.3; cursor: default; }
+
+.btn-gold {
+  margin-left: auto;
+  padding: 0.6rem 1.2rem;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(var(--color-brass), var(--color-brass-dim));
+  color: var(--color-walnut-dark);
+  font: inherit;
+  font-weight: 700;
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: box-shadow var(--dur-med) var(--ease-out);
+}
+.btn-gold:hover { box-shadow: 0 0 24px var(--color-candle-glow); }
+.btn-gold:active { transform: translateY(1px); }
+
+/* Catalogue drawers slide out a little under the hand. */
+.drawer { transition: transform var(--dur-med) var(--ease-out); }
+.drawer:hover { transform: translateY(-2px) scale(1.01); }
+
+@media (max-width: 760px) {
+  .arc-stage { height: 21rem; }
+  .arc-ring { height: 15rem; bottom: 3.5rem; }
+  .viewer-inner { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); padding: var(--space-xl) var(--space-md); align-content: start; }
+  .v-book { order: -1; padding-top: var(--space-lg); }
+  .v-box { --bw: 170px; --bh: 255px; --depth: 32px; }
+  .v-book::after { width: 150px; bottom: -1.75rem; }
+  .btn-gold { margin-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .starfield, .starfield::after, .v-float, .v-book::after { animation: none !important; }
+  .book3d:hover .b-body, .book3d:focus-visible .b-body { transform: none; }
+}
+
+
+/* Stamps thump onto the due-date card in order. */
+@media (prefers-reduced-motion: no-preference) {
+  .stamps .stamp { opacity: 0; }
+  .stamps.is-stamped .stamp { animation: stamp-in 380ms var(--ease-out) calc(var(--i) * 110ms) forwards; }
+}
+@keyframes stamp-in {
+  0% { opacity: 0; transform: scale(1.8); }
+  60% { opacity: 1; transform: scale(0.94); }
+  100% { opacity: 0.88; transform: scale(1); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   Printed spines and the book that slides out (round two).
+   Spines are cloth in the cover's own colour with crisp type;
+   the cover image lives on the book's side, at its real size.
+   ════════════════════════════════════════════════════════════ */
+:root {
+  --color-ink-on-light: oklch(22% 0.02 60);
+  --color-cloth-weave: oklch(100% 0 0 / 0.05);
+}
+
+/* Shared cloth: a fine weave, light from the left, a rounded back. */
+.b-spine, .spine {
+  background-color: var(--cloth, var(--cloth-walnut));
+  background-image:
+    linear-gradient(90deg, var(--color-shade) 0%, transparent 18%, var(--color-shine) 42%, transparent 60%, var(--color-shade-soft) 85%, var(--color-shade) 100%),
+    repeating-linear-gradient(45deg, var(--color-cloth-weave) 0 1px, transparent 1px 3px);
+  background-size: 100% 100%, auto;
+  background-position: center, center;
+  transition: background-color 600ms var(--ease-out);
+}
+
+.b-spine {
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  padding: 14% 0 9%;
+}
+
+.b-title {
+  max-height: 72%;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  text-shadow: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.b-author {
+  writing-mode: vertical-rl;
+  max-height: 22%;
+  overflow: hidden;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.book3d[data-ink="dark"] .b-spine, .spine[data-ink="dark"] { color: var(--color-ink-on-light); }
+.book3d[data-ink="dark"] .b-spine::before, .book3d[data-ink="dark"] .b-spine::after { background: var(--color-walnut-dark); opacity: 0.55; }
+.spine[data-ink="dark"] .spine-title { text-shadow: none; }
+
+/* The real cover, on the side of the book that faces right. */
+.b-cover {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: var(--D, 180px);
+  height: 100%;
+  transform-origin: left center;
+  transform: rotateY(90deg);
+  background-color: var(--cloth, var(--cloth-walnut));
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 6px 0 10px var(--color-shade-soft);
+}
+
+.b-top { height: var(--D, 180px); }
+.b-ledge::before { height: calc(var(--D, 180px) + 30px); }
+
+/* The book in the middle slides forward and turns its cover to you. */
+.book3d .b-body {
+  transform-origin: 50% 50% calc(var(--D, 180px) * -0.5);
+  transition: transform 650ms var(--ease-out);
+}
+
+.book3d.is-out .b-body,
+.book3d.is-out:hover .b-body,
+.book3d.is-out:focus-visible .b-body {
+  transform: translateY(-14px) translateZ(calc(var(--D, 180px) * 0.55 + 40px)) rotateY(-62deg);
+}
+
+.book3d.is-out { z-index: 2; }
+
+.book3d:not(.is-out):hover .b-body,
+.book3d:not(.is-out):focus-visible .b-body { transform: translateY(-12px) translateZ(14px); }
+
+/* First visit: the shelf waits for its colours, then the books rise into place. */
+.arc-stage.is-loading .arc-ring { opacity: 0; }
+.arc-ring { transition: opacity 500ms var(--ease-out); }
+@media (prefers-reduced-motion: no-preference) {
+  .arc-stage:not(.is-loading) .book3d .b-spine { animation: rise 700ms var(--ease-out) calc(min(var(--i), 30) * 22ms) backwards; }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+
+.arc-stage { height: 28rem; }
+.arc-ring { bottom: 3.5rem; height: 19rem; }
+
+/* The card that names the book that is out. */
+.arc-shelf { display: grid; }
+.arc-stage { grid-area: 1 / 1; }
+
+.arc-panel {
+  grid-area: 1 / 1;
+  align-self: end;
+  justify-self: start;
+  position: relative;
+  z-index: 3;
+  width: min(24rem, 32vw);
+  margin: 0 0 5rem max(var(--space-lg), calc(50vw - var(--page-max) / 2 + var(--space-lg)));
+  padding: var(--space-lg);
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--color-wall) 55%, transparent);
+  pointer-events: auto;
+}
+
+.arc-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0 0 var(--space-md);
+  color: var(--color-ivory-dim);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.arc-rule { width: 2.5rem; height: 1px; background: var(--color-ivory-dim); opacity: 0.6; }
+
+.arc-title {
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+  line-height: 1.04;
+  overflow-wrap: break-word;
+}
+
+.arc-author { margin: var(--space-sm) 0 0; color: var(--color-brass); font-family: var(--font-display); font-size: var(--text-lg); }
+.arc-status { margin: var(--space-2xs) 0 var(--space-md); color: var(--color-ivory-dim); font-size: var(--text-sm); }
+
+.arc-open {
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 1px solid var(--color-brass);
+  background: none;
+  color: var(--color-ivory);
+  font: inherit;
+  font-size: var(--text-sm);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.arc-open:hover { color: var(--color-brass); }
+
+.arc-foot { margin-top: -2.5rem; position: relative; z-index: 3; }
+.arc-name, .arc-plank { display: none; }
+
+@media (max-width: 760px) {
+  .arc-stage { height: 23rem; }
+  .arc-ring { height: 15rem; bottom: 3rem; }
+  .arc-panel {
+    grid-area: auto;
+    width: auto;
+    margin: -1rem var(--space-md) 0;
+    padding: 0;
+    background: none;
+  }
+  .arc-foot { margin-top: var(--space-md); }
+}
+
+/* The card sits under the shelf, centred below the book that is out,
+   so it never covers a spine. */
+.arc-panel {
+  grid-area: auto;
+  align-self: auto;
+  justify-self: center;
+  width: min(40rem, 100% - 2 * var(--space-lg));
+  margin: -1.5rem auto 0;
+  padding: 0;
+  background: none;
+  text-align: center;
+}
+.arc-count { justify-content: center; }
+.arc-title { font-size: clamp(1.7rem, 3vw, 2.4rem); }
+.arc-foot { margin-top: var(--space-lg); }
+@media (max-width: 760px) {
+  .arc-panel { margin: -1rem auto 0; width: calc(100% - 2 * var(--space-md)); }
+}

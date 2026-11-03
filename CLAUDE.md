@@ -10,9 +10,11 @@ Brainstorming is done. Open questions answered and visual inspiration added to t
 
 Next steps, in order:
 
-Plan: `docs/superpowers/plans/2026-11-03-reading-library-books.md` (books only; articles get their own plan later), run natively. Pipeline (Tasks 1 to 8) is built and tested but not committed yet; the build ledger is in `.superpowers/sdd/2026-11-03-reading-library-books/progress.md`.
+Plan: `docs/superpowers/plans/2026-11-03-reading-library-books.md` (books only; articles get their own plan later), run natively. Pipeline and website are built, reviewed and committed; the build ledger (rulings, deferred minors) is in `.superpowers/sdd/2026-11-03-reading-library-books/progress.md`.
 
-Next: the website, Tasks 9 to 15, then one whole-project review.
+Genres are fully automatic (rules in `dbt/seeds/genre_rules.csv` over Open Library subjects, Hardcover genre tags and the title, then the author's usual genre, then Fiction). Book links go to a Goodreads search.
+
+Next: create the public repo `surbhi-bhor/reading-library` and push, add the `HARDCOVER_API_TOKEN` secret, set Pages to GitHub Actions, run the nightly workflow once. Then README and case study results (Task 15).
 
 Run locally: `.venv/Scripts/python -m extract` (needs HARDCOVER_API_TOKEN), then `cd dbt && ../.venv/Scripts/dbt build --profiles-dir .`.
 

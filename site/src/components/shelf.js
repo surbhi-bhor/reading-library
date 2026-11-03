@@ -1,5 +1,6 @@
 import {spineLabel, spineStyle} from "./spine.js";
 import {openBook} from "./bookPanel.js";
+import {paintSpines} from "./color.js";
 
 // One shelf of spines on a plank. `books` is the list the panel's
 // previous/next walk through, so it should be the list as shown.
@@ -29,7 +30,6 @@ export function Shelf(books, {label, empty = "Nothing on this shelf yet."} = {})
     button.style.width = `${s.width}px`;
     button.style.height = `${s.height}%`;
     button.style.setProperty("--cloth", s.cloth);
-    if (s.cover) button.style.setProperty("--cover", `url("${s.cover}")`);
 
     const title = document.createElement("span");
     title.className = "spine-title";
@@ -53,6 +53,8 @@ export function Shelf(books, {label, empty = "Nothing on this shelf yet."} = {})
     bookend.setAttribute("aria-hidden", "true");
     row.append(bookend);
   }
+
+  paintSpines(books.map((book, i) => ({book, el: row.querySelectorAll(".spine")[i]})));
 
   const plank = document.createElement("div");
   plank.className = "plank";

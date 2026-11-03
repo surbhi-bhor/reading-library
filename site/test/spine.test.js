@@ -39,3 +39,8 @@ test("a book with a cover uses the medium-size image on the spine", () => {
   const style = spineStyle({item_id: "book:9", cover_url: "https://covers.openlibrary.org/b/id/1-L.jpg", page_count: 300});
   assert.equal(style.cover, "https://covers.openlibrary.org/b/id/1-M.jpg");
 });
+
+test("a book whose cover colour is known uses it as cloth", () => {
+  const style = spineStyle({item_id: "book:9", cover_url: null, page_count: 300, cover_rgb: [10, 20, 30]});
+  assert.equal(style.cloth, "rgb(10 20 30)");
+});

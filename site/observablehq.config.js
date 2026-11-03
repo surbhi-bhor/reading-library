@@ -24,7 +24,7 @@ export default {
     const links = [["shelves", "Shelves"], ["catalogue", "Catalogue"], ["year", "Year in review"], ["stats", "Stats"], ["about", "How it's made"]];
     const items = links.map(([href, name]) =>
       `<li><a href="./${href}"${path === `/${href}` ? ' aria-current="page"' : ""}>${name}</a></li>`).join("");
-    return `<nav class="site-nav" aria-label="Library rooms"><a class="site-mark" href="./">The Reading Library</a><ul>${items}</ul></nav>`;
+    return `<div class="ceiling" aria-hidden="true"><div class="starfield"></div></div><nav class="site-nav" aria-label="Library rooms"><a class="site-mark" href="./">The Reading Library</a><ul>${items}</ul></nav>`;
   },
   footer: `Rebuilt every night from my Hardcover reading log. <a href="./about">How it's made</a>.`,
   // Data loaders are Python; locally point PYTHON at the project venv.
