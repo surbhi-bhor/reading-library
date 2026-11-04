@@ -2,8 +2,8 @@
 
 Everything I read, books and articles, on a lit 3D bookcase, with a small dbt warehouse underneath. Visitors can recommend me books. The site rebuilds itself every night on GitHub Actions and is hosted free on Vercel.
 
-**Live site:** https://reading-library-psi.vercel.app/
-**dbt docs (models, lineage, tests):** https://reading-library-psi.vercel.app/docs/
+**Live site:** https://surbhis-reading-room.vercel.app/
+**dbt docs (models, lineage, tests):** https://surbhis-reading-room.vercel.app/docs/
 **Case study:** [docs/case-study.md](docs/case-study.md)
 
 ## How it works

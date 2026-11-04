@@ -202,7 +202,7 @@
 /* ── Base ───────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 html, body { overflow-x: clip; }
-html { background: var(--bg-deep); -webkit-text-size-adjust: 100%; font-size: 87.5%; } /* 14px: the type scale reads smaller everywhere, the shelf is the large thing */
+html { background: var(--bg-deep); -webkit-text-size-adjust: 100%; } /* the browser's own 16px base, so text follows the reader's font-size setting */
 
 body {
   margin: 0;
@@ -1160,8 +1160,9 @@ dialog.viewer.is-closing::backdrop { opacity: 0; transition: opacity 400ms var(-
 @media (max-width: 760px) {
   :root { --shelf-height: 14rem; }
   #observablehq-center { padding: 0 max(var(--space-md), env(safe-area-inset-right, 0px)) 0 max(var(--space-md), env(safe-area-inset-left, 0px)); }
-  .site-nav { flex-direction: column; align-items: flex-start; gap: var(--space-xs); }
-  #observablehq-header { position: relative; } /* a two-row bar would eat a phone screen if it stuck */
+  /* One link and the toggle fit beside the name, so the bar stays one row. */
+  .site-nav { gap: var(--space-sm); }
+  .site-mark { min-width: 0; }
   .site-nav ul { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
   .site-nav ul { gap: var(--space-sm); }
   .page-head { padding: var(--space-xl) 0 var(--space-lg); }
@@ -1334,7 +1335,7 @@ dialog.viewer.is-closing::backdrop { opacity: 0; transition: opacity 400ms var(-
 .gl-stage {
   position: relative;
   /* Sized so nav, finder, shelf, scroller and caption all fit the first screen. */
-  height: clamp(22rem, calc(100svh - 24rem), 52rem);
+  height: clamp(20rem, calc(100svh - 27rem), 52rem);
   cursor: grab;
   touch-action: pan-y;
   outline: none;
@@ -1446,3 +1447,9 @@ dialog.recommend::backdrop { background: rgb(0 0 0 / 0.18); backdrop-filter: blu
 /* "Worth reading" waits for the bookcase above it, so on a slow load the page never
    shows the end of the page first and then jumps when the shelf arrives. */
 main:not(:has(.gl-shelf, .arc-shelf)) :is(.home-section, .coverflow) { visibility: hidden; }
+
+/* A numbers table wider than a small phone scrolls inside its card instead of the page. */
+.stat-card details { max-width: 100%; overflow-x: auto; }
+
+/* A page head with only its title spans the full width. */
+.page-head:not(:has(> p)) { grid-template-columns: minmax(0, 1fr); }
