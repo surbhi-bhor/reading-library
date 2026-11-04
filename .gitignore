@@ -20,3 +20,9 @@ data/raw/
 
 .env.local
 brag-output/
+
+# Claude Code working files stay local
+CLAUDE.md
+.claude/
+docs/superpowers/
+.gstack/
