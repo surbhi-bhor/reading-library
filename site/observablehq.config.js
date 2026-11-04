@@ -16,7 +16,16 @@ export default {
   head: `<script>document.documentElement.lang = "en";
 // Vercel Web Analytics (no cookies). Added at load time because the script only
 // exists on Vercel's servers, so the build cannot bundle it; skipped locally.
-if (!["localhost", "127.0.0.1"].includes(location.hostname)) {
+// Opening the site once with ?notrack stops counting this browser's visits
+// (?track turns it back on).
+try {
+  const q = new URLSearchParams(location.search);
+  if (q.has("notrack")) localStorage.setItem("no-analytics", "1");
+  if (q.has("track")) localStorage.removeItem("no-analytics");
+} catch {}
+let optedOut = false;
+try { optedOut = localStorage.getItem("no-analytics") === "1"; } catch {}
+if (!optedOut && !["localhost", "127.0.0.1"].includes(location.hostname)) {
   const va = document.createElement("script");
   va.defer = true;
   va.src = "/_vercel/insights/script.js";

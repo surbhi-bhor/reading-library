@@ -18,7 +18,7 @@ Recommendations (built 2026-11-04): visitors recommend books through a Supabase 
 
 Before launch or any commit: delete the test recommendations listed in `.superpowers/test-recommendations.md` (made-up test data in Supabase), rerun the extract, and check `data/raw/recommendations.json` is clean.
 
-Live since 2026-11-04 at https://surbhis-reading-room.vercel.app (public repo; GitHub Actions builds and deploys to Vercel with VERCEL_TOKEN secret and VERCEL_ORG_ID/VERCEL_PROJECT_ID variables; earlier on GitHub Pages; secrets HARDCOVER_API_TOKEN and RAINDROP_TOKEN, variables SUPABASE_URL and SUPABASE_ANON_KEY). Still to do: delete the test recommendations, then add the SUPABASE_SERVICE_KEY secret; fill the case study results.
+Live since 2026-11-04 at https://reading-room-shelf.vercel.app (public repo; GitHub Actions builds and deploys to Vercel with VERCEL_TOKEN secret and VERCEL_ORG_ID/VERCEL_PROJECT_ID variables; earlier on GitHub Pages; secrets HARDCOVER_API_TOKEN and RAINDROP_TOKEN, variables SUPABASE_URL and SUPABASE_ANON_KEY). Still to do: delete the test recommendations, then add the SUPABASE_SERVICE_KEY secret; fill the case study results.
 
 Run locally: `.venv/Scripts/python -m extract` (needs HARDCOVER_API_TOKEN), then `cd dbt && ../.venv/Scripts/dbt build --profiles-dir .`.
 

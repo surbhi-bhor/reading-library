@@ -2,7 +2,7 @@
 
 A public website of everything I read, books and articles, laid out like a bookcase, on top of a small data warehouse modelled with dbt. Visitors can also recommend books to me. The site itself is called The Reading Room.
 
-Status: live since November 2026 at https://surbhis-reading-room.vercel.app. Sections marked "to fill" get real numbers once the site is live.
+Status: live since November 2026 at https://reading-room-shelf.vercel.app. Sections marked "to fill" get real numbers once the site is live.
 
 ## Summary
 
