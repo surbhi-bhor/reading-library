@@ -794,16 +794,27 @@ dialog.viewer {
   margin: 0;
   padding: 0;
   border: 0;
-  /* Lit in the colour of the cover, kept dark enough for cream text. */
+  /* The room is the cover's own colour, a little deeper at the edges; light covers get dark ink (below). */
   background:
-    radial-gradient(60% 80% at 28% 50%, color-mix(in oklab, var(--tint) 75%, transparent), transparent 75%),
-    linear-gradient(color-mix(in oklab, var(--tint) 48%, #07110d), color-mix(in oklab, var(--tint) 30%, #07110d));
+    radial-gradient(60% 80% at 28% 50%, color-mix(in oklab, var(--tint) 92%, white), transparent 75%),
+    linear-gradient(color-mix(in oklab, var(--tint) 92%, #07110d), color-mix(in oklab, var(--tint) 78%, #07110d));
   background-color: transparent;
   color: var(--cream);
   overflow-y: auto;
   transition: --tint 700ms var(--ease-out);
 }
 @property --tint { syntax: "<color>"; inherits: true; initial-value: #1d3b2b; }
+/* A light cover: dark ink on its colour. */
+dialog.viewer[data-ink="dark"] {
+  --cream: oklch(20% 0.03 160);
+  --cream-dim: oklch(30% 0.03 158);
+  --cream-faint: oklch(38% 0.03 155);
+  --honey: oklch(42% 0.14 38);
+  --honey-light: oklch(36% 0.14 36);
+  --star: oklch(42% 0.14 38);
+  --line: oklch(20% 0.03 160 / 0.25);
+  --line-strong: oklch(20% 0.03 160 / 0.4);
+}
 dialog.viewer::backdrop {
   background: radial-gradient(45% 55% at 68% 48%, rgb(198 93 48 / 0.18), transparent 70%), var(--backdrop);
   backdrop-filter: blur(10px);

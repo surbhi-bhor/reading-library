@@ -1,5 +1,5 @@
 import {spineLabel, spineStyle} from "./spine.js";
-import {coverColor, toCss} from "./color.js";
+import {coverColor, inkFor, toCss} from "./color.js";
 import {animate, stagger} from "npm:motion";
 import {recommendedBy} from "./recommend.js";
 
@@ -196,10 +196,15 @@ function render({fly = false} = {}) {
   const details = Details(book, index, books.length);
   dialog.replaceChildren(el("div", {class: "viewer-inner"}, bookEl, details));
   // The room takes on the colour of the book's cover.
-  const tint = (rgb) => { if (rgb && books[current.index] === book) dialog.style.setProperty("--tint", toCss(rgb)); };
+  // The room takes the cover's colour; on a light cover the text switches to dark ink.
+  const tint = (rgb) => {
+    if (!rgb || books[current.index] !== book) return;
+    dialog.style.setProperty("--tint", toCss(rgb));
+    dialog.dataset.ink = inkFor(rgb);
+  };
   if (book.cover_rgb) tint(book.cover_rgb);
   else if (book.cover_url) coverColor(book.cover_url.replace(/-[LM]\.jpg$/, "-S.jpg")).then((rgb) => { if (rgb) book.cover_rgb = rgb; tint(rgb); });
-  else dialog.style.removeProperty("--tint");
+  else { dialog.style.removeProperty("--tint"); delete dialog.dataset.ink; }
   dialog.querySelector(".btn-gold").focus({preventScroll: true});
   // Fetch the neighbours' covers now, so Previous and Next never show an empty box.
   for (const n of [books[index - 1], books[index + 1]]) if (n?.cover_hd_url ?? n?.cover_url) new Image().src = n.cover_hd_url ?? n.cover_url;
