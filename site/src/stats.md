@@ -104,7 +104,7 @@ ${card("Books by year", `${bestYear.year} is my biggest year so far, with ${say(
     y: {label: null, grid: true, tickFormat: "d"},
     marginLeft: 24,
     marks: [
-      Plot.barY(byYear, {x: "year", y: "books", fill: gold, rx: 3, insetLeft: 4, insetRight: 4, tip: true}),
+      Plot.barY(byYear, {x: "year", y: "books", fill: gold, rx: 3, insetLeft: 4, insetRight: 4, tip: {format: {x: (d) => String(d)}}}),
       Plot.text(byYear, {x: "year", y: "books", text: "books", dy: -8, fill: "var(--cream)", fontWeight: 600}),
       Plot.ruleY([0], {stroke: ink})
     ]
@@ -196,7 +196,7 @@ ${card("When they were written", `${Math.round((thisDecade / pubTotal) * 100)}% 
     y: {label: null, grid: true, tickFormat: "d"},
     marginLeft: 24,
     marks: [
-      Plot.rectY(pubYears, {x1: (d) => d.first_published_year - 0.4, x2: (d) => d.first_published_year + 0.4, y: "books", fill: gold, tip: true}),
+      Plot.rectY(pubYears, {x1: (d) => d.first_published_year - 0.4, x2: (d) => d.first_published_year + 0.4, y: "books", fill: gold, title: (d) => `${d.first_published_year}: ${d.books} ${d.books === 1 ? "book" : "books"}`, tip: true}),
       Plot.ruleY([0], {stroke: ink})
     ]
   }), pubYears, [["first_published_year", "Year"], ["books", "Books"]])}
@@ -209,7 +209,7 @@ ${card("The reading calendar", `Busiest month: ${monthLong[busiest.month - 1]} $
     r: {range: [0, 13]},
     marks: [
       Plot.gridY({stroke: ink, strokeOpacity: 0.12}),
-      Plot.dot(calendar, {x: "month", y: "year", r: "books", fill: gold, tip: true, channels: {Books: "books"}}),
+      Plot.dot(calendar, {x: "month", y: "year", r: "books", fill: gold, title: (d) => `${monthLong[d.month - 1]} ${d.year}: ${d.books} ${d.books === 1 ? "book" : "books"}`, tip: true}),
       Plot.text(calendar.filter((d) => d.books > 1), {x: "month", y: "year", text: "books", fill: "var(--emerald-ink)", fontWeight: 700})
     ]
   })), calendar.map((d) => ({...d, label: `${monthNames[d.month - 1]} ${d.year}`})), [["label", "Month"], ["books", "Books"]], {wide: true})}

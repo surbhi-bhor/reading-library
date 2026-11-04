@@ -37,7 +37,7 @@ function hasWebGL() {
 
 function status(book) {
   if (book.kind === "recommendation") return recommendedBy(book);
-  if (book.kind === "article") return book.finish_dates?.length ? `Read ${formatDate(book.finish_dates.at(-1))}` : "Read";
+  if (book.kind === "article") return ""; // articles carry no date: the saved day is not the day read
   if (book.shelf_status === "reading") return "Reading now";
   if (book.shelf_status === "want_to_read") return "On my list";
   const d = book.finish_dates ?? [];
