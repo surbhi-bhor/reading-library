@@ -50,8 +50,13 @@ unit_tests:
           - {item_id: 'book:1', shelf_status: read, rating_10: 8, page_count: 100}
           - {item_id: 'book:2', shelf_status: read, rating_10: null, page_count: null}
           - {item_id: 'book:3', shelf_status: want_to_read, rating_10: 10, page_count: 50}
+          - {item_id: 'raindrop:7', item_type: article, shelf_status: read, rating_10: null, page_count: null}
+      - input: ref('stg_raindrop__articles')
+        rows:
+          - {read_id: 'raindrop:7', added_on: 2026-01-02, status: read}
     expect:
       rows:
+        - {item_id: 'raindrop:7', date_id: 20260102, rating_10: null, reading_minutes: null}
         - {item_id: 'book:1', date_id: 20240109, rating_10: 8, reading_minutes: 150}
         - {item_id: 'book:1', date_id: 20250301, rating_10: 8, reading_minutes: 150}
         - {item_id: 'book:2', date_id: null, rating_10: null, reading_minutes: null}
@@ -70,10 +75,18 @@ unit_tests:
       - input: ref('int_item_genre')
         rows:
           - {hardcover_id: '1', genre: Mythology}
+      - input: ref('cover_overrides')
+        rows:
+          - {hardcover_id: '2', title: Unmatched, cover_url: 'https://example.com/c.jpg'}
+      - input: ref('stg_raindrop__articles')
+        rows:
+          - {read_id: 'raindrop:7', title: An Essay, source: Substack, url: 'https://x.substack.com/p/essay', added_on: 2026-01-02, status: read, cover_url: 'https://substackcdn.com/a.jpg'}
+          - {read_id: 'raindrop:8', title: No Link, source: Medium, url: null, added_on: 2026-01-03, status: read}
     expect:
       rows:
-        - {item_id: 'book:1', title: 'Matched: A Subtitle', page_count: 300, cover_or_image_url: 'https://covers.openlibrary.org/b/id/1-L.jpg', genre: Mythology, url: 'https://www.goodreads.com/search?q=Matched%20Elif%20%C5%9Eafak'}
-        - {item_id: 'book:2', title: Unmatched, page_count: null, cover_or_image_url: null, genre: Fiction, url: 'https://www.goodreads.com/search?q=Unmatched'}
+        - {item_id: 'book:1', title: 'Matched: A Subtitle', page_count: 300, cover_or_image_url: 'https://covers.openlibrary.org/b/id/1-L.jpg', cover_hd_url: 'https://wsrv.nl/?w=800&q=85&we&output=webp&url=https%3A%2F%2Fcovers.openlibrary.org%2Fb%2Fid%2F1-L.jpg', genre: Mythology, url: 'https://www.goodreads.com/search?q=Matched%20Elif%20%C5%9Eafak'}
+        - {item_id: 'book:2', title: Unmatched, page_count: null, cover_or_image_url: 'https://wsrv.nl/?w=400&url=https%3A%2F%2Fexample.com%2Fc.jpg', cover_hd_url: 'https://wsrv.nl/?w=800&q=85&we&output=webp&url=https%3A%2F%2Fexample.com%2Fc.jpg', genre: Fiction, url: 'https://www.goodreads.com/search?q=Unmatched'}
+        - {item_id: 'raindrop:7', title: An Essay, page_count: null, cover_or_image_url: 'https://wsrv.nl/?w=400&url=https%3A%2F%2Fsubstackcdn.com%2Fa.jpg', cover_hd_url: 'https://wsrv.nl/?w=800&q=85&we&output=webp&url=https%3A%2F%2Fsubstackcdn.com%2Fa.jpg', genre: Articles, url: 'https://x.substack.com/p/essay'}
 
   - name: item_genre_from_subjects_tags_title_then_author_then_fiction
     model: int_item_genre
@@ -87,14 +100,22 @@ unit_tests:
           union all select '4', 'Inner Life', 'D', []::varchar[]
           union all select '5', 'Another by D', 'D', ['Spirituality']
           union all select '6', 'Nothing Known', 'E', ['Fantasy']
+          union all select '7', 'Monk Mind', 'F', ['Self-Help']
+          union all select '8', 'Striped Boy', 'G', ['Historical Fiction']
       - input: ref('stg_openlibrary__subjects')
         rows:
           - {hardcover_id: '1', subject_name: Indic Mythology}
+          - {hardcover_id: '7', subject_name: Hinduism}
+          - {hardcover_id: '7', subject_name: Hindu philosophy}
+          - {hardcover_id: '8', subject_name: Holocaust}
       - input: ref('genre_rules')
         rows:
-          - {priority: 1, pattern: 'mytholog', genre: Mythology}
+          - {priority: 1, pattern: 'mytholog|\bhindu\b', genre: Mythology}
           - {priority: 2, pattern: 'thriller|murder', genre: Mystery & thriller}
+          - {priority: 3, pattern: 'memoir|holocaust', genre: History & memoir}
+          - {priority: 4, pattern: 'self-help', genre: Self-help}
           - {priority: 5, pattern: 'spiritual', genre: Spirituality}
+          - {priority: 6, pattern: 'historical fiction', genre: Fiction}
     expect:
       rows:
         - {hardcover_id: '1', genre: Mythology}
@@ -103,6 +124,35 @@ unit_tests:
         - {hardcover_id: '4', genre: Spirituality}
         - {hardcover_id: '5', genre: Spirituality}
         - {hardcover_id: '6', genre: Fiction}
+        - {hardcover_id: '7', genre: Self-help}
+        - {hardcover_id: '8', genre: Fiction}
+
+  - name: page_buckets_count_each_book_once_at_band_edges
+    model: metric_page_buckets
+    given:
+      - input: ref('fact_reading')
+        rows:
+          - {reading_id: r1, item_id: 'book:1'}
+          - {reading_id: r2, item_id: 'book:1'}
+          - {reading_id: r3, item_id: 'book:2'}
+          - {reading_id: r4, item_id: 'book:3'}
+          - {reading_id: r5, item_id: 'book:4'}
+      - input: ref('dim_item')
+        rows:
+          - {item_id: 'book:1', item_type: book, page_count: 100}
+          - {item_id: 'book:2', item_type: book, page_count: 101}
+          - {item_id: 'book:3', item_type: book, page_count: 1200}
+          - {item_id: 'book:4', item_type: book, page_count: null}
+    expect:
+      rows:
+        - {bucket_order: 1, bucket: '1-100', books: 1}
+        - {bucket_order: 2, bucket: '101-200', books: 1}
+        - {bucket_order: 3, bucket: '201-300', books: 0}
+        - {bucket_order: 4, bucket: '301-400', books: 0}
+        - {bucket_order: 5, bucket: '401-500', books: 0}
+        - {bucket_order: 6, bucket: '501-600', books: 0}
+        - {bucket_order: 7, bucket: '601-1000', books: 0}
+        - {bucket_order: 8, bucket: '1000+', books: 1}
 
   - name: genre_mix_counts_books_once_per_reread
     model: metric_genre_mix

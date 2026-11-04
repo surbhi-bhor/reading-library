@@ -13,7 +13,7 @@ export const CLOTHS = [
 ];
 
 // FNV-1a: a stable small hash so a book keeps its height and cloth between builds.
-function hash(text) {
+export function hash(text) {
   let h = 2166136261;
   for (let i = 0; i < text.length; i++) {
     h ^= text.charCodeAt(i);

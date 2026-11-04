@@ -1,6 +1,3 @@
-select d.year as finish_year, d.month as finish_month, count(*) as books_read
-from {{ ref('fact_reading') }} f
-join {{ ref('dim_item') }} i using (item_id)
-join {{ ref('dim_date') }} d using (date_id)
-where i.item_type = 'book'
-group by d.year, d.month
+select finish_year, finish_month, reads as books_read
+from {{ ref('metric_reads_by_period') }}
+where item_type = 'book'

@@ -5,8 +5,12 @@ version: 2
 models:
   - name: metric_items_read
     description: Count of finished reads (rows in fact_reading), by item type; a re-read counts again. distinct_items counts the books themselves.
+  - name: metric_reads_by_period
+    description: Finished reads (books and articles) that have a date, by item type, year and month. An article is dated the day it was saved.
   - name: metric_books_by_period
-    description: Finished book reads that have a finish date, by year and month.
+    description: Finished book reads that have a finish date, by year and month. The book rows of metric_reads_by_period.
+  - name: metric_article_sources
+    description: Finished articles by the publication they come from, with each publication's share.
   - name: metric_pages_read
     description: Sum of page counts over finished book reads, by finish year (null year means undated). Books without a page count add nothing.
   - name: metric_reading_time
@@ -25,3 +29,51 @@ models:
     description: Finished reads without a finish date, by item type. Shown on the site, never hidden.
   - name: metric_rating_spread
     description: Rated finished reads per rating step, 0 to 10.
+  - name: metric_reading_pace
+    description: One row, books only. Dated finished book reads, first and last finish, lifetime days per book and books per year (breaks included), books finished in the last 12 months, number of reading spells, days per book inside spells, the current spell's start, books and days per book (null between spells), the break threshold in days, distinct authors read, and average page count of finished books.
+  - name: metric_reading_spells
+    description: One row per reading spell, books only. A spell is a run of dated finished books with no gap over var('reading_break_days') days. Start and end, books, days per book and books per year (null for one-book spells), and whether it is still running (last book within the threshold of today). Books add up to dated reads.
+  - name: metric_page_buckets
+    description: Finished books (each once) per page-count band; every band listed, empty ones with 0.
+  - name: metric_fiction_split
+    description: Finished books (each once) by Fiction, Non-fiction or Unknown, from the genre_kinds seed. Shares add up to 1.
+  - name: metric_publication_years
+    description: Finished books (each once) by first publication year; books without a year are left out.
+  - name: metric_mood_mix
+    description: For each Hardcover mood tag, finished books carrying it and their share of finished books with any mood. Shares overlap.
+
+unit_tests:
+  - name: reading_spells_split_on_a_gap_over_the_break_and_ignore_articles
+    description: >
+      With reading_break_days = 180: a 180-day gap stays in one spell, a 181-day gap
+      starts a new one, two books on the same day share a spell, and an article in the
+      gap does not bridge it. Dates are long past, so no spell is current.
+    model: metric_reading_spells
+    overrides:
+      vars:
+        reading_break_days: 180
+    given:
+      - input: ref('fact_reading')
+        rows:
+          - {item_id: 'book:1', date_id: 20200101}
+          - {item_id: 'book:2', date_id: 20200101}
+          - {item_id: 'book:3', date_id: 20200629}
+          - {item_id: 'raindrop:9', date_id: 20200901}
+          - {item_id: 'book:4', date_id: 20201227}
+      - input: ref('dim_item')
+        rows:
+          - {item_id: 'book:1', item_type: book}
+          - {item_id: 'book:2', item_type: book}
+          - {item_id: 'book:3', item_type: book}
+          - {item_id: 'book:4', item_type: book}
+          - {item_id: 'raindrop:9', item_type: article}
+      - input: ref('dim_date')
+        rows:
+          - {date_id: 20200101, date: 2020-01-01}
+          - {date_id: 20200629, date: 2020-06-29}
+          - {date_id: 20200901, date: 2020-09-01}
+          - {date_id: 20201227, date: 2020-12-27}
+    expect:
+      rows:
+        - {spell_number: 1, started_on: 2020-01-01, ended_on: 2020-06-29, books: 3, days_per_book: 90.0, is_current: false}
+        - {spell_number: 2, started_on: 2020-12-27, ended_on: 2020-12-27, books: 1, days_per_book: null, is_current: false}

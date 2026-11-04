@@ -41,10 +41,17 @@ jobs:
       # Fresh data only on the schedule or a manual run; a push rebuilds from the
       # committed raw files. A failure here stops the job, so the live site and
       # the committed raw files stay as they were.
-      - name: Extract from Hardcover and Open Library
+      # Articles come from Raindrop too; without RAINDROP_TOKEN, or if Raindrop
+      # is down, the step still passes and the saved articles stay.
+      # Recommendations come from Supabase (approved rows only); without its
+      # settings the step still passes and the saved ones stay.
+      - name: Extract from Hardcover, Open Library, Raindrop and Supabase
         if: github.event_name != 'push'
         env:
           HARDCOVER_API_TOKEN: ${{ secrets.HARDCOVER_API_TOKEN }}
+          RAINDROP_TOKEN: ${{ secrets.RAINDROP_TOKEN }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
         run: python -m extract
 
       - name: dbt build (models and tests)
@@ -59,6 +66,10 @@ jobs:
 
       - name: Build site
         working-directory: site
+        # The form's two public values (the anon key is built to be public; the table only accepts inserts).
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
         run: |
           npm ci
           npm test

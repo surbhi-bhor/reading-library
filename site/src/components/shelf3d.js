@@ -1,12 +1,15 @@
 import {arcPlacement, clampScroll} from "./arc.js";
 import {spineLabel, spineStyle} from "./spine.js";
 import {paintSpines} from "./color.js";
+import {Canopy} from "./canopy.js";
 import {formatDate, openBook} from "./bookPanel.js";
+import {recommendedBy} from "./recommend.js";
 
 const GAP = 3;
 const reducedMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function status(book) {
+  if (book.kind === "recommendation") return recommendedBy(book);
   if (book.shelf_status === "reading") return "Reading now";
   if (book.shelf_status === "want_to_read") return "On my list";
   const d = book.finish_dates ?? [];
@@ -16,7 +19,8 @@ function status(book) {
 // The curved bookcase. Move along it by dragging, scrolling or with the arrow
 // keys; the book in the middle slides out and turns to show its cover, and
 // picking it takes it off the shelf.
-export function ArcShelf(books, {label = "My books", empty = "Nothing on these shelves matches that."} = {}) {
+// backdrop: an image url shown behind the books (the reading room).
+export function ArcShelf(books, {label = "My books", empty = "Nothing on these shelves matches that.", backdrop = null} = {}) {
   const root = document.createElement("section");
   root.className = "arc-shelf";
   root.setAttribute("aria-label", label);
@@ -32,9 +36,10 @@ export function ArcShelf(books, {label = "My books", empty = "Nothing on these s
 
   const stage = document.createElement("div");
   stage.className = "arc-stage is-loading";
+  if (backdrop) stage.style.setProperty("--room", `url("${backdrop}")`);
   const ring = document.createElement("div");
   ring.className = "arc-ring";
-  stage.append(ring);
+  stage.append(Canopy(), ring);
 
   let u = 0;
   const items = books.map((book, index) => {
@@ -57,7 +62,10 @@ export function ArcShelf(books, {label = "My books", empty = "Nothing on these s
     button.querySelector(".b-title").textContent = spineLabel(book.title, 34);
     button.querySelector(".b-author").textContent = book.author ? book.author.split(" ").at(-1) : "";
     const cover = button.querySelector(".b-cover");
-    if (s.cover) cover.style.backgroundImage = `url("${s.cover}")`;
+    if (s.cover) {
+      cover.style.backgroundImage = `url("${s.cover}")`;
+      button.style.setProperty("--art", `url("${s.cover}")`); // the spine is printed from the cover
+    }
     ring.append(button);
     return {book, button, center, width, index};
   });
@@ -133,10 +141,17 @@ export function ArcShelf(books, {label = "My books", empty = "Nothing on these s
 
   function select(i) {
     if (i === selected) return;
-    if (selected >= 0) items[selected].button.classList.remove("is-out");
+    if (selected >= 0) {
+      items[selected].button.classList.remove("is-out");
+      items[selected - 1]?.button.classList.remove("nudge-l");
+      items[selected + 1]?.button.classList.remove("nudge-r");
+    }
     selected = i;
     const {book, button} = items[i];
     button.classList.add("is-out");
+    // The neighbours lean away a little to give the book room.
+    items[i - 1]?.button.classList.add("nudge-l");
+    items[i + 1]?.button.classList.add("nudge-r");
     items.forEach((it) => (it.button.tabIndex = it.index === i ? 0 : -1));
     const [main] = book.title.split(":");
     panel.querySelector(".arc-n").textContent = String(i + 1).padStart(2, "0");
@@ -241,6 +256,14 @@ export function ArcShelf(books, {label = "My books", empty = "Nothing on these s
       else goTo(it.index);
     });
     it.button.addEventListener("focus", () => { if (it.index !== selected) goTo(it.index); });
+    // Under the hand a spine tips toward the pointer, up to 4 degrees each way.
+    it.button.addEventListener("pointermove", (e) => {
+      if (drag?.moved || reducedMotion()) return;
+      const r = it.button.getBoundingClientRect();
+      const x = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width) * 2 - 1));
+      it.button.style.setProperty("--tilt", `${(x * 4).toFixed(2)}deg`);
+    });
+    it.button.addEventListener("pointerleave", () => it.button.style.removeProperty("--tilt"));
     it.button.addEventListener("keydown", (e) => {
       const keys = {ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1};
       if (e.key in keys) { e.preventDefault(); goTo(selected + keys[e.key], {focus: true}); }

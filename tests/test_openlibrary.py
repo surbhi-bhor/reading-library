@@ -1,7 +1,7 @@
 import responses
 
 from extract import openlibrary
-from extract.openlibrary import SEARCH_URL, enrich
+from extract.openlibrary import SEARCH_URL, add_descriptions, enrich
 
 TS = "2026-11-03T00:00:00+00:00"
 
@@ -49,6 +49,20 @@ def test_enrich_prefers_latin_author_name():
     responses.get(SEARCH_URL, json={"docs": [doc(author_name=["村上春樹"], author_alternative_name=["Haruki Murakami"])]})
     rows = enrich([book("1", authors=["Haruki Murakami"])], [], TS)
     assert rows[0]["author_name"] == "Haruki Murakami"
+
+
+@responses.activate
+def test_add_descriptions_fills_only_books_hardcover_left_blank():
+    responses.get("https://openlibrary.org/works/OL1W.json",
+                  json={"description": {"type": "/type/text", "value": "**A tale** of [two](https://x.org) cities.\r\n\r\n----------\r\nSource: somewhere"}})
+    rows = [{"hardcover_id": "1", "ol_key": "/works/OL1W"}, {"hardcover_id": "2", "ol_key": "/works/OL2W"},
+            {"hardcover_id": "3", "ol_key": "/works/OL3W", "description": None}]
+    books = [{"hardcover_id": "1", "description": None}, {"hardcover_id": "2", "description": "Has one."},
+             {"hardcover_id": "3", "description": None}]
+    add_descriptions(rows, books)
+    assert rows[0]["description"] == "A tale of two cities."
+    assert rows[1]["description"] is None  # Hardcover's own blurb wins, no request made
+    assert len(responses.calls) == 1  # row 3 was looked up on an earlier run
 
 
 @responses.activate

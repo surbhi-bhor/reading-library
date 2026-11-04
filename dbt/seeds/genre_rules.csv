@@ -1,6 +1,7 @@
 priority,pattern,genre
-1,mytholog|deity|indus civilization|hindu|ramayan|mahabharat,Mythology
+1,mytholog|deity|indus civilization|\bhindu\b|ramayan|mahabharat,Mythology
 2,thriller|mystery|crime|suspense|murder|\bkill,Mystery & thriller
 3,autobiograph|memoir|biograph|holocaust|auschwitz|1939-1945,History & memoir
 4,self-help|self help|habit|personal growth|personal development,Self-help
 5,karma|yoga|spiritual,Spirituality
+6,historical fiction,Fiction

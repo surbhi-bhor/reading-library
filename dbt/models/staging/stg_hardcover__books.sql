@@ -6,6 +6,12 @@ select
     authors,
     isbn_13,
     isbn_10,
+    -- The book's blurb, markup already removed at extract; and Hardcover's cover,
+    -- used where Open Library has none.
+    description,
+    cover_url as hardcover_cover_url,
+    -- Height of that image in pixels (older raw files lack it).
+    try_cast(cover_height as integer) as hardcover_cover_height,
     -- Hardcover rates 0 to 5 in half stars; the warehouse stores 0 to 10.
     rating * 2 as rating_10,
     case status_id
@@ -18,5 +24,7 @@ select
     finished_dates,
     -- Hardcover's crowd-sourced genre tags (older raw files may lack the field).
     coalesce(genres, []::varchar[]) as genres,
+    -- Readers' mood tags, lower case (older raw files may lack the field).
+    coalesce(moods, []::varchar[]) as moods,
     extracted_at::timestamptz as extracted_at
 from {{ source('raw', 'hardcover_books') }}

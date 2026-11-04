@@ -1,10 +1,14 @@
--- Calendar from Jan 1 of the earliest finish year to Dec 31 of the later of
+-- Calendar from Jan 1 of the earliest finish (book or article) year to Dec 31 of the later of
 -- this year and the latest finish year.
 with bounds as (
     select
         make_date(coalesce(min(year(finished_at)), year(current_date)), 1, 1) as first_day,
         make_date(greatest(coalesce(max(year(finished_at)), 0), year(current_date)), 12, 31) as last_day
-    from {{ ref('stg_hardcover__reads') }}
+    from (
+        select finished_at from {{ ref('stg_hardcover__reads') }}
+        union all
+        select added_on from {{ ref('stg_raindrop__articles') }}
+    )
 ),
 
 days as (

@@ -2,6 +2,15 @@ version: 2
 
 seeds:
   - name: genre_rules
-    description: Maps a book to a genre shelf, automatically. Each rule is a regex over the book's Open Library subjects, Hardcover genre tags and title, lowercased; the lowest priority number that matches wins.
+    description: Maps a book to a genre shelf, automatically. Each rule is a regex over the book's Open Library subjects, Hardcover genre tags and title, lowercased. A rule matching the Hardcover tags beats one matching only subjects or title; then the lowest priority number wins.
   - name: allowed_published_columns
     description: Every column allowed in the metrics and publish schemas. The privacy test fails on anything else.
+  - name: genre_kinds
+    description: Whether each genre shelf is fiction or non-fiction. A genre missing here counts as Unknown on Stats.
+  - name: cover_overrides
+    description: A hand-picked cover for a book whose sources only have a wrong one (an audiobook square, a translation). hardcover_id is the user book id from hardcover_books.json; title is for whoever edits the file; cover_url is any image URL, served through the image proxy. Empty most of the time.
+    config:
+      column_types:
+        hardcover_id: varchar
+        title: varchar
+        cover_url: varchar

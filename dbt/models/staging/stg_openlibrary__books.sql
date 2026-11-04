@@ -9,5 +9,7 @@ select
     end as cover_url,
     nullif(trim(publisher), '') as publisher,
     subjects,
+    -- The work's blurb, used when Hardcover has none (older raw files lack it).
+    description::varchar as description,
     extracted_at::timestamptz as extracted_at
 from {{ source('raw', 'openlibrary_books') }}

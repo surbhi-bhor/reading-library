@@ -1,7 +1,8 @@
 -- One genre shelf per book, fully automatic. Open Library subjects are too
 -- noisy to filter by, so each book is matched against genre_rules using its
--- subjects, its Hardcover genre tags and its title together. A book nothing
--- matches takes the most common genre of the author's other books, then Fiction.
+-- Hardcover genre tags first (they are curated), then subjects, tags and title
+-- together. A book nothing matches takes the most common genre of the author's
+-- other books, then Fiction.
 with subjects as (
     select hardcover_id, string_agg(subject_name, ' | ') as subject_text
     from {{ ref('stg_openlibrary__subjects') }}
@@ -12,6 +13,7 @@ books as (
     select
         b.hardcover_id,
         b.author,
+        lower(array_to_string(b.genres, ' | ')) as tag_text,
         lower(concat_ws(' | ', s.subject_text, array_to_string(b.genres, ' | '), b.title)) as signal_text
     from {{ ref('stg_hardcover__books') }} as b
     left join subjects as s using (hardcover_id)
@@ -20,8 +22,12 @@ books as (
 ruled as (
     select b.hardcover_id, r.genre
     from books as b
-    join {{ ref('genre_rules') }} as r on regexp_matches(b.signal_text, r.pattern)
-    qualify row_number() over (partition by b.hardcover_id order by r.priority) = 1
+    join {{ ref('genre_rules') }} as r
+        on regexp_matches(b.tag_text, r.pattern) or regexp_matches(b.signal_text, r.pattern)
+    qualify row_number() over (
+        partition by b.hardcover_id
+        order by not regexp_matches(b.tag_text, r.pattern), r.priority
+    ) = 1
 ),
 
 author_genre as (

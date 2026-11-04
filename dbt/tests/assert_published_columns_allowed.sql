@@ -13,8 +13,19 @@
 -- depends_on: {{ ref('metric_genre_mix') }}
 -- depends_on: {{ ref('metric_rating_spread') }}
 -- depends_on: {{ ref('metric_undated_reads') }}
+-- depends_on: {{ ref('metric_reading_pace') }}
+-- depends_on: {{ ref('metric_reading_spells') }}
+-- depends_on: {{ ref('metric_page_buckets') }}
+-- depends_on: {{ ref('metric_fiction_split') }}
+-- depends_on: {{ ref('metric_publication_years') }}
+-- depends_on: {{ ref('metric_mood_mix') }}
+-- depends_on: {{ ref('pub_reading_list') }}
 -- depends_on: {{ ref('pub_shelf') }}
 -- depends_on: {{ ref('pub_build_info') }}
+-- depends_on: {{ ref('pub_bookcase') }}
+-- depends_on: {{ ref('pub_recommendations') }}
+-- depends_on: {{ ref('metric_reads_by_period') }}
+-- depends_on: {{ ref('metric_article_sources') }}
 select c.table_schema, c.table_name, c.column_name
 from information_schema.columns as c
 left join {{ ref('allowed_published_columns') }} as a

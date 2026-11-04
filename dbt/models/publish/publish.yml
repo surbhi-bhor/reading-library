@@ -2,9 +2,61 @@ version: 2
 
 models:
   - name: pub_shelf
-    description: One row per item on a shelf, with first author, finish dates and non-generic topics. The only item table the site reads.
+    description: One row per item on a shelf (books and articles, kind says which), with first author (an article's publication), finish dates and non-generic topics. The only item table the site reads.
     columns:
       - name: item_id
         tests: [unique, not_null]
   - name: pub_build_info
     description: When the site data was built and when Hardcover was last read.
+  - name: pub_reading_list
+    description: Essays and articles with a link, from my Raindrop Read collection. Empty until reads are added.
+  - name: pub_bookcase
+    description: What stands on the main bookcase, in shelf order. Books being read come first, then finished books and articles together, newest finish first, undated last. Want-to-read books keep their own shelf and stay out. Read by the home shelf and the café model on How it's made.
+    columns:
+      - name: item_id
+        tests: [unique, not_null]
+      - name: kind
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['book', 'article']
+      - name: shelf_position
+        tests: [unique, not_null]
+
+  - name: pub_recommendations
+    description: The books visitors recommended to me, one row per book however many times it was sent, with an Open Library cover and link, and the name and note from the earliest recommendation that gave them.
+    columns:
+      - name: rec_id
+        tests: [unique, not_null]
+
+unit_tests:
+  - name: bookcase_orders_books_and_articles_together
+    model: pub_bookcase
+    given:
+      - input: ref('pub_shelf')
+        rows:
+          - {item_id: 'book:1', kind: book, title: Old, shelf_status: read, last_finished: 2024-01-01}
+          - {item_id: 'book:2', kind: book, title: Now, shelf_status: reading, last_finished: null}
+          - {item_id: 'book:3', kind: book, title: Later, shelf_status: want_to_read, last_finished: null}
+          - {item_id: 'book:4', kind: book, title: Undated, shelf_status: read, last_finished: null}
+          - {item_id: 'raindrop:9', kind: article, title: Essay, author: Substack, genre: Articles, summary: A note, shelf_status: read, last_finished: 2025-06-01}
+      - input: ref('pub_reading_list')
+        rows:
+          - {read_id: 'raindrop:9', topic: Craft}
+    expect:
+      rows:
+        - {item_id: 'book:2', kind: book, shelf_position: 1, author: null, genre: null, summary: null, last_finished: null, topic: null}
+        - {item_id: 'raindrop:9', kind: article, shelf_position: 2, author: Substack, genre: Articles, summary: A note, last_finished: 2025-06-01, topic: Craft}
+        - {item_id: 'book:1', kind: book, shelf_position: 3, author: null, genre: null, summary: null, last_finished: 2024-01-01, topic: null}
+        - {item_id: 'book:4', kind: book, shelf_position: 4, author: null, genre: null, summary: null, last_finished: null, topic: null}
+
+  - name: recommendations_one_row_per_book_with_first_words
+    model: pub_recommendations
+    given:
+      - input: ref('stg_supabase__recommendations')
+        rows:
+          - {rec_id: 'a', title: 'Circe', author: Madeline Miller, ol_key: /works/OL1W, cover_id: 7, recommended_by: null, note: null, recommended_on: 2026-11-03}
+          - {rec_id: 'c', title: 'Circe', author: Madeline Miller, ol_key: /works/OL1W, cover_id: 7, recommended_by: Asha, note: Loved it, recommended_on: 2026-11-05}
+    expect:
+      rows:
+        - {rec_id: 'a', title: Circe, cover_url: 'https://covers.openlibrary.org/b/id/7-M.jpg', url: 'https://openlibrary.org/works/OL1W', recommended_by: Asha, note: Loved it, recommended_on: 2026-11-05}

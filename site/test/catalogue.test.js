@@ -1,12 +1,6 @@
 import {test} from "node:test";
 import assert from "node:assert/strict";
-import {filedName, ledgerFigures, outOfFive} from "../src/components/catalogue.js";
-
-test("authors are filed surname first", () => {
-  assert.equal(filedName("Amish Tripathi"), "Tripathi, Amish");
-  assert.equal(filedName("Viktor E. Frankl"), "Frankl, Viktor E.");
-  assert.equal(filedName("Sadhguru"), "Sadhguru");
-});
+import {ledgerFigures, outOfFive} from "../src/components/catalogue.js";
 
 test("ratings read out of five", () => {
   assert.equal(outOfFive(10), "5.0 of 5");

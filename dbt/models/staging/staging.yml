@@ -25,3 +25,17 @@ models:
     columns:
       - name: subject_name
         tests: [not_null]
+  - name: stg_raindrop__articles
+    description: Articles I have read, one row per Raindrop item in the Read collection.
+    columns:
+      - name: read_id
+        tests: [unique, not_null]
+      - name: url
+        tests: [not_null]
+  - name: stg_supabase__recommendations
+    description: "Books visitors recommended, one row per recommendation, only real Open Library works (title, author and cover from Open Library), with the visitor's name and note."
+    columns:
+      - name: rec_id
+        tests: [unique, not_null]
+      - name: title
+        tests: [not_null]

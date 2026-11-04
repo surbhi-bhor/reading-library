@@ -22,13 +22,6 @@ export function outOfFive(rating10) {
   return `${r.toFixed(1)} of 5`;
 }
 
-// "Amish Tripathi" -> "Tripathi, Amish", the way a catalogue files authors.
-export function filedName(name) {
-  const parts = name.trim().split(/\s+/);
-  if (parts.length < 2) return name;
-  return `${parts.at(-1)}, ${parts.slice(0, -1).join(" ")}`;
-}
-
 export function ledgerFigures(m) {
   const books = m.metric_items_read.find((d) => d.item_type === "book");
   const rating = m.metric_avg_rating.find((d) => d.dimension === "type" && d.dimension_value === "book");
@@ -42,69 +35,30 @@ export function ledgerFigures(m) {
   };
 }
 
-export function Ledger(m) {
-  const f = ledgerFigures(m);
-  const row = (term, value, note) => el("div", {class: "ledger-row"},
-    el("dt", {}, term), el("dd", {}, value), note ? el("dd", {class: "ledger-note"}, note) : null);
-  return el("article", {class: "card ledger"},
-    el("h3", {}, "Reading ledger"),
-    el("dl", {},
-      row("Books finished", nf.format(f.books)),
-      row("Pages turned", nf.format(f.pages), "where the page count is known"),
-      row("Hours of reading", `about ${nf.format(f.hours)}`, "at 40 pages an hour"),
-      row("Average rating", f.rating, `over ${f.ratedReads} rated reads`),
-      row("Kept without a date", nf.format(f.undated))
-    ));
-}
 
-// One drawer per genre; drawer height follows its share of reads.
-export function Drawers(m) {
-  const ratings = new Map(m.metric_avg_rating.filter((d) => d.dimension === "genre").map((d) => [d.dimension_value, d.avg_rating_10]));
-  const rows = [...m.metric_genre_mix].sort((a, b) => b.reads - a.reads || a.genre.localeCompare(b.genre));
-  const max = Math.max(...rows.map((d) => d.share));
-  return el("div", {class: "cabinet", role: "list", "aria-label": "Books read per genre"},
-    ...rows.map((d) => el("div", {
-      class: "drawer",
-      role: "listitem",
-      style: `--h: ${Math.max(3.25, 9 * (d.share / max)).toFixed(2)}rem`
-    },
-      el("span", {class: "drawer-label"},
-        el("strong", {}, d.genre),
-        el("span", {}, `${d.reads} ${d.reads === 1 ? "book" : "books"}, ${Math.round(d.share * 100)}% of my reading`),
-        ratings.has(d.genre) ? el("span", {}, `rated ${outOfFive(ratings.get(d.genre))}`) : null),
-      el("span", {class: "drawer-pull", "aria-hidden": "true"}))));
-}
-
-// A due-date card: one ink stamp per month with finished books, oldest first.
-export function CheckoutCard(m, {year} = {}) {
-  const months = m.metric_books_by_period
-    .filter((d) => year == null || d.finish_year === year)
-    .sort((a, b) => a.finish_year - b.finish_year || a.finish_month - b.finish_month);
-  const undated = m.metric_undated_reads.find((d) => d.item_type === "book")?.undated_reads ?? 0;
-  const stamps = months.map((d, i) => el("li", {class: "stamp-row"},
-    el("span", {class: "stamp", style: `--tilt: ${((i * 37) % 7) - 3}deg; --i: ${i}`},
-      monthShort.format(new Date(Date.UTC(d.finish_year, d.finish_month - 1, 1)))),
-    el("span", {class: "stamp-count"}, `${d.books_read} ${d.books_read === 1 ? "book" : "books"}`)));
-  const list = stamps.length ? el("ol", {class: "stamps"}, ...stamps) : null;
-  // The stamps land one after another the first time the card comes into view.
-  if (list && typeof IntersectionObserver !== "undefined") {
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { list.classList.add("is-stamped"); io.disconnect(); }
-    }, {threshold: 0.4});
-    io.observe(list);
-  }
-  return el("article", {class: "card checkout"},
-    el("h3", {}, "Date due"),
-    list ?? el("p", {}, "No dated books yet."),
-    year == null && undated ? el("p", {class: "checkout-note"}, `${undated} more read without a stamp.`) : null);
-}
-
-// Only authors with at least two books: "keep going back to" means it.
-export function AuthorCards(m, n = 6) {
+// Authors as an editorial index, rebuilt after the 21st.dev "Editorial service
+// list" (ibrandify): numbered rows that shift a little on hover and open to the
+// author's books on the shelf. Only authors with two or more books.
+export function AuthorList(m, shelf, {open: openBook} = {}, n = 6) {
   const top = [...m.metric_top_creators].filter((d) => d.items_read >= 2).sort((a, b) => a.rank - b.rank).slice(0, n);
-  return el("div", {class: "author-cards", role: "list"},
-    ...top.map((d) => el("article", {class: "card author-card", role: "listitem"},
-      el("h3", {}, filedName(d.creator_name)),
-      el("p", {}, `${d.items_read} ${d.items_read === 1 ? "book" : "books"} read`),
-      el("p", {}, d.avg_rating_10 != null ? `Rated ${outOfFive(d.avg_rating_10)}` : "Not rated"))));
+  const list = el("ol", {class: "editorial"});
+  top.forEach((d, i) => {
+    const books = shelf.filter((b) => b.shelf_status === "read" && (b.author ?? "").includes(d.creator_name));
+    const panelId = `author-books-${i}`;
+    const head = el("button", {class: "ed-row", type: "button", "aria-expanded": "false", "aria-controls": panelId},
+      el("span", {class: "ed-num"}, String(i + 1).padStart(2, "0")),
+      el("span", {class: "ed-name"}, d.creator_name),
+      el("span", {class: "ed-note"}, `${d.items_read} books${d.avg_rating_10 != null ? ` · rated ${outOfFive(d.avg_rating_10)}` : ""}`),
+      el("span", {class: "ed-chev", "aria-hidden": "true"}, "›"));
+    const inner = el("ul", {class: "ed-books"}, ...books.map((b, k) => {
+      const btn = el("button", {type: "button", class: "ed-book"}, b.title.split(":")[0].trim());
+      btn.addEventListener("click", () => openBook?.(books, k, btn));
+      return el("li", {}, btn);
+    }));
+    // The panel opens with a CSS grid-rows transition, so this file stays importable in node tests.
+    const panel = el("div", {class: "ed-panel", id: panelId, role: "region", "aria-label": `Books by ${d.creator_name}`}, inner);
+    head.addEventListener("click", () => head.setAttribute("aria-expanded", String(head.getAttribute("aria-expanded") === "false")));
+    list.append(el("li", {class: "ed-item"}, head, panel));
+  });
+  return list;
 }

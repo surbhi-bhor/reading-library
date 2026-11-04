@@ -1,76 +1,5 @@
-import {spineLabel, spineStyle} from "./spine.js";
-import {openBook} from "./bookPanel.js";
-import {paintSpines} from "./color.js";
+import {animate} from "npm:motion";
 
-// One shelf of spines on a plank. `books` is the list the panel's
-// previous/next walk through, so it should be the list as shown.
-export function Shelf(books, {label, empty = "Nothing on this shelf yet."} = {}) {
-  const shelf = document.createElement("div");
-  shelf.className = "shelf";
-
-  const row = document.createElement("div");
-  row.className = "shelf-row";
-  row.setAttribute("role", "list");
-  if (label) row.setAttribute("aria-label", label);
-
-  if (books.length === 0) {
-    const p = document.createElement("p");
-    p.className = "shelf-empty";
-    p.textContent = empty;
-    row.append(p);
-  }
-
-  books.forEach((book, index) => {
-    const s = spineStyle(book);
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "spine";
-    button.setAttribute("aria-label", book.author ? `${book.title} by ${book.author}` : book.title);
-    button.dataset.reading = String(book.shelf_status === "reading");
-    button.style.width = `${s.width}px`;
-    button.style.height = `${s.height}%`;
-    button.style.setProperty("--cloth", s.cloth);
-
-    const title = document.createElement("span");
-    title.className = "spine-title";
-    title.textContent = spineLabel(book.title);
-    button.append(title);
-
-    button.addEventListener("click", () => openBook(books, index, button));
-    // The wrapper is the list item, so the spine keeps its button role for screen readers.
-    const item = document.createElement("div");
-    item.setAttribute("role", "listitem");
-    item.className = "spine-slot";
-    item.style.height = button.style.height;
-    button.style.height = "100%";
-    item.append(button);
-    row.append(item);
-  });
-
-  if (books.length > 0) {
-    const bookend = document.createElement("span");
-    bookend.className = "bookend";
-    bookend.setAttribute("aria-hidden", "true");
-    row.append(bookend);
-  }
-
-  paintSpines(books.map((book, i) => ({book, el: row.querySelectorAll(".spine")[i]})));
-
-  const plank = document.createElement("div");
-  plank.className = "plank";
-  shelf.append(row, plank);
-  return shelf;
-}
-
-// A bookcase holds one or more shelves.
-export function Bookcase(...shelves) {
-  const el = document.createElement("div");
-  el.className = "bookcase";
-  // Under about a dozen books the case shrinks to fit them.
-  if (shelves.every((s) => s.querySelectorAll(".spine").length < 12)) el.classList.add("fit");
-  el.append(...shelves);
-  return el;
-}
 
 // Search + genre picker. Emits "input" like any Framework input so pages
 // can use it with view(); its value is {query, genre}.
@@ -79,7 +8,9 @@ export function Finder(genres) {
   form.className = "finder";
   form.setAttribute("role", "search");
   form.addEventListener("submit", (e) => e.preventDefault());
-  form.value = {query: "", genre: null};
+  // A link to ./?genre=... opens the shelf on that genre.
+  const asked = new URLSearchParams(location.search).get("genre");
+  form.value = {query: "", genre: genres.some((g) => g.genre === asked) ? asked : null};
 
   const label = document.createElement("label");
   label.className = "visually-hidden";
@@ -104,14 +35,16 @@ export function Finder(genres) {
     const b = document.createElement("button");
     b.type = "button";
     b.className = "genre";
-    b.setAttribute("aria-pressed", String(genre === null));
-    b.append(genre ?? "All books");
+    b.setAttribute("aria-pressed", String(genre === form.value.genre));
+    b.append(genre ?? "Everything");
     if (reads != null) {
       const n = document.createElement("small");
       n.textContent = reads;
       b.append(n);
     }
     b.addEventListener("click", () => {
+      // A small press on a stiff spring, so the choice feels taken.
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) animate(b, {scale: [1, 0.93, 1]}, {type: "spring", stiffness: 520, damping: 18});
       buttons.forEach((other) => other.setAttribute("aria-pressed", String(other === b)));
       form.value = {...form.value, genre};
       form.dispatchEvent(new Event("input", {bubbles: true}));
@@ -120,7 +53,34 @@ export function Finder(genres) {
   });
   group.append(...buttons);
 
-  form.append(label, input, group);
+  // Header row, after the 21st.dev filter chips: a label, and Clear once anything is narrowed.
+  const head = document.createElement("div");
+  head.className = "finder-head";
+  const title = document.createElement("span");
+  title.className = "finder-label";
+  title.innerHTML = `<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 4h7M12 4h2M2 12h3M8 12h6M9 2v4M5 10v4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Filter by genre`;
+  const clear = document.createElement("button");
+  clear.type = "button";
+  clear.className = "finder-clear";
+  clear.textContent = "Clear";
+  const sync = () => { clear.hidden = !form.value.query && !form.value.genre; };
+  clear.addEventListener("click", () => {
+    input.value = "";
+    buttons.forEach((b, i) => b.setAttribute("aria-pressed", String(i === 0)));
+    form.value = {query: "", genre: null};
+    form.dispatchEvent(new Event("input", {bubbles: true}));
+    input.focus();
+  });
+  form.addEventListener("input", sync);
+  sync();
+  head.append(title, clear);
+
+  const field = document.createElement("div");
+  field.className = "finder-field";
+  field.innerHTML = `<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+  field.append(input);
+
+  form.append(label, field, head, group);
   return form;
 }
 

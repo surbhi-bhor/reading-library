@@ -11,6 +11,8 @@ test-paths: ["tests"]
 vars:
   minutes_per_page: 1.5
   words_per_minute: 238
+  # A gap longer than this between finished books ends a reading spell.
+  reading_break_days: 180
 
 models:
   reading_library:
