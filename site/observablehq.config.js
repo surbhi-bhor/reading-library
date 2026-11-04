@@ -53,7 +53,14 @@ document.addEventListener("DOMContentLoaded", () => {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap">
-<meta name="description" content="Every book I have read, on the shelves of a library café. Rebuilt every night from my reading log.">`,
+<meta name="description" content="Everything I read, books and articles, on a 3D bookcase, with reading stats from a tested dbt warehouse. Rebuilt every night.">
+<meta property="og:title" content="The Reading Room">
+<meta property="og:description" content="Everything I read, books and articles, on a 3D bookcase, with reading stats from a tested dbt warehouse. Rebuilt every night.">
+<meta property="og:image" content="https://reading-room-shelf.vercel.app/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://reading-room-shelf.vercel.app/">
+<meta name="twitter:card" content="summary_large_image">`,
   header: ({path}) => {
     const links = [["stats", "Stats"]];
     const items = links.map(([href, name]) =>

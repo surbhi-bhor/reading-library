@@ -96,5 +96,5 @@ jobs:
           VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
         run: |
-          cp site/vercel.json site/dist/vercel.json
+          cp site/vercel.json site/og.jpg site/dist/
           npx --yes vercel@65.11.0 deploy site/dist --prod --yes --token "$VERCEL_TOKEN"

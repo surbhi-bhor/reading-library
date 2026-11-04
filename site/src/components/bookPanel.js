@@ -117,11 +117,26 @@ function copyButton(book) {
 }
 
 // Open the book named in the address bar, if there is one on this shelf.
+// A shared link (#book-123) opens that book, on load and whenever the address
+// changes to another book's link (pasting it, or Forward after Back).
+let linkable = [];
 export function openFromHash(books) {
-  const id = location.hash.slice(1);
-  const index = books.findIndex((b) => anchorOf(b) === id);
-  if (index >= 0) openBook(books, index, null);
+  linkable = books;
+  const open = () => {
+    const index = linkable.findIndex((b) => anchorOf(b) === location.hash.slice(1));
+    if (index < 0 || (dialog?.open && anchorOf(current.books[current.index]) === location.hash.slice(1))) return;
+    // The entry under the book becomes the plain page, so Back after opening a link closes the book.
+    if (!history.state?.book) history.replaceState(null, "", location.pathname + location.search);
+    openBook(linkable, index, null);
+  };
+  open();
+  addEventListener("hashchange", open);
 }
+
+// Back closes the book: opening one adds a history entry, closing it takes it off again.
+addEventListener("popstate", () => {
+  if (dialog?.open && !location.hash) closeBook({fromHistory: true});
+});
 
 function ensureDialog() {
   if (dialog) return dialog;
@@ -176,7 +191,7 @@ const RESTING = "rotateY(-24deg)";
 function render({fly = false} = {}) {
   const {books, index, opener} = current;
   const book = books[index];
-  history.replaceState(null, "", `#${anchorOf(book)}`);
+  history.replaceState(history.state, "", `#${anchorOf(book)}`);
   const bookEl = Book3D(book);
   const details = Details(book, index, books.length);
   dialog.replaceChildren(el("div", {class: "viewer-inner"}, bookEl, details));
@@ -214,7 +229,7 @@ async function step(delta) {
   busy = false;
 }
 
-async function closeBook() {
+async function closeBook({fromHistory = false} = {}) {
   if (busy || !dialog?.open) return;
   busy = true;
   // Fly back onto the shelf only if the book shown is the one that was taken down.
@@ -229,7 +244,11 @@ async function closeBook() {
   }
   dialog.classList.remove("is-closing");
   dialog.close();
-  history.replaceState(null, "", location.pathname + location.search);
+  // Closed with the button or Escape: drop the history entry the book added.
+  if (!fromHistory) {
+    if (history.state?.book) history.back();
+    else history.replaceState(null, "", location.pathname + location.search);
+  }
   current.opener?.focus({preventScroll: true});
   busy = false;
 }
@@ -237,6 +256,10 @@ async function closeBook() {
 export function openBook(books, index, opener) {
   ensureDialog();
   current = {books, index, opener, openedIndex: index};
-  if (!dialog.open) dialog.showModal();
+  if (!dialog.open) {
+    // One history entry per opening (Previous/Next only replace it), so Back closes the book.
+    if (!history.state?.book) history.pushState({book: true}, "", `#${anchorOf(books[index])}`);
+    dialog.showModal();
+  }
   render({fly: true});
 }

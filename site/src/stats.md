@@ -43,11 +43,13 @@ const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep
 const monthLong = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 // Books per month. Articles stay out of the timelines: each is dated the day it
 // was saved, so a week of saving would read as a record month.
-const calendar = metrics.metric_books_by_period.map((d) => ({year: d.finish_year, month: d.finish_month, books: d.books_read}));
+const calendar = metrics.metric_books_by_period.map((d) => ({year: d.finish_year, month: d.finish_month, books: d.books_read})).sort((a, b) => a.year - b.year || a.month - b.month);
 // The month with the most books; on a tie, the most recent one.
 const busiest = d3.greatest(calendar, (a, b) => a.books - b.books || (a.year * 12 + a.month) - (b.year * 12 + b.month));
 const years = d3.range(d3.max(calendar, (d) => d.year), d3.min(calendar, (d) => d.year) - 1, -1);
-const byYear = d3.rollups(calendar, (v) => d3.sum(v, (d) => d.books), (d) => d.year).map(([year, books]) => ({year, books})).sort((a, b) => a.year - b.year);
+// Every year from the first to the last, zero years included, so gaps in reading show.
+const booksIn = d3.rollup(calendar, (v) => d3.sum(v, (d) => d.books), (d) => d.year);
+const byYear = d3.range(d3.min(calendar, (d) => d.year), d3.max(calendar, (d) => d.year) + 1).map((year) => ({year, books: booksIn.get(year) ?? 0}));
 const bestYear = d3.greatest(byYear, (d) => d.books);
 const articlesRead = metrics.metric_items_read.find((d) => d.item_type === "article")?.distinct_items ?? 0;
 const sources = [...metrics.metric_article_sources].sort((a, b) => b.articles - a.articles || a.source_name.localeCompare(b.source_name));
@@ -105,7 +107,7 @@ ${card("Books by year", `${bestYear.year} is my biggest year so far, with ${say(
     marginLeft: 24,
     marks: [
       Plot.barY(byYear, {x: "year", y: "books", fill: gold, rx: 3, insetLeft: 4, insetRight: 4, tip: {format: {x: (d) => String(d)}}}),
-      Plot.text(byYear, {x: "year", y: "books", text: "books", dy: -8, fill: "var(--cream)", fontWeight: 600}),
+      Plot.text(byYear.filter((d) => d.books > 0), {x: "year", y: "books", text: "books", dy: -8, fill: "var(--cream)", fontWeight: 600}),
       Plot.ruleY([0], {stroke: ink})
     ]
   }), byYear, [["year", "Year"], ["books", "Books"]])}

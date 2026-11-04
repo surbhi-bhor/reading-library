@@ -49,25 +49,26 @@ const shown = mainShelf.filter((d) => matches(d, find));
 const recShown = recommended.filter((d) => matches(d, {query: find.query}));
 const wantShown = wantShelf.filter((d) => matches(d, {query: find.query}));
 const filtered = find.query || find.genre;
-const found = shown.length + recShown.length + wantShown.length;
-// With no matches the shelf itself says so, so the status line stays quiet.
+// The count describes the main shelf; recommendations that match a search are named separately.
+const recNote = find.query && recShown.length ? ` · ${recShown.length} recommended to me` : "";
 display(html`<p class="finder-status" aria-live="polite">${
-  filtered && found ? `${found} of ${mainShelf.length + recommended.length + wantShelf.length} on the shelves` : ""
+  filtered ? `${shown.length} of ${mainShelf.length} on my shelf${recNote}` : ""
 }</p>`);
 // Real objects at either end of the shelf (Poly Haven, CC0; packed by scripts/pack_glb.py).
 const props = [
   {url: await FileAttachment("models/brass_vase_01.glb").url(), height: 0.8, side: "start"},
   {url: await FileAttachment("models/potted_plant_02.glb").url(), height: 0.95, side: "end"}
 ];
-display(GLShelf(shown, {label: "Books and articles I have read", empty: "Nothing on these shelves matches that.", invalidation, props}));
+display(GLShelf(shown, {label: "Books and articles I have read", empty: "Nothing on my shelf matches that.", invalidation, props}));
 ```
 
 ```js
 // The lower compartments of the same bookcase: books readers sent me (publish.pub_recommendations),
 // then the ones I want to read.
-// A compartment with nothing matching the search folds away.
-if (recShown.length > 0) display(GLShelf(recShown, {label: "Books readers recommended to me", compartment: "Recommended to me", invalidation}));
-if (wantShown.length > 0) display(GLShelf(wantShown, {label: "Books I want to read", compartment: "On my list", invalidation}));
+// A compartment with nothing matching the search folds away. Something is always displayed,
+// because Framework keeps a cell's last output until the cell displays again.
+display(recShown.length ? GLShelf(recShown, {label: "Books readers recommended to me", compartment: "Recommended to me", invalidation}) : html`<span hidden></span>`);
+display(wantShown.length ? GLShelf(wantShown, {label: "Books I want to read", compartment: "On my list", invalidation}) : html`<span hidden></span>`);
 ```
 
 ```js
