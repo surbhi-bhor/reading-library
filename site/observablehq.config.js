@@ -14,6 +14,14 @@ export default {
   ],
   // Framework 1.13 has no lang option, so set it before anything reads the page.
   head: `<script>document.documentElement.lang = "en";
+// Vercel Web Analytics (no cookies). Added at load time because the script only
+// exists on Vercel's servers, so the build cannot bundle it; skipped locally.
+if (!["localhost", "127.0.0.1"].includes(location.hostname)) {
+  const va = document.createElement("script");
+  va.defer = true;
+  va.src = "/_vercel/insights/script.js";
+  document.head.append(va);
+}
 // Light or dark: a choice made with the nav toggle wins over the system setting.
 // Read before first paint, so the page never flashes the other theme.
 try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}

@@ -1,9 +1,9 @@
 # The Reading Room
 
-Everything I read, books and articles, on a lit 3D bookcase, with a small dbt warehouse underneath. Visitors can recommend me books. The site rebuilds itself every night on GitHub Actions and is hosted free on GitHub Pages.
+Everything I read, books and articles, on a lit 3D bookcase, with a small dbt warehouse underneath. Visitors can recommend me books. The site rebuilds itself every night on GitHub Actions and is hosted free on Vercel.
 
-**Live site:** https://surbhi-bhor.github.io/reading-library/
-**dbt docs (models, lineage, tests):** https://surbhi-bhor.github.io/reading-library/docs/
+**Live site:** https://reading-library-psi.vercel.app/
+**dbt docs (models, lineage, tests):** https://reading-library-psi.vercel.app/docs/
 **Case study:** [docs/case-study.md](docs/case-study.md)
 
 ## How it works
@@ -20,7 +20,7 @@ flowchart LR
   MART --> PUB["Publish tables<br>shelf, bookcase, recommendations"]
   MET --> SITE["Observable Framework site"]
   PUB --> SITE
-  SITE --> GP["GitHub Pages"]
+  SITE --> GP["Vercel<br>hosting + Web Analytics"]
   SITE -. "visitors recommend a book" .-> SB
 ```
 
@@ -30,7 +30,7 @@ Every night at 03:00 UTC one workflow ([`nightly.yml`](.github/workflows/nightly
 2. **Extract** (`python -m extract`): books from the Hardcover GraphQL API, articles from Raindrop, recommendations from Supabase, each book matched on Open Library. Raw answers are written to `data/raw/`, which is never committed: the last extract that passed every test is kept in the GitHub Actions cache instead. An empty or failed Hardcover answer stops the run, so a bad night cannot wipe the library. Raindrop and Supabase are optional: if either is down, the books still update and the cached articles and recommendations stay.
 3. **dbt build**: models and tests on DuckDB, then source freshness and dbt docs.
 4. **Site build**: node tests, then Observable Framework turns the published tables into static pages.
-5. **Deploy** to GitHub Pages, only if every step above passed. Otherwise yesterday's site stays up.
+5. **Deploy** the finished static site to Vercel (hosting and Web Analytics), only if every step above passed. Otherwise yesterday's site stays up. Vercel builds nothing; Actions does all the work.
 
 Pull requests run [`ci.yml`](.github/workflows/ci.yml) without secrets or data: ruff, pytest, the site tests and `dbt parse`. The full build with data runs in the nightly job.
 
@@ -111,7 +111,7 @@ Tests: `ruff check .`, `pytest -q`, `cd site && npm test`.
 
 1. Repository secrets: `HARDCOVER_API_TOKEN`, `RAINDROP_TOKEN` (optional), `SUPABASE_SERVICE_KEY` (optional).
 2. Repository variables: `SUPABASE_URL`, `SUPABASE_ANON_KEY` (optional; without them the recommend form is hidden).
-3. Settings → Pages → Source: GitHub Actions.
+3. A Vercel project (`npx vercel link`), with `VERCEL_TOKEN` as a repository secret and `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` as repository variables. Turn on Web Analytics in the Vercel project.
 4. Run the nightly workflow once from the Actions tab.
 
 For recommendations, create a free Supabase project and run [`supabase/recommendations.sql`](supabase/recommendations.sql) in its SQL editor.

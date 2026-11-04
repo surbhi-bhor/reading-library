@@ -2,13 +2,13 @@
 
 A public website of everything I read, books and articles, laid out like a bookcase, on top of a small data warehouse modelled with dbt. Visitors can also recommend books to me. The site itself is called The Reading Room.
 
-Status: built and tested locally, November 2026; launch to GitHub Pages next. Sections marked "to fill" get real numbers once the site is live.
+Status: live since November 2026 at https://reading-library-psi.vercel.app. Sections marked "to fill" get real numbers once the site is live.
 
 ## Summary
 
 I turned my reading history into a static website laid out as a bookcase. Books and saved articles stand on a lit 3D shelf as spines printed from their covers; you pull one out to see the cover, my rating and when I finished it. A second compartment of the same bookcase holds books visitors have recommended to me.
 
-Under the shelves sits a DuckDB warehouse modelled with dbt as a star schema, with every number on the site defined once in a metric layer. A nightly GitHub Actions job pulls my books from Hardcover, my articles from Raindrop and visitors' recommendations from a Supabase Postgres table, enriches and verifies them against Open Library, tests everything and redeploys the site to GitHub Pages. It costs nothing to run and needs no laptop.
+Under the shelves sits a DuckDB warehouse modelled with dbt as a star schema, with every number on the site defined once in a metric layer. A nightly GitHub Actions job pulls my books from Hardcover, my articles from Raindrop and visitors' recommendations from a Supabase Postgres table, enriches and verifies them against Open Library, tests everything and redeploys the site to Vercel. It costs nothing to run and needs no laptop.
 
 ## Problem statement
 
@@ -35,13 +35,13 @@ The problem: **turn a small, sparse, messy personal dataset from several sources
 | One definition per number | A dbt test fails the build if any two published totals disagree |
 | Honest with sparse data | Undated reads count in the totals and are named as undated; nothing is silently dropped |
 | Hands-off | Marking a book finished in Hardcover or saving an article to Raindrop is the only manual step |
-| Free | GitHub Actions and Pages, plus Supabase's free tier |
+| Free | GitHub Actions, Vercel's Hobby plan and Supabase's free tier |
 | Nothing private leaks | A dbt test checks every published column against an allow-list |
 
 ## Constraints
 
 - **Small, sparse data.** About 37 books and a handful of articles; some books have no finish date. Every view must still look good.
-- **Zero budget.** Public GitHub repo, Actions and Pages, Supabase free tier. No paid APIs.
+- **Zero budget.** Public GitHub repo and Actions, Vercel Hobby, Supabase free tier. No paid APIs.
 - **Static site.** No login and no server of my own, so the safety boundary is "what gets published", not access control.
 - **Secrets stay in CI.** API tokens and the Supabase service key live in GitHub Actions secrets and never reach the built site.
 
@@ -62,7 +62,7 @@ flowchart LR
   MARTS --> PUB[Publish layer]
   MET --> SITE[Observable Framework site]
   PUB --> SITE
-  SITE --> GP[GitHub Pages]
+  SITE --> GP[Vercel]
   SITE -. visitors recommend .-> SB
 ```
 
@@ -165,7 +165,7 @@ The visual starting point was a minimal online bookshelf with spines painted fro
 4. The library UI on real data, then the 3D bookcase (done)
 5. Articles from Raindrop in the same model (done)
 6. Recommendations through Supabase (done)
-7. Nightly workflow and GitHub Pages: site live (next)
+7. Nightly workflow, site live on Vercel with Web Analytics (done)
 8. README and results
 
 ## Results (to fill)

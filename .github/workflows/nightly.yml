@@ -9,11 +9,9 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: deploy
   cancel-in-progress: false
 
 jobs:
@@ -89,16 +87,14 @@ jobs:
           npm run build
       - run: python scripts/copy_dbt_docs.py
 
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site/dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      # Hosting is on Vercel (for its Web Analytics). Actions still runs the whole
+      # pipeline and only hands Vercel the finished static site; vercel.json says
+      # there is nothing for Vercel to build.
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+        run: |
+          cp site/vercel.json site/dist/vercel.json
+          npx --yes vercel@65.11.0 deploy site/dist --prod --yes --token "$VERCEL_TOKEN"
