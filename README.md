@@ -1,10 +1,21 @@
+<div align="center">
+
+<img src="site/src/logo.svg" alt="" width="72" height="72">
+
 # Reading Library
 
-A personal reading data pipeline. Books from Hardcover, articles from Raindrop and book recommendations from visitors are extracted nightly, modelled in a dbt star schema on DuckDB, tested, and published as a static site with a metric layer behind every number.
+A personal reading data pipeline: books, articles and visitor recommendations, modelled in dbt on DuckDB, tested, and published nightly as a 3D bookcase.
 
-**Live site:** https://reading-room-shelf.vercel.app
-**dbt docs (models, lineage, tests):** https://reading-room-shelf.vercel.app/docs/
-**Write-up:** [docs/case-study.md](docs/case-study.md)
+[![Nightly build and deploy](https://github.com/surbhi-bhor/reading-library/actions/workflows/nightly.yml/badge.svg)](https://github.com/surbhi-bhor/reading-library/actions/workflows/nightly.yml)
+![dbt](https://img.shields.io/badge/dbt-1.9-FF694B?logo=dbt&logoColor=white)
+![DuckDB](https://img.shields.io/badge/DuckDB-warehouse-FFF000?logo=duckdb&logoColor=black)
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+
+**[Live site](https://reading-room-shelf.vercel.app)** · **[dbt docs](https://reading-room-shelf.vercel.app/docs/)** · **[Case study](docs/case-study.md)** · **[Demo video](docs/demo.mp4)**
+
+<a href="docs/demo.mp4"><img src="docs/images/demo.gif" alt="A 21-second tour: the bookcase, a book taken off the shelf, the pipeline, the Stats page and the recommend form" width="760"></a>
+
+</div>
 
 ## Why I built it
 
@@ -137,9 +148,16 @@ tests/              pytest for the extractors
 docs/case-study.md  problem, approach, decisions, results
 ```
 
-## The site
+## Screenshots
 
-The home page shows the books and articles as a 3D bookcase, with recommendations in a second compartment and a search across both. A Stats page draws each metric with Observable Plot, with the numbers in a table under every chart.
+| | |
+|---|---|
+| ![The bookcase: books and articles on a lit 3D shelf](docs/images/home.jpg) | ![A book taken off the shelf, with my rating and finish date](docs/images/viewer.jpg) |
+| **The bookcase.** Books and articles from the publish layer, newest first, with search and genre filters. | **A book off the shelf.** Rating, finish date and genre come from `pub_shelf`. |
+| ![The Stats page in dark mode](docs/images/stats-charts-dark.jpg) | ![The Stats page in light mode](docs/images/stats-light.jpg) |
+| **Stats.** Every chart reads one metric table; the numbers sit in a table under each chart. | **Light mode.** Same data, daylit theme. |
+| ![The recommend-a-book form searching Open Library](docs/images/recommend.jpg) | <img src="docs/images/phone.jpg" alt="The bookcase on a phone" width="260"> |
+| **Recommend a book.** Searches Open Library and writes to Supabase. | **On a phone.** Tested from 320 to 1440 px wide. |
 
 ## Limitations
 

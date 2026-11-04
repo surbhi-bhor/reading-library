@@ -19,3 +19,4 @@ data/raw/
 .vercel
 
 .env.local
+brag-output/
