@@ -14,3 +14,5 @@ __pycache__/
 .superpowers/
 bash.exe.stackdump
 dbt/.user.yml
+# Raw extracts stay out of git; CI keeps the last good one in the Actions cache.
+data/raw/

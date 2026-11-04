@@ -55,7 +55,7 @@ flowchart LR
   RD[Raindrop API] --> EX
   SB[Supabase Postgres] --> EX
   OL[Open Library] --> EX
-  EX --> RAW[Raw JSON in the repo]
+  EX --> RAW[Raw JSON, cached in CI]
   RAW --> DBT[dbt on DuckDB]
   DBT --> MARTS[Star schema]
   MARTS --> MET[Metric layer]
@@ -137,7 +137,7 @@ The visual starting point was a minimal online bookshelf with spines painted fro
 | Decision | Why | Trade-off |
 |---|---|---|
 | DuckDB + dbt instead of a hosted warehouse | Free, fast, a single file, runs inside CI | Not a "big data" stack; the data is small |
-| Raw extracts committed to the repo | A failed API call can never wipe history; pull requests can build without secrets | Nightly data commits in the git history |
+| Raw extracts kept out of the repo, last good one in the Actions cache | No personal or visitor data in git history; a failed API call still cannot wipe the site | Pull requests cannot build with data, so they run lint, unit tests and `dbt parse` only |
 | Articles as items in the same star schema | One fact table answers "everything I read"; book-only metrics filter on item type | Articles have no pages or rating, so several metrics stay books only |
 | Articles kept out of the timelines on Stats | Each article is dated the day it was saved, so a week of saving would look like a record month | Article counts live in their own tile and card |
 | Supabase for recommendations | Shows the app database to warehouse pattern; visitors need no account | One more service, and it pauses after a week of inactivity on the free tier |

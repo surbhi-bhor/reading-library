@@ -18,7 +18,7 @@ Recommendations (built 2026-11-04): visitors recommend books through a Supabase 
 
 Before launch or any commit: delete the test recommendations listed in `.superpowers/test-recommendations.md` (made-up test data in Supabase), rerun the extract, and check `data/raw/recommendations.json` is clean.
 
-Next: create the public repo `surbhi-bhor/reading-library` and push, add the `HARDCOVER_API_TOKEN` secret, set Pages to GitHub Actions, run the nightly workflow once. Then README and case study results (Task 15).
+Live since 2026-11-04 at https://surbhi-bhor.github.io/reading-library/ (public repo, Pages from GitHub Actions, secrets HARDCOVER_API_TOKEN and RAINDROP_TOKEN, variables SUPABASE_URL and SUPABASE_ANON_KEY). Still to do: delete the test recommendations, then add the SUPABASE_SERVICE_KEY secret; fill the case study results.
 
 Run locally: `.venv/Scripts/python -m extract` (needs HARDCOVER_API_TOKEN), then `cd dbt && ../.venv/Scripts/dbt build --profiles-dir .`.
 

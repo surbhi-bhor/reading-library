@@ -18,22 +18,18 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - run: ruff check .
       - run: pytest -q
-      # Builds from the committed raw files, so no secrets are needed here.
-      - name: dbt build
+      # No raw data lives in the repository, so CI checks that every dbt model
+      # compiles; the full build with data and data tests runs in the nightly job.
+      - name: dbt parse
         working-directory: dbt
-        env:
-          WAREHOUSE_PATH: ${{ runner.temp }}/warehouse.duckdb
-        run: dbt build --profiles-dir .
+        run: dbt parse --profiles-dir .
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
           cache-dependency-path: site/package-lock.json
-      - name: Site tests and build
+      - name: Site tests
         working-directory: site
-        env:
-          WAREHOUSE_PATH: ${{ runner.temp }}/warehouse.duckdb
         run: |
           npm ci
           npm test
-          npm run build

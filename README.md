@@ -10,7 +10,7 @@ Everything I read, books and articles, on a lit 3D bookcase, with a small dbt wa
 
 ```mermaid
 flowchart LR
-  HC["Hardcover<br>my books"] --> EX["Python extract<br>raw JSON in git"]
+  HC["Hardcover<br>my books"] --> EX["Python extract<br>raw JSON, cached in CI"]
   RD["Raindrop<br>articles I saved"] --> EX
   SB["Supabase Postgres<br>recommendations"] --> EX
   OL["Open Library<br>covers, pages, subjects,<br>book check"] --> EX
@@ -27,12 +27,12 @@ flowchart LR
 Every night at 03:00 UTC one workflow ([`nightly.yml`](.github/workflows/nightly.yml)) runs:
 
 1. **Lint and test**: ruff, pytest.
-2. **Extract** (`python -m extract`): books from the Hardcover GraphQL API, articles from Raindrop, recommendations from Supabase, each book matched on Open Library. Raw answers are written to `data/raw/` and committed. An empty Hardcover answer never replaces a good file, so a bad night cannot wipe the library. Raindrop and Supabase are optional: if either is down, the books still update.
+2. **Extract** (`python -m extract`): books from the Hardcover GraphQL API, articles from Raindrop, recommendations from Supabase, each book matched on Open Library. Raw answers are written to `data/raw/`, which is never committed: the last extract that passed every test is kept in the GitHub Actions cache instead. An empty or failed Hardcover answer stops the run, so a bad night cannot wipe the library. Raindrop and Supabase are optional: if either is down, the books still update and the cached articles and recommendations stay.
 3. **dbt build**: models and tests on DuckDB, then source freshness and dbt docs.
 4. **Site build**: node tests, then Observable Framework turns the published tables into static pages.
 5. **Deploy** to GitHub Pages, only if every step above passed. Otherwise yesterday's site stays up.
 
-Pull requests run the same checks in [`ci.yml`](.github/workflows/ci.yml) without secrets, from the committed raw files.
+Pull requests run [`ci.yml`](.github/workflows/ci.yml) without secrets or data: ruff, pytest, the site tests and `dbt parse`. The full build with data runs in the nightly job.
 
 ## Sources
 
@@ -120,7 +120,7 @@ For recommendations, create a free Supabase project and run [`supabase/recommend
 
 ```
 extract/            Python extractors (Hardcover, Open Library, Raindrop, Supabase)
-data/raw/           raw extracts, committed
+data/raw/           raw extracts (local and CI cache only, not in git)
 dbt/                models, seeds, tests
 site/src/           Observable Framework pages, components, data loaders, 3D models
 supabase/           the recommendations table and its access rules

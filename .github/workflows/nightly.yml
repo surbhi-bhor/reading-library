@@ -8,7 +8,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -38,15 +38,22 @@ jobs:
       - run: ruff check .
       - run: pytest -q
 
-      # Fresh data only on the schedule or a manual run; a push rebuilds from the
-      # committed raw files. A failure here stops the job, so the live site and
-      # the committed raw files stay as they were.
-      # Articles come from Raindrop too; without RAINDROP_TOKEN, or if Raindrop
-      # is down, the step still passes and the saved articles stay.
-      # Recommendations come from Supabase (approved rows only); without its
-      # settings the step still passes and the saved ones stay.
+      # Raw data never goes into the repository. The last good extract lives in
+      # the Actions cache instead (private to the repo, not in git), so the
+      # extract can keep yesterday's articles or recommendations when Raindrop or
+      # Supabase is down, and reuse Open Library matches instead of redoing them.
+      - name: Restore the last good extract
+        uses: actions/cache/restore@v4
+        with:
+          path: data/raw
+          key: raw-${{ github.run_id }}
+          restore-keys: raw-
+
+      # Fresh data on every run. If Hardcover fails or answers empty, the job
+      # stops here and the live site stays as it was. Articles (Raindrop) and
+      # recommendations (Supabase) are optional: if either is down, the step
+      # still passes and the cached copies stay.
       - name: Extract from Hardcover, Open Library, Raindrop and Supabase
-        if: github.event_name != 'push'
         env:
           HARDCOVER_API_TOKEN: ${{ secrets.HARDCOVER_API_TOKEN }}
           RAINDROP_TOKEN: ${{ secrets.RAINDROP_TOKEN }}
@@ -57,6 +64,12 @@ jobs:
       - name: dbt build (models and tests)
         working-directory: dbt
         run: dbt build --profiles-dir .
+      # Only an extract that passed every dbt test becomes the next fallback.
+      - name: Keep this extract as the next fallback
+        uses: actions/cache/save@v4
+        with:
+          path: data/raw
+          key: raw-${{ github.run_id }}
       - name: Source freshness (warn only)
         working-directory: dbt
         run: dbt source freshness --profiles-dir . || echo "::warning::raw extracts are stale"
@@ -75,18 +88,6 @@ jobs:
           npm test
           npm run build
       - run: python scripts/copy_dbt_docs.py
-
-      # Only after every test passed: keep the new raw extract in git.
-      - name: Commit raw extract
-        if: github.event_name != 'push'
-        run: |
-          if [ -n "$(git status --porcelain data/raw)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/raw
-            git commit -m "data: nightly extract"
-            git push
-          fi
 
       - uses: actions/upload-pages-artifact@v3
         with:
