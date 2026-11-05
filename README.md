@@ -21,7 +21,7 @@ A personal reading data pipeline: books, articles and visitor recommendations, m
 
 My reading lives in a tracker app that logs books well but answers simple questions badly: how many books did I read this year, how fast do I read, what do I rate highest. Some books have no finish date, some are re-reads, and the articles I read live in another app entirely. Two charts built separately would disagree.
 
-I wanted one place for everything I read, where every number is defined once and tested, refreshed without any manual step, and safe to make public. It is also a portfolio project for data and BI engineering, since my other pipeline runs on private data and cannot be shown.
+I wanted one place for everything I read, where every number is defined once and tested, refreshed without any manual step, and safe to make public. 
 
 ## Architecture
 
