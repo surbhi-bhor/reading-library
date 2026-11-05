@@ -34,7 +34,8 @@ if (!optedOut && !["localhost", "127.0.0.1"].includes(location.hostname)) {
 // Dark by default; a choice made with the nav toggle is remembered.
 // Read before first paint, so the page never flashes the other theme.
 document.documentElement.dataset.theme = "dark";
-try { const t = localStorage.getItem("theme"); if (t === "light") document.documentElement.dataset.theme = t; } catch {}
+// The key changed when dark became the default, so a light choice saved before that is dropped.
+try { localStorage.removeItem("theme"); const t = localStorage.getItem("theme-choice"); if (t === "light") document.documentElement.dataset.theme = t; } catch {}
 document.addEventListener("click", (e) => {
   const b = e.target.closest(".theme-toggle");
   if (!b) return;
@@ -43,7 +44,7 @@ document.addEventListener("click", (e) => {
   const next = now === "light" ? "dark" : "light";
   root.dataset.theme = next;
   b.setAttribute("aria-pressed", String(next === "light"));
-  try { localStorage.setItem("theme", next); } catch {}
+  try { localStorage.setItem("theme-choice", next); } catch {}
 });
 document.addEventListener("DOMContentLoaded", () => {
   const light = (document.documentElement.dataset.theme ?? (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark")) === "light";
@@ -70,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const toggle = `<button type="button" class="theme-toggle" aria-label="Light mode" aria-pressed="false" title="Switch light and dark"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>`;
     return `<nav class="site-nav" aria-label="Library rooms"><a class="site-mark" href="./"><svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#7a2230"/><path d="M32 21c-2.6-3.4 2.8-5.2 0-9.6M38.5 21c-2.6-3.4 2.8-5.2 0-9.6M25.5 21c-2.6-3.4 2.8-5.2 0-9.6" fill="none" stroke="#f3e9d8" stroke-width="2.4" stroke-linecap="round"/><path d="M12 26c7-2.6 14-2 20 2.2v21.6c-6-4.2-13-4.8-20-2.2z" fill="#f3e9d8"/><path d="M52 26c-7-2.6-14-2-20 2.2v21.6c6-4.2 13-4.8 20-2.2z" fill="#e0703a"/><path d="M16 31c4.6-1.2 8.8-.8 12.6 1.2M16 36c4.6-1.2 8.8-.8 12.6 1.2M16 41c4.6-1.2 8.8-.8 12.6 1.2" fill="none" stroke="#7a2230" stroke-width="1.4" stroke-linecap="round" opacity=".55"/></svg>The Reading Room</a><div class="site-nav-end"><ul>${items}</ul>${toggle}</div></nav>`;
   },
-  footer: `<p class="site-foot">Code under the MIT licence. Book data from <a href="https://hardcover.app" rel="noopener">Hardcover</a> and <a href="https://openlibrary.org" rel="noopener">Open Library</a>.</p>`,
+  footer: `<p class="site-foot">Code under the MIT license. Book data from <a href="https://hardcover.app" rel="noopener">Hardcover</a> and <a href="https://openlibrary.org" rel="noopener">Open Library</a>.</p>`,
   // Data loaders are Python; locally point PYTHON at the project venv. Windows has no python3.
   interpreters: {".py": [process.env.PYTHON ?? (process.platform === "win32" ? "python" : "python3")]}
 };
