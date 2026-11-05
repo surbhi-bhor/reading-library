@@ -2,8 +2,6 @@
 
 A personal reading data pipeline: books, articles and visitor recommendations from four sources, modelled in dbt on DuckDB, tested, and published weekly as a static site.
 
-Live since November 2026: https://reading-room-shelf.vercel.app · Code: https://github.com/surbhi-bhor/reading-library
-
 ## Why
 
 I track my books on Hardcover, which has great stats of its own, and save the articles I read in Raindrop. I wanted everything I read together in one place, and more control over my stats: every number defined once, tested, refreshed without manual work, and safe to publish.
