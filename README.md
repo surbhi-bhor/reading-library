@@ -13,7 +13,7 @@ A personal reading data pipeline: books, articles and visitor recommendations, m
 
 **[Live site](https://reading-room-shelf.vercel.app)** · **[dbt docs](https://reading-room-shelf.vercel.app/docs/)** · **[Case study](docs/case-study.md)** · **[Demo video](docs/demo.mp4)**
 
-<a href="docs/demo.mp4"><img src="docs/images/demo.gif" alt="A 21-second tour: the bookcase, a book taken off the shelf, the pipeline, the Stats page and the recommend form" width="760"></a>
+<a href="docs/demo.mp4"><img src="docs/images/demo.gif" alt="A 26-second tour: scrolling the bookcase, opening a book, the pipeline, the Stats page and the recommend form" width="760"></a>
 
 </div>
 
@@ -168,4 +168,4 @@ docs/case-study.md  problem, approach, decisions, results
 
 ## Credits
 
-Book data from [Hardcover](https://hardcover.app) and [Open Library](https://openlibrary.org). 3D shelf objects from [Poly Haven](https://polyhaven.com) (CC0).
+Book data from [Hardcover](https://hardcover.app) and [Open Library](https://openlibrary.org). 3D shelf objects from [Poly Haven](https://polyhaven.com) (CC0). Demo video music: "Happy Beats / Business Moves" from [ende.app](https://ende.app/en).
