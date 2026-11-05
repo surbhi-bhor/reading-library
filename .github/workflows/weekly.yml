@@ -1,8 +1,8 @@
-name: Nightly build and deploy
+name: Weekly build and deploy
 
 on:
   schedule:
-    - cron: "0 3 * * *"   # 03:00 UTC every night
+    - cron: "0 0 * * 5"   # Fridays 00:00 UTC (05:30 in India), so recommendations are up for the weekend
   workflow_dispatch:
   push:
     branches: [main]
@@ -28,7 +28,7 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: npm
           cache-dependency-path: site/package-lock.json
       - run: pip install -r requirements-dev.txt

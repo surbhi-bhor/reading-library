@@ -19,13 +19,13 @@ jobs:
       - run: ruff check .
       - run: pytest -q
       # No raw data lives in the repository, so CI checks that every dbt model
-      # compiles; the full build with data and data tests runs in the nightly job.
+      # compiles; the full build with data and data tests runs in the weekly job.
       - name: dbt parse
         working-directory: dbt
         run: dbt parse --profiles-dir .
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: npm
           cache-dependency-path: site/package-lock.json
       - name: Site tests

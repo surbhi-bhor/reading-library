@@ -101,16 +101,17 @@ ${card("Reading pace",
   spells.map((s) => ({...s, pace: s.books_per_year ? one.format(s.books_per_year) : "", status: s.is_current ? "Now" : ""})),
   [["started_on", "From"], ["ended_on", "To"], ["books", "Books"], ["pace", "A year"], ["status", ""]])}
 ${card("Books by year", `${bestYear.year} is my biggest year so far, with ${say(bestYear.books)} books`, "",
-  chart({
-    x: {type: "band", label: null, tickFormat: "d"},
-    y: {label: null, grid: true, tickFormat: "d"},
-    marginLeft: 24,
+  chart((width) => ({
+    // On a phone ten years do not fit as 2017, 2018...: show '17, '18 instead.
+    x: {type: "band", label: null, tickFormat: (d) => (width / byYear.length < 44 ? `'${String(d).slice(2)}` : String(d)), tickSize: 0, tickPadding: 8},
+    y: {label: null, grid: true, tickFormat: "d", ticks: 4},
+    marginLeft: 24, marginTop: 24,
     marks: [
-      Plot.barY(byYear, {x: "year", y: "books", fill: gold, rx: 3, insetLeft: 4, insetRight: 4, tip: {format: {x: (d) => String(d)}}}),
+      Plot.barY(byYear, {x: "year", y: "books", fill: gold, rx: 3, insetLeft: width < 480 ? 2 : 4, insetRight: width < 480 ? 2 : 4, tip: {format: {x: (d) => String(d)}}}),
       Plot.text(byYear.filter((d) => d.books > 0), {x: "year", y: "books", text: "books", dy: -8, fill: "var(--cream)", fontWeight: 600}),
       Plot.ruleY([0], {stroke: ink})
     ]
-  }), byYear, [["year", "Year"], ["books", "Books"]])}
+  })), byYear, [["year", "Year"], ["books", "Books"]])}
 ${card("Articles", articlesRead ? `${cap(say(articlesRead))} ${articlesRead === 1 ? "article" : "articles"}, ${sources.length > 1 ? "most" : "all"} from ${sources[0]?.source_name}` : "No articles saved yet", "",
   chart({
     x: {label: null, grid: true, tickFormat: "d", ticks: Math.min(5, d3.max(sources, (d) => d.articles) ?? 1)},

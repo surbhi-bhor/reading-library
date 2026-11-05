@@ -18,9 +18,6 @@ metric_top_creators,creator_name
 metric_top_creators,items_read
 metric_top_creators,avg_rating_10
 metric_top_creators,rank
-metric_topic_mix,topic_name
-metric_topic_mix,reads
-metric_topic_mix,share
 metric_rating_spread,rating_10
 metric_rating_spread,reads
 metric_genre_mix,genre

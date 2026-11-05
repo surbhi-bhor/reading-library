@@ -5,8 +5,8 @@ sources:
     description: Raw extract files written by `python -m extract`, committed under data/raw.
     loaded_at_field: "extracted_at::timestamptz"
     freshness:
-      warn_after: {count: 36, period: hour}
-      error_after: {count: 72, period: hour}
+      warn_after: {count: 8, period: day}
+      error_after: {count: 15, period: day}
     tables:
       - name: hardcover_books
         description: One row per book in my Hardcover library.

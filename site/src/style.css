@@ -1332,7 +1332,12 @@ dialog.viewer.is-closing::backdrop { opacity: 0; transition: opacity 400ms var(-
 .cf-dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: var(--space-md); }
 .cf-dots i { width: 0.5rem; height: 0.5rem; border-radius: 999px; background: var(--line-strong); cursor: pointer; transition: width 300ms var(--spring), background-color 200ms; }
 .cf-dots i.on { width: 1.6rem; background: var(--antique-gold); }
-@media (max-width: 640px) { .cf-arrow { top: auto; bottom: 0; } }
+/* On a phone the arrows sit beside the dots, clear of the tape deck in the corner. */
+@media (max-width: 640px) {
+  .cf-arrow { top: auto; bottom: 0; width: 2.75rem; height: 2.75rem; }
+  .cf-prev { left: calc(50% - 6.5rem); }
+  .cf-next { right: calc(50% - 6.5rem); }
+}
 
 
 /* ════════════════════════════════════════════════════════
@@ -1466,3 +1471,15 @@ main:not(:has(.gl-shelf, .arc-shelf)) :is(.home-section, .coverflow) { visibilit
 
 /* A page head with only its title spans the full width. */
 .page-head:not(:has(> p)) { grid-template-columns: minmax(0, 1fr); }
+
+/* On a phone the shelf slider stops short of the tape deck in the corner. */
+@media (max-width: 640px) {
+  .gl-shelf .arc-scrubber { width: calc(100% - 2 * var(--space-lg) - 3.5rem); margin-left: var(--space-lg); }
+}
+
+/* A smaller tape deck on a phone, tucked closer into the corner. */
+@media (max-width: 640px) {
+  .deck { right: max(0.75rem, env(safe-area-inset-right, 0px)); bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px)); }
+  .deck summary { width: 2.5rem; height: 1.75rem; }
+  .deck-tab { width: 1.8rem; height: 1.15rem; }
+}

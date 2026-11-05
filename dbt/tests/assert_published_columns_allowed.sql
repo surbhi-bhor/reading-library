@@ -8,7 +8,6 @@
 -- depends_on: {{ ref('metric_reading_time') }}
 -- depends_on: {{ ref('metric_avg_rating') }}
 -- depends_on: {{ ref('metric_top_creators') }}
--- depends_on: {{ ref('metric_topic_mix') }}
 -- depends_on: {{ ref('metric_long_form_share') }}
 -- depends_on: {{ ref('metric_genre_mix') }}
 -- depends_on: {{ ref('metric_rating_spread') }}

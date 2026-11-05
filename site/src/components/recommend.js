@@ -1,7 +1,7 @@
 // "Recommend a book": a visitor searches Open Library, picks a book, adds an
 // optional name and note, and it goes into the Supabase table
 // (supabase/recommendations.sql) with the public anon key. The table only
-// accepts inserts. The nightly build checks the book against Open Library and
+// accepts inserts. The weekly build checks the book against Open Library and
 // puts it on the "Recommended to me" shelf with the name and note; no approval step.
 
 const OL_KEY = /^\/works\/OL\d+W$/;
@@ -110,7 +110,7 @@ export function RecommendButton(config) {
         body: JSON.stringify(row)
       });
       if (!r.ok) throw new Error(String(r.status));
-      status.textContent = `Thank you. ${row.title} joins the shelf after tonight’s update.`;
+      status.textContent = `Thank you. ${row.title} joins the shelf after Friday’s update.`;
       pick = null;
       form.reset();
       chosen.hidden = true;

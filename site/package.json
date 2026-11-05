@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "observable preview",
-    "build": "observable build",
+    "build": "node -e \"require('fs').rmSync('dist', {recursive: true, force: true})\" && observable build",
     "test": "node --test test/*.test.js",
     "fresh": "node -e \"require('fs').rmSync('src/.observablehq/cache/data', {recursive: true, force: true})\""
   },

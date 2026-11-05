@@ -1,7 +1,7 @@
 """python -m extract: pull my books from Hardcover, enrich them from Open
 Library, pull the articles I have read from Raindrop and the books visitors
 recommend from Supabase, and write the raw
-files dbt reads. Exits non-zero if the books fail, so the nightly job
+files dbt reads. Exits non-zero if the books fail, so the weekly job
 stops before touching the site; articles and recommendations are optional
 and never stop it."""
 import json

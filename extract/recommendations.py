@@ -68,7 +68,7 @@ def parse_recommendations(items: list[dict], saved: list[dict], extracted_at: st
         book = ({k: known[k] for k in ("title", "author", "cover_id")} if known and known["ol_key"] == ol_key
                 else verify_work(ol_key))
         if not book:
-            continue  # not a real work (or Open Library is down): try again tomorrow
+            continue  # not a real work (or Open Library is down): try again next run
         rows.append({
             "rec_id": rec_id,
             **book,

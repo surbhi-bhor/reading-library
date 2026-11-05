@@ -1,6 +1,6 @@
 # Case study: Reading Library
 
-A personal reading data pipeline: books, articles and visitor recommendations from four sources, modelled in dbt on DuckDB, tested, and published nightly as a static site.
+A personal reading data pipeline: books, articles and visitor recommendations from four sources, modelled in dbt on DuckDB, tested, and published weekly as a static site.
 
 Live since November 2026: https://reading-room-shelf.vercel.app · Code: https://github.com/surbhi-bhor/reading-library
 
@@ -28,7 +28,7 @@ flowchart LR
   SITE --> V[Vercel]
 ```
 
-One GitHub Actions workflow runs nightly and on every push: lint and tests, extract, `dbt build` (models and tests), site build, deploy. If any test fails, nothing deploys and the live site keeps the previous day's data.
+One GitHub Actions workflow runs every Friday morning and on every push: lint and tests, extract, `dbt build` (models and tests), site build, deploy. If any test fails, nothing deploys and the live site keeps the previous day's data.
 
 ### Data model
 
@@ -38,18 +38,18 @@ Genres are assigned by rules over Open Library subjects, Hardcover tags and the 
 
 ### Metric layer
 
-Each metric is one dbt model (19 in total), and the site reads only the metric and publish schemas, so a number shown in two places comes from the same table.
+Each metric is one dbt model (18 in total), and the site reads only the metric and publish schemas, so a number shown in two places comes from the same table.
 
 Reading pace needed more care. The plain average, first to last dated book, gives one book every 105 days, which hides that I read in spells with long gaps between. A spell ends after a gap of more than 180 days (a single dbt variable), and pace is measured inside spells: one book every 39 days while reading.
 
 ### Recommendations: app database to warehouse
 
-Visitors send a book through a form on the site. The page writes straight to a Supabase Postgres table with the public key; row-level security makes the table insert-only. The nightly extract reads it with the service key, keeps only books that resolve to a real Open Library work, and uses Open Library's title, author and cover instead of what the visitor typed. Names or notes containing a link are dropped. dbt then folds repeat recommendations into one row per book. This is the operational-database-to-warehouse pattern at small scale.
+Visitors send a book through a form on the site. The page writes straight to a Supabase Postgres table with the public key; row-level security makes the table insert-only. The weekly extract reads it with the service key, keeps only books that resolve to a real Open Library work, and uses Open Library's title, author and cover instead of what the visitor typed. Names or notes containing a link are dropped. dbt then folds repeat recommendations into one row per book. This is the operational-database-to-warehouse pattern at small scale.
 
 ### Data quality
 
-- 54 data tests across 45 models: keys, accepted values, relationships.
-- 16 unit tests for the edge cases: re-reads, undated reads, abandoned and unmatched books, articles, repeat recommendations, shelf order, reading-spell boundaries.
+- 51 data tests across 40 models: keys, accepted values, relationships.
+- 11 unit tests for the edge cases: re-reads, undated reads, abandoned and unmatched books, articles, repeat recommendations, shelf order, reading-spell boundaries.
 - A consistency test that dated plus undated reads equal total reads, and that totals agree across metrics.
 - A privacy test: every published column must be on an allow-list.
 - Source freshness warnings, and extractors that never let an empty or failed Hardcover response replace good data.
@@ -65,14 +65,14 @@ Visitors send a book through a form on the site. The page writes straight to a S
 | Pace measured inside reading spells | The lifetime average made long breaks look like slow reading | The 180-day break is a judgement call, kept in one variable |
 | Supabase for recommendations | Shows the app-to-warehouse pattern; visitors need no account | One more service, and free projects pause after a week idle |
 | No manual approval, Open Library verification instead | Spam can only add a real book; repeats fold into one | A rude name or note shows until I delete the row |
-| Static site with build-time data | Nothing to run or attack, cheap to host | Data is at most a day old |
+| Static site with build-time data | Nothing to run or attack, cheap to host | Data is up to a week old between pushes |
 
 ## Results
 
 - **Live:** https://reading-room-shelf.vercel.app, with dbt docs at `/docs`.
 - **Data:** 38 books and 6 articles on the shelves, all finished reads; 34 books have a finish date and 4 do not (counted in totals, not in any month).
-- **Warehouse:** 45 dbt models (6 staging, 11 marts, 19 metrics, 5 publish), 54 data tests, 16 unit tests, plus pytest for the extractors.
-- **Nightly run:** about 1 to 2 minutes end to end, from extract to deploy.
+- **Warehouse:** 40 dbt models (6 staging, 11 marts, 18 metrics, 5 publish), 51 data tests, 11 unit tests, plus pytest for the extractors.
+- **Weekly run:** about 1 to 2 minutes end to end, from extract to deploy.
 - **Cost:** nothing. GitHub Actions, Vercel Hobby and the Supabase free tier.
 - **Lighthouse (home page):** mobile 27 performance, 90 accessibility, 100 best practices, 100 SEO; desktop 40, 90, 100, 100. Performance is the weak spot: the 3D shelf, about 44 cover images and the 3D models load up front (largest contentful paint 18.6 s on mobile, 5.6 s on desktop).
 

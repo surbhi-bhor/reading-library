@@ -45,7 +45,8 @@ select
     title,
     author,
     'https://covers.openlibrary.org/b/id/' || cover_id || '-M.jpg' as cover_url,
-    'https://covers.openlibrary.org/b/id/' || cover_id || '-L.jpg' as cover_hd_url,
+    -- Through the same proxy as the shelf's own covers: cached, CORS-readable and resized.
+    'https://wsrv.nl/?w=800&q=85&we&output=webp&url=' || url_encode('https://covers.openlibrary.org/b/id/' || cover_id || '-L.jpg') as cover_hd_url,
     'https://openlibrary.org' || ol_key as url,
     recommended_by,
     note,

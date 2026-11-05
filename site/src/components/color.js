@@ -59,6 +59,20 @@ export function coverColor(url, timeout = 5000) {
   });
 }
 
+// The colour of a cover image that is already loaded (and CORS-readable).
+export function imageColor(img) {
+  try {
+    const canvas = document.createElement("canvas");
+    canvas.width = 12;
+    canvas.height = 18;
+    const ctx = canvas.getContext("2d", {willReadFrequently: true});
+    ctx.drawImage(img, 0, 0, 12, 18);
+    return dominantColor(ctx.getImageData(0, 0, 12, 18).data);
+  } catch {
+    return null;
+  }
+}
+
 // Colour spines from their covers. Results are cached per cover, so a filter
 // that redraws the shelf does not fetch again. Resolves when every spine is done.
 const cache = new Map();

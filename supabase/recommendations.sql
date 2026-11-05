@@ -1,11 +1,11 @@
 -- Book recommendations from visitors. Run once in the Supabase SQL editor.
 --
--- The site writes here with the public anon key; the nightly extract reads
+-- The site writes here with the public anon key; the weekly extract reads
 -- here with the service-role key (a GitHub secret). Visitors can only add a
 -- row: they cannot read, change or delete anything. There is no approval
 -- step: a book shows on the site once it checks out as a real Open Library
 -- work, with the visitor's name and note (dropped if they contain a link).
--- Deleting a row takes it off the site on the next nightly run. The
+-- Deleting a row takes it off the site on the next weekly run. The
 -- approved column is left over from an earlier design and is unused.
 
 create table if not exists public.recommendations (

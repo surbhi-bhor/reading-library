@@ -14,7 +14,7 @@ def write_raw(path: Path, rows: list[dict]) -> int:
     if not rows:
         raise EmptyExtractError(f"refusing to overwrite {path} with an empty extract")
     if all("hardcover_id" in r for r in rows):
-        # Stable order keeps the nightly data commits small and readable.
+        # Stable order keeps the data commits small and readable.
         rows = sorted(rows, key=lambda r: r["hardcover_id"])
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)

@@ -3,7 +3,7 @@ import {GLTFLoader} from "npm:three/examples/jsm/loaders/GLTFLoader.js/+esm";
 import {RoomEnvironment} from "npm:three/examples/jsm/environments/RoomEnvironment.js/+esm";
 import {animate} from "npm:motion";
 import {hash, spineLabel, spineStyle, spineHeight} from "./spine.js";
-import {coverColor, inkFor, toCss} from "./color.js";
+import {imageColor, inkFor, toCss} from "./color.js";
 import {formatDate, openBook} from "./bookPanel.js";
 import {ArcShelf} from "./shelf3d.js";
 import {isLight, onThemeChange} from "./theme.js";
@@ -44,11 +44,14 @@ function status(book) {
   return d.length ? `Finished ${formatDate(d.at(-1))}` : "Finished, date not kept";
 }
 
+// Phones get a lighter scene: fewer pixels, smaller shadows and covers.
+const phone = () => matchMedia("(pointer: coarse)").matches || innerWidth < 760;
+
 // The shelf is large now, so the medium Open Library cover (about 180px) blurs:
-// take the large one, or ask the Hardcover resizer for a 500px copy.
+// ask the resizer for a 500px WebP copy (300px on a phone, where books are smaller).
 function shelfCover(book) {
   const hd = book.cover_hd_url;
-  if (hd?.includes("wsrv.nl")) return hd.replace(/([?&])w=\d+/, "$1w=500");
+  if (hd?.includes("wsrv.nl")) return hd.replace(/([?&])w=\d+/, `$1w=${phone() ? 300 : 500}`);
   return hd ?? book.cover_url;
 }
 
@@ -274,7 +277,7 @@ export function GLShelf(books, {label = "My books", empty = "Nothing on these sh
 
   // ── Scene ──────────────────────────────────────────────────────────
   const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true, powerPreference: "high-performance"});
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.6));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, phone() ? 1.25 : 1.6));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
@@ -291,7 +294,7 @@ export function GLShelf(books, {label = "My books", empty = "Nothing on these sh
   scene.add(sky);
   const lamp = new THREE.SpotLight(0xffd7a0, 42, 0, 0.85, 0.75, 1.5);
   lamp.castShadow = true;
-  lamp.shadow.mapSize.set(innerWidth < 760 ? 1024 : 2048, innerWidth < 760 ? 1024 : 2048);
+  lamp.shadow.mapSize.set(phone() ? 512 : 2048, phone() ? 512 : 2048);
   lamp.shadow.bias = -0.0004;
   lamp.shadow.radius = 6;
   scene.add(lamp, lamp.target);
@@ -439,7 +442,8 @@ export function GLShelf(books, {label = "My books", empty = "Nothing on these sh
   const paint = async (it) => {
     if (disposed) return;
     const img = it.book.cover_url ? await loadImage(shelfCover(it.book)) : null;
-    const rgb = it.book.cover_url ? await coverColor(it.book.cover_url.replace(/-[LM]\.jpg$/, "-S.jpg")) : null;
+    // The colour comes from the cover just loaded; a second request to Open Library was the slow part.
+    const rgb = img ? imageColor(img) : null;
     if (disposed) return;
     const paper = it.book.kind === "article";
     const clothCss = rgb ? toCss(rgb) : paper ? "#e9dfc6" : "#4a2e1e";
