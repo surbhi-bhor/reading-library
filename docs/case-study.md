@@ -82,9 +82,3 @@ Visitors send a book through a form on the site. The page writes straight to a S
 - **Visitor data needs a different safety rule.** For books, an empty API answer is treated as a failure and never overwrites history. For recommendations, an empty answer can be real (I deleted a row), so it must be written as empty. And visitor names should never be in git history, which cannot be rewritten for one person.
 - **Run CI's exact commands locally.** The first CI run failed because I had been running `python -m pytest`, which hides an import-path problem that plain `pytest` exposes.
 - **Front-end weight is a real cost.** The 3D shelf is what makes the site memorable, and also what drags its performance score down.
-
-## Next
-
-- Load the 3D shelf and covers lazily to bring mobile performance up.
-- A custom domain.
-- Swap any test recommendations for real ones as they arrive.
