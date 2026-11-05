@@ -11,9 +11,13 @@ A personal reading data pipeline: books, articles and visitor recommendations, m
 ![DuckDB](https://img.shields.io/badge/DuckDB-warehouse-FFF000?logo=duckdb&logoColor=black)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 
-**[Live site](https://reading-room-shelf.vercel.app)** · **[dbt docs](https://reading-room-shelf.vercel.app/docs)** · **[Case study](docs/case-study.md)** · **[Demo video](docs/demo.mp4)**
+**[Live site](https://reading-room-shelf.vercel.app)** · **[dbt docs](https://reading-room-shelf.vercel.app/docs)** · **[Case study](docs/case-study.md)**
 
 <a href="docs/demo.mp4"><img src="docs/images/demo.gif" alt="A 26-second tour: scrolling the bookcase, opening a book, the pipeline, the Stats page and the recommend form" width="760"></a>
+
+
+https://github.com/user-attachments/assets/0244222d-c06a-4a71-8a27-6a47450f780e
+
 
 </div>
 
