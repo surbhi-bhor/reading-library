@@ -99,7 +99,12 @@ jobs:
           cp site/vercel.json site/og.jpg site/dist/
           url=$(npx --yes vercel@65.11.0 deploy site/dist --prod --yes --token "$VERCEL_TOKEN")
           echo "deployed $url"
-          # Only the live site stays reachable: older deployment URLs are removed.
-          npx --yes vercel@65.11.0 ls reading-library --scope "$VERCEL_ORG_ID" --token "$VERCEL_TOKEN" \
-            | grep -oE 'https://reading-library-[a-z0-9]+-[a-z0-9-]+\.vercel\.app' | sort -u | grep -vF "$url" \
-            | xargs -r -n1 npx --yes vercel@65.11.0 rm --yes --scope "$VERCEL_ORG_ID" --token "$VERCEL_TOKEN" || echo "::warning::old deployments not removed"
+          # Only the live site stays reachable: older deployments are deleted.
+          cur=${url#https://}
+          api=https://api.vercel.com
+          auth="Authorization: Bearer $VERCEL_TOKEN"
+          if [ -n "$cur" ]; then
+            curl -sf -H "$auth" "$api/v6/deployments?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&limit=100"               | jq -r --arg cur "$cur" '.deployments[] | select(.url != $cur) | .uid'               | while read -r id; do
+                  curl -sf -X DELETE -H "$auth" "$api/v13/deployments/$id?teamId=$VERCEL_ORG_ID" > /dev/null && echo "removed $id"
+                done || echo "::warning::old deployments not removed"
+          fi
