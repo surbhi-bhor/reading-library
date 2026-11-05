@@ -11,7 +11,7 @@ A personal reading data pipeline: books, articles and visitor recommendations, m
 ![DuckDB](https://img.shields.io/badge/DuckDB-warehouse-FFF000?logo=duckdb&logoColor=black)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 
-**[Live site](https://reading-room-shelf.vercel.app)** · **[dbt docs](https://reading-room-shelf.vercel.app/docs/)** · **[Case study](docs/case-study.md)** · **[Demo video](docs/demo.mp4)**
+**[Live site](https://reading-room-shelf.vercel.app)** · **[dbt docs](https://reading-room-shelf.vercel.app/docs)** · **[Case study](docs/case-study.md)** · **[Demo video](docs/demo.mp4)**
 
 <a href="docs/demo.mp4"><img src="docs/images/demo.gif" alt="A 26-second tour: scrolling the bookcase, opening a book, the pipeline, the Stats page and the recommend form" width="760"></a>
 
@@ -19,9 +19,7 @@ A personal reading data pipeline: books, articles and visitor recommendations, m
 
 ## Why I built it
 
-My reading lives in a tracker app that logs books well but answers simple questions badly: how many books did I read this year, how fast do I read, what do I rate highest. Some books have no finish date, some are re-reads, and the articles I read live in another app entirely. Two charts built separately would disagree.
-
-I wanted one place for everything I read, where every number is defined once and tested, refreshed without any manual step, and safe to make public. 
+I track my books on Hardcover, which has great stats of its own, and save articles in Raindrop. I wanted everything I read in one place and more control over my stats: every number defined once and tested, refreshed without any manual step, and safe to make public.
 
 ## Architecture
 
@@ -90,6 +88,14 @@ Each metric is one dbt model, so a number is defined in exactly one place: items
 
 Visitors search Open Library on the site and send a book, with an optional name and note. The page inserts the row into Supabase with the public anon key; row-level security makes the table insert-only ([`supabase/recommendations.sql`](supabase/recommendations.sql)). The nightly extract reads it with the service key and keeps only books that resolve to a real Open Library work, using Open Library's title, author and cover rather than the visitor's text. Names or notes containing a link are dropped. dbt folds repeat recommendations into one row per book. Recommendations stay out of `fact_reading`, since they are books I have not read.
 
+## Dashboard
+
+The [Stats page](https://reading-room-shelf.vercel.app/stats) reads only the metric layer. Each chart is one metric table, with its numbers in a table under the chart.
+
+| | |
+|---|---|
+| ![The Stats page in dark mode](docs/images/stats-charts-dark.jpg) | ![The Stats page in light mode](docs/images/stats-light.jpg) |
+
 ## Data quality
 
 - **54 data tests** across 45 models: unique and not-null keys, accepted values, relationships.
@@ -101,18 +107,21 @@ Visitors search Open Library on the site and send a book, with an optional name 
 
 ## Getting started
 
-Requirements: Python 3.12, Node 20.
+Requirements: Python 3.12, Node 20, and a free [Hardcover](https://hardcover.app) API token.
 
 ```bash
+git clone https://github.com/surbhi-bhor/reading-library.git
+cd reading-library
 python -m venv .venv
-.venv/Scripts/pip install -r requirements-dev.txt     # macOS/Linux: .venv/bin/pip
-cp .env.example .env                                    # add your tokens
+source .venv/bin/activate                 # Windows: .venv/Scripts/activate
+pip install -r requirements-dev.txt
+cp .env.example .env                      # add your tokens
 
-.venv/Scripts/python -m extract                        # needs HARDCOVER_API_TOKEN
-cd dbt && ../.venv/Scripts/dbt build --profiles-dir . && cd ..
+python -m extract                         # pull from the sources into data/raw/
+cd dbt && dbt build --profiles-dir . && cd ..
 
 cd site && npm ci
-PYTHON=../.venv/Scripts/python npx observable preview  # http://127.0.0.1:3000
+PYTHON=python npx observable preview      # http://127.0.0.1:3000
 ```
 
 | Command | What it does |
@@ -145,27 +154,14 @@ site/src/           pages, components, data loaders, 3D models
 supabase/           recommendations table and access rules
 scripts/            dbt docs copy, glTF packer
 tests/              pytest for the extractors
-docs/case-study.md  problem, approach, decisions, results
+docs/case-study.md  why, approach, decisions, results
 ```
 
-## Screenshots
+## Sources
 
-| | |
-|---|---|
-| ![The bookcase: books and articles on a lit 3D shelf](docs/images/home.jpg) | ![A book taken off the shelf, with my rating and finish date](docs/images/viewer.jpg) |
-| **The bookcase.** Books and articles from the publish layer, newest first, with search and genre filters. | **A book off the shelf.** Rating, finish date and genre come from `pub_shelf`. |
-| ![The Stats page in dark mode](docs/images/stats-charts-dark.jpg) | ![The Stats page in light mode](docs/images/stats-light.jpg) |
-| **Stats.** Every chart reads one metric table; the numbers sit in a table under each chart. | **Light mode.** Same data, daylit theme. |
-| ![The recommend-a-book form searching Open Library](docs/images/recommend.jpg) | <img src="docs/images/phone.jpg" alt="The bookcase on a phone" width="260"> |
-| **Recommend a book.** Searches Open Library and writes to Supabase. | **On a phone.** Tested from 320 to 1440 px wide. |
-
-## Limitations
-
-- Articles are dated by when they were saved, not read, so they are kept out of the time-based charts.
-- A few books (4 of 38) have no finish date; they count in totals but not in any month or year.
-- Pull requests build without data (no secrets), so they run lint, unit tests and `dbt parse` only; the full data build runs on `main`.
-- Supabase free projects pause after a week of inactivity; the nightly read is expected to keep it active.
-
-## Credits
-
-Book data from [Hardcover](https://hardcover.app) and [Open Library](https://openlibrary.org). 3D shelf objects from [Poly Haven](https://polyhaven.com) (CC0). Demo video music: "Happy Beats / Business Moves" from [ende.app](https://ende.app/en).
+- [Hardcover](https://hardcover.app): books, ratings, reading dates and moods
+- [Open Library](https://openlibrary.org): covers, page counts, subjects and the recommend search
+- [Raindrop.io](https://raindrop.io): saved articles
+- [Supabase](https://supabase.com): visitor recommendations
+- [Poly Haven](https://polyhaven.com): 3D shelf objects (CC0)
+- [ende.app](https://ende.app/en): demo video music, "Happy Beats / Business Moves"

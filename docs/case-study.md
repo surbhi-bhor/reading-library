@@ -4,15 +4,9 @@ A personal reading data pipeline: books, articles and visitor recommendations fr
 
 Live since November 2026: https://reading-room-shelf.vercel.app · Code: https://github.com/surbhi-bhor/reading-library
 
-## Problem
+## Why
 
-My reading lives in Hardcover, a reading tracker. It logs books well but answers simple questions badly, and the data behind those questions is messy:
-
-- Some books have no finish date, some are re-reads, some I abandoned.
-- The articles I read are saved in a different app (Raindrop), dated by when I saved them, not when I read them.
-- Two charts built separately from the same data can easily disagree.
-
-I wanted every number about my reading defined once, tested, refreshed without manual work, and safe to publish. It is also a public portfolio piece: my other pipeline runs on private data and cannot be shown.
+I track my books on Hardcover, which has great stats of its own, and save the articles I read in Raindrop. I wanted everything I read together in one place, and more control over my stats: every number defined once, tested, refreshed without manual work, and safe to publish.
 
 ## Approach
 
@@ -75,7 +69,7 @@ Visitors send a book through a form on the site. The page writes straight to a S
 
 ## Results
 
-- **Live:** https://reading-room-shelf.vercel.app, with dbt docs at `/docs/`.
+- **Live:** https://reading-room-shelf.vercel.app, with dbt docs at `/docs`.
 - **Data:** 38 books and 6 articles on the shelves, all finished reads; 34 books have a finish date and 4 do not (counted in totals, not in any month).
 - **Warehouse:** 45 dbt models (6 staging, 11 marts, 19 metrics, 5 publish), 54 data tests, 16 unit tests, plus pytest for the extractors.
 - **Nightly run:** about 1 to 2 minutes end to end, from extract to deploy.

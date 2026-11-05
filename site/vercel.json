@@ -4,5 +4,15 @@
   "buildCommand": "",
   "outputDirectory": ".",
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/manifest.json",
+      "destination": "/docs/manifest.json"
+    },
+    {
+      "source": "/catalog.json",
+      "destination": "/docs/catalog.json"
+    }
+  ]
 }

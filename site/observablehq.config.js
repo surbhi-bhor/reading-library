@@ -31,9 +31,10 @@ if (!optedOut && !["localhost", "127.0.0.1"].includes(location.hostname)) {
   va.src = "/_vercel/insights/script.js";
   document.head.append(va);
 }
-// Light or dark: a choice made with the nav toggle wins over the system setting.
+// Dark by default; a choice made with the nav toggle is remembered.
 // Read before first paint, so the page never flashes the other theme.
-try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}
+document.documentElement.dataset.theme = "dark";
+try { const t = localStorage.getItem("theme"); if (t === "light") document.documentElement.dataset.theme = t; } catch {}
 document.addEventListener("click", (e) => {
   const b = e.target.closest(".theme-toggle");
   if (!b) return;
