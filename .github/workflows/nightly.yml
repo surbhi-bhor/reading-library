@@ -100,6 +100,6 @@ jobs:
           url=$(npx --yes vercel@65.11.0 deploy site/dist --prod --yes --token "$VERCEL_TOKEN")
           echo "deployed $url"
           # Only the live site stays reachable: older deployment URLs are removed.
-          npx --yes vercel@65.11.0 ls reading-library --token "$VERCEL_TOKEN" 2>/dev/null \
+          npx --yes vercel@65.11.0 ls --scope "$VERCEL_ORG_ID" --token "$VERCEL_TOKEN" 2>/dev/null \
             | grep -oE 'https://reading-library-[a-z0-9]+-[a-z0-9-]+\.vercel\.app' | sort -u | grep -vF "$url" \
-            | xargs -r -n1 npx --yes vercel@65.11.0 rm --yes --token "$VERCEL_TOKEN" || echo "::warning::old deployments not removed"
+            | xargs -r -n1 npx --yes vercel@65.11.0 rm --yes --scope "$VERCEL_ORG_ID" --token "$VERCEL_TOKEN" || echo "::warning::old deployments not removed"
