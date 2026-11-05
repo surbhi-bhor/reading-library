@@ -12,11 +12,7 @@ A personal reading data pipeline: books, articles and visitor recommendations, m
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 
 **[Live site](https://reading-room-shelf.vercel.app)** · **[dbt docs](https://reading-room-shelf.vercel.app/docs)** · **[Case study](docs/case-study.md)**
-
-
-https://github.com/user-attachments/assets/0244222d-c06a-4a71-8a27-6a47450f780e
-
-
+https://github.com/user-attachments/assets/5ea73fcc-1153-4e08-a475-e389621602b4
 </div>
 
 ## Why I built it
