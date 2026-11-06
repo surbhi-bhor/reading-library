@@ -96,7 +96,7 @@ jobs:
           VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
         run: |
-          cp site/vercel.json site/og.jpg site/dist/
+          cp site/vercel.json site/og.jpg site/robots.txt site/sitemap.xml site/dist/
           url=$(npx --yes vercel@65.11.0 deploy site/dist --prod --yes --token "$VERCEL_TOKEN")
           echo "deployed $url"
           # Only the live site stays reachable: older deployments are deleted.
